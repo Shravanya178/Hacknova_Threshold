@@ -18,6 +18,7 @@ import usersDataRaw from "../../data/users.json";
 import IdentityConversation from "@/components/IdentityConversation";
 import UserToggle from "@/components/UserToggle";
 import DiagnosisReveal from "@/components/DiagnosisReveal";
+import JourneyScreen from "@/components/JourneyScreen";
 
 const usersData = usersDataRaw as User[];
 
@@ -42,9 +43,7 @@ export default function EmbedPage() {
   const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>({});
   
   // Reflection Input state
-  const [activeReflectionStepId, setActiveReflectionStepId] = useState<string | null>(null);
-  const [reflectionText, setReflectionText] = useState<string>("");
-  const [submittingReflection, setSubmittingReflection] = useState<boolean>(false);
+  const [submittingStepId, setSubmittingStepId] = useState<string | null>(null);
   const [lapseAlert, setLapseAlert] = useState<{ reasoning: string } | null>(null);
 
   // Sync user data on toggle
@@ -57,7 +56,6 @@ export default function EmbedPage() {
       setDiagnosis(null);
       setEvidence({});
       setCompletedSteps({});
-      setActiveReflectionStepId(null);
       setLapseAlert(null);
       setActiveTab("diagnose");
     }
@@ -91,21 +89,15 @@ export default function EmbedPage() {
     }
   };
 
-  const handleCheckboxChange = (stepId: string, checked: boolean) => {
+  const handleStepCompleteToggle = (stepId: string) => {
     setCompletedSteps((prev) => ({
       ...prev,
-      [stepId]: checked
+      [stepId]: !prev[stepId]
     }));
   };
 
-  const openReflectionDialog = (stepId: string) => {
-    setActiveReflectionStepId(stepId);
-    setReflectionText("");
-  };
-
-  const submitReflection = async (stepId: string) => {
-    if (!reflectionText.trim()) return;
-    setSubmittingReflection(true);
+  const handleReflectionSubmit = async (stepId: string, text: string) => {
+    setSubmittingStepId(stepId);
     try {
       const res = await fetch("/api/reflect", {
         method: "POST",
@@ -113,9 +105,8 @@ export default function EmbedPage() {
         body: JSON.stringify({
           userId: currentUser.id,
           stepId,
-          reflectionText,
+          reflectionText: text,
           statedGoal,
-          recentReflections,
           constraints: {
             timeAvailable,
             location,
@@ -131,37 +122,28 @@ export default function EmbedPage() {
           ...prev,
           [stepId]: data.evidenceEntry
         }));
+        // Auto-complete step upon filing evidence
+        setCompletedSteps((prev) => ({
+          ...prev,
+          [stepId]: true
+        }));
       }
 
-      // Check for lapse re-diagnosis (Tier 2)
+      // Check for lapse re-diagnosis
       if (data.analysis?.is_lapse && data.reDiagnosis) {
         setDiagnosis(data.reDiagnosis);
         setLapseAlert({
           reasoning: data.analysis.reasoning
         });
+        // Clear completed/evidence on re-diagnosis
+        setEvidence({});
+        setCompletedSteps({});
       }
-
-      // Close input
-      setActiveReflectionStepId(null);
-      setReflectionText("");
     } catch (err) {
       console.error(err);
     } finally {
-      setSubmittingReflection(false);
+      setSubmittingStepId(null);
     }
-  };
-
-  // Check if a step is locked based on previous requires_output steps
-  const isStepLocked = (step: ExperienceStep, index: number, journey: ExperienceStep[]) => {
-    if (index === 0) return false;
-    // Look at all previous steps. If any requires_output is true AND has no evidence submitted, then locked.
-    for (let i = 0; i < index; i++) {
-      const prevStep = journey[i];
-      if (prevStep.requires_output && !evidence[prevStep.id]) {
-        return true;
-      }
-    }
-    return false;
   };
 
   return (
@@ -296,120 +278,14 @@ export default function EmbedPage() {
               </div>
             )}
 
-            <div className="flex justify-between items-center border-b border-white/5 pb-2">
-              <span className="text-[10px] uppercase tracking-wider text-mutedText font-bold">Experience Pathway</span>
-              <span className="text-[10px] font-script text-primaryAccent text-lg">
-                State: {diagnosis.quadrant}
-              </span>
-            </div>
-
-            {/* Step list */}
-            <div className="flex flex-col gap-3 relative">
-              {diagnosis.journey.map((step, idx) => {
-                const locked = isStepLocked(step, idx, diagnosis.journey);
-                const hasEvidence = !!evidence[step.id];
-                const completed = completedSteps[step.id] || hasEvidence;
-
-                return (
-                  <div
-                    key={step.id}
-                    className={`border p-4 transition-all duration-normal flex flex-col gap-3 bg-surface ${
-                      locked
-                        ? "border-white/5 opacity-30 select-none pointer-events-none"
-                        : "border-white/10 hover:border-white/20"
-                    }`}
-                  >
-                    <div className="flex justify-between items-start gap-3">
-                      
-                      {/* Checkbox wrapper */}
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          disabled={locked}
-                          checked={completed}
-                          onChange={(e) => handleCheckboxChange(step.id, e.target.checked)}
-                          className="w-4 h-4 border-2 border-white/20 bg-background rounded-none text-primaryAccent focus-ring cursor-pointer"
-                        />
-                        <div className="flex flex-col">
-                          <span className="text-[9px] uppercase tracking-widest text-primaryAccent font-bold">
-                            {step.verb}
-                          </span>
-                          <span className="text-xs font-medium leading-tight text-primaryText mt-0.5">
-                            {step.label}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Locked icon or status badge */}
-                      <div>
-                        {locked ? (
-                          <Lock className="w-4 h-4 text-mutedText" />
-                        ) : hasEvidence ? (
-                          <span className="text-[9px] bg-success/10 text-success border border-success/20 px-2 py-0.5 uppercase tracking-wider font-semibold rounded-[3px]">
-                            EVIDENCE RECORDED
-                          </span>
-                        ) : step.requires_output ? (
-                          <span className="text-[9px] bg-warning/10 text-warning border border-warning/20 px-2 py-0.5 uppercase tracking-wider font-semibold rounded-[3px]">
-                            GATED INPUT REQUIRED
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
-
-                    {/* Completion separate signal ledger indicators */}
-                    <div className="flex gap-4 border-t border-white/5 pt-2 text-[10px] text-mutedText">
-                      <span className="flex items-center gap-1">
-                        <span className={`w-1.5 h-1.5 rounded-full ${completed ? "bg-success" : "bg-white/20"}`} />
-                        COMPLETED: {completed ? "YES" : "NO"}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <span className={`w-1.5 h-1.5 rounded-full ${hasEvidence ? "bg-success" : "bg-white/20"}`} />
-                        PROOF OF GROWTH: {hasEvidence ? "SUBMITTED" : "PENDING"}
-                      </span>
-                    </div>
-
-                    {/* Reflection input section */}
-                    {!locked && !hasEvidence && (
-                      <div className="mt-2">
-                        {activeReflectionStepId === step.id ? (
-                          <div className="flex flex-col gap-2">
-                            <textarea
-                              value={reflectionText}
-                              onChange={(e) => setReflectionText(e.target.value)}
-                              className="w-full bg-background border border-white/10 p-2 text-xs text-primaryText focus-ring rounded-[4px] resize-none h-14"
-                              placeholder="Write a reflection. Note: Words like 'fail', 'rejection', or 'give up' simulate emotional drift..."
-                            />
-                            <div className="flex justify-end gap-2">
-                              <button
-                                onClick={() => setActiveReflectionStepId(null)}
-                                className="px-3 py-1 bg-surface border border-white/10 text-[10px] uppercase font-bold tracking-wider hover:bg-background transition-normal"
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                onClick={() => submitReflection(step.id)}
-                                disabled={submittingReflection}
-                                className="px-3 py-1 bg-primaryAccent text-secondaryBg text-[10px] uppercase font-bold tracking-wider hover:bg-primaryHover transition-normal flex items-center gap-1"
-                              >
-                                {submittingReflection ? <Loader className="w-3 h-3 animate-spin" /> : null}
-                                SUBMIT PROOF
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => openReflectionDialog(step.id)}
-                            className="w-full py-1.5 bg-background border border-white/10 hover:border-white/25 text-[10px] font-bold uppercase tracking-wider text-secondaryText hover:text-primaryText transition-normal"
-                          >
-                            RECORD PROOF
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+            <JourneyScreen
+              steps={diagnosis.journey}
+              completedSteps={completedSteps}
+              evidence={evidence}
+              onStepCompleteToggle={handleStepCompleteToggle}
+              onReflectionSubmit={handleReflectionSubmit}
+              submittingStepId={submittingStepId}
+            />
           </div>
         )}
 
