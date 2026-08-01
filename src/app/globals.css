@@ -4,14 +4,23 @@
 
 :root {
   --background: #FFFFFF;
-  --foreground: #1A1A1A;
+  --secondaryBg: #F9F9FB;
+  --surface: #FFFFFF;
+  --elevatedSurface: #F4F4F6;
+  --primaryText: #111115;
+  --secondaryText: #6B7280;
+  --mutedText: #9CA3AF;
+  --border: #E5E7EB;
+  --primaryAccent: #111111;
+  --primaryHover: #333333;
 }
 
 body {
-  color: var(--foreground);
+  color: var(--primaryText);
   background: var(--background);
   font-family: var(--font-sans), Inter, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Crop/leading adjustment for editorial titles */
@@ -42,13 +51,13 @@ body {
 /* Subtle editorial animations */
 .fade-in-up {
   opacity: 0;
-  animation: fadeInUp 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInUp 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;

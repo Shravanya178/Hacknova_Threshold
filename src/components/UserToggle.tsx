@@ -21,13 +21,13 @@ export default function UserToggle({ activeUserId, onUserChange }: UserTogglePro
 
   return (
     <div className="user-toggle flex items-center gap-2 flex-wrap">
-      <div className="flex gap-1 border border-border p-0.5 rounded-full bg-secondaryBg">
+      <div className="flex gap-1.5 border border-border p-1 rounded-full bg-secondaryBg">
         <button
           onClick={() => {
             setIsCustom(false);
             onUserChange("aarav");
           }}
-          className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full transition-normal ${
+          className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-normal ${
             !isCustom && activeUserId === "aarav"
               ? "bg-champagneGold text-background shadow-subtle"
               : "text-secondaryText hover:text-primaryText"
@@ -40,7 +40,7 @@ export default function UserToggle({ activeUserId, onUserChange }: UserTogglePro
             setIsCustom(false);
             onUserChange("meera");
           }}
-          className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full transition-normal ${
+          className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-normal ${
             !isCustom && activeUserId === "meera"
               ? "bg-champagneGold text-background shadow-subtle"
               : "text-secondaryText hover:text-primaryText"
@@ -55,7 +55,7 @@ export default function UserToggle({ activeUserId, onUserChange }: UserTogglePro
               onUserChange(customName.toLowerCase().trim());
             }
           }}
-          className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full transition-normal ${
+          className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-normal ${
             isCustom
               ? "bg-champagneGold text-background shadow-subtle"
               : "text-secondaryText hover:text-primaryText"
@@ -66,17 +66,17 @@ export default function UserToggle({ activeUserId, onUserChange }: UserTogglePro
       </div>
 
       {isCustom && (
-        <form onSubmit={handleCustomSubmit} className="flex gap-1.5 items-center">
+        <form onSubmit={handleCustomSubmit} className="flex gap-2 items-center">
           <input
             type="text"
             value={customName}
             onChange={(e) => setCustomName(e.target.value)}
             placeholder="User ID (e.g. siddharth)..."
-            className="bg-background border border-border p-1.5 px-3 text-xs text-primaryText rounded-input focus-ring w-40 font-sans"
+            className="bg-background border border-border p-2 px-3 text-xs text-primaryText rounded-input focus-ring w-44 font-sans"
           />
           <button
             type="submit"
-            className="bg-champagneGold hover:bg-champagneHover text-background text-[10px] font-bold px-3 py-1.5 rounded-btn uppercase tracking-wider transition-normal"
+            className="bg-champagneGold hover:bg-champagneHover text-background text-xs font-bold px-4 py-2 rounded-btn uppercase tracking-wider transition-normal"
           >
             Load
           </button>

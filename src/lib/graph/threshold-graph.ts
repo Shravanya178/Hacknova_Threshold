@@ -118,8 +118,8 @@ Output format must be a raw JSON object matching this schema:
 /**
  * Enforces specific quadrant and capability gap constraints for demo users.
  */
-function enforceSpecSanity(userId: string, diagnosis: Diagnosis): Diagnosis {
-  if (userId === "aarav") {
+function enforceSpecSanity(userId: string, diagnosis: Diagnosis, isLapseOrDropOff?: boolean): Diagnosis {
+  if (userId === "aarav" && !isLapseOrDropOff) {
     let modified = false;
     const nextDiag = { ...diagnosis };
 
@@ -144,7 +144,7 @@ function enforceSpecSanity(userId: string, diagnosis: Diagnosis): Diagnosis {
     return nextDiag;
   }
 
-  if (userId === "meera") {
+  if (userId === "meera" && !isLapseOrDropOff) {
     let modified = false;
     const nextDiag = { ...diagnosis };
 
@@ -274,7 +274,7 @@ async function composerNode(state: typeof GraphStateAnnotation.State) {
     trace: []
   };
 
-  finalDiagnosis = enforceSpecSanity(state.userId, finalDiagnosis);
+  finalDiagnosis = enforceSpecSanity(state.userId, finalDiagnosis, state.isLapse || isDropOff);
 
   // Attach matching media card
   const catalog = readMediaCatalog();

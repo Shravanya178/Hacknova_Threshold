@@ -50,7 +50,7 @@ export async function runMediaAgent(
                         type: SchemaType.OBJECT,
                         properties: {
                           id: { type: SchemaType.STRING },
-                          type: { type: SchemaType.STRING, enum: ["watch", "skip"] },
+                          type: { type: SchemaType.STRING, format: "enum", enum: ["watch", "skip"] },
                           start: { type: SchemaType.NUMBER },
                           end: { type: SchemaType.NUMBER },
                           label: { type: SchemaType.STRING }

@@ -23,7 +23,7 @@ export default function DiagnosisReveal({ diagnosis }: DiagnosisRevealProps) {
           className="w-full text-[10px] uppercase tracking-widest text-primaryText font-bold flex justify-between items-center"
         >
           <span className="flex items-center gap-1.5 font-mono">
-            <Terminal className="w-3.5 h-3.5" />
+            <Terminal className="w-3.5 h-3.5 text-champagneGold" />
             AGENT EXECUTION TRACE
           </span>
           {showTrace ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -60,7 +60,7 @@ export default function DiagnosisReveal({ diagnosis }: DiagnosisRevealProps) {
       {/* 2. Quadrant Reveal */}
       <div className="flex justify-between items-baseline border-b border-border pb-3">
         <span className="text-[11px] uppercase tracking-wider text-secondaryText font-bold">Growth State</span>
-        <span className="font-script text-3xl text-primaryAccent leading-none">
+        <span className="font-script text-3xl text-champagneGold leading-none">
           {diagnosis.quadrant}
         </span>
       </div>
@@ -104,7 +104,7 @@ export default function DiagnosisReveal({ diagnosis }: DiagnosisRevealProps) {
         {showWhyNotX && (
           <div className="px-4 pb-4 border-t border-border pt-3 flex flex-col gap-3">
             {diagnosis.rejected_quadrants.map((item, idx) => (
-              <div key={idx} className="text-xs text-secondaryText border-l-2 border-border pl-3">
+              <div key={idx} className="text-xs text-secondaryText border-l-2 border-champagneGold pl-3">
                 <span className="font-bold text-primaryText block text-[10px] uppercase tracking-wider mb-0.5">
                   {item.quadrant}
                 </span>

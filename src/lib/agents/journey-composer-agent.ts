@@ -117,7 +117,7 @@ export async function runJourneyComposerAgent(
         resource_type: "video" as any,
         capability_gap: context.capability_gap,
         content: ytResult.id
-      };
+      } as any;
     }
   } catch (err) {
     console.error("YouTube search fallback query in composer failed:", err);
@@ -180,7 +180,7 @@ Please compose the experience pathway. Make sure to attach the matched media ass
   }
 
   // Customize the fallback steps dynamically based on the matched media
-  let customizedFallback = selectedFallback.map(step => {
+  const customizedFallback = selectedFallback.map(step => {
     if (matchedMedia) {
       if (step.verb === "attend") {
         return {

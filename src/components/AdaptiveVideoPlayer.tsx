@@ -53,7 +53,7 @@ export default function AdaptiveVideoPlayer({
 
   // Set up YT Player instance
   useEffect(() => {
-    let checkYT = setInterval(() => {
+    const checkYT = setInterval(() => {
       if (window.YT && window.YT.Player && iframeRef.current) {
         clearInterval(checkYT);
         playerRef.current = new window.YT.Player(iframeRef.current, {

@@ -1,5 +1,6 @@
 import React from "react";
 import { ShieldCheck } from "lucide-react";
+import ThresholdDashboard from "@/components/ThresholdDashboard";
 
 export default function HomePage() {
   return (
@@ -21,7 +22,7 @@ export default function HomePage() {
           </a>
           <a
             href="/embed"
-            className="text-xs uppercase tracking-wider font-semibold text-primaryText hover:text-primaryHover transition-normal border border-border px-3 py-1.5 rounded-btn"
+            className="text-xs uppercase tracking-wider font-semibold text-champagneGold hover:text-champagneHover transition-normal border border-champagneGold/40 hover:border-champagneGold px-3 py-1.5 rounded-btn"
           >
             Launch Raw Embed
           </a>
@@ -29,13 +30,16 @@ export default function HomePage() {
       </header>
 
       {/* 2. Hero Section */}
-      <main className="max-w-[1280px] w-full mx-auto px-6 flex-1 flex flex-col justify-center items-center py-20 gap-16">
+      <main className="max-w-[1280px] w-full mx-auto px-6 flex-1 flex flex-col justify-center items-center py-16 gap-16 relative">
         
-        {/* Editorial Text Blocks */}
-        <div className="text-center flex flex-col gap-6 max-w-4xl">
+        {/* Glowing background circles for visual depth */}
+        <div className="absolute top-[5%] left-[50%] -translate-x-1/2 w-[700px] h-[700px] bg-champagneGold/5 rounded-full blur-[130px] pointer-events-none z-0" />
+
+        {/* Editorial Typography Headers */}
+        <div className="text-center flex flex-col gap-6 max-w-4xl z-10 relative">
           <h1 className="hero-headline text-primaryText tracking-tighter select-none font-bold">
             Become the self <br />
-            <span className="text-secondaryText font-medium italic font-serif leading-none block mt-2 lowercase">you imagine.</span>
+            <span className="text-champagneGold font-medium italic font-serif leading-none block mt-2 lowercase">you imagine.</span>
           </h1>
           
           <div className="flex items-center justify-center gap-2 mt-2">
@@ -44,54 +48,44 @@ export default function HomePage() {
             </span>
           </div>
 
-          <p className="text-lg text-secondaryText font-normal max-w-2xl mx-auto mt-4 leading-relaxed">
+          <p className="text-base sm:text-lg text-secondaryText font-normal max-w-2xl mx-auto mt-4 leading-relaxed">
             Threshold is an Agentic Journey Intelligence System that diagnoses your current growth moment, composes the next meaningful experience, and continuously adapts as you grow.
           </p>
         </div>
 
-        {/* VERBATIM PITCH HIGHLIGHT CARDS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-[1000px] text-left">
-          <div className="border border-border bg-secondaryBg p-8 flex flex-col gap-4 rounded-card shadow-subtle">
-            <span className="text-[10px] uppercase tracking-widest text-primaryText font-bold font-mono">THE METHOD</span>
+        {/* ACTIVE SHOWCASE: Threshold Slide Deck Dashboard */}
+        <section id="demo" className="w-full flex flex-col items-center z-10 relative">
+          <div className="w-full max-w-[1200px] mx-auto">
+            <ThresholdDashboard />
+          </div>
+        </section>
+
+        {/* PITCH HIGHLIGHT CARDS - Relocated creatively below the interactive dashboard */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-[1000px] text-left mt-8 z-10 relative">
+          <div className="border border-border bg-secondaryBg/40 p-8 flex flex-col gap-4 rounded-card shadow-subtle backdrop-blur-md">
+            <span className="text-[10px] uppercase tracking-widest text-champagneGold font-black font-mono">THE METHOD</span>
             <h3 className="text-md font-bold text-primaryText uppercase tracking-wider">Diagnosis before curation</h3>
             <p className="text-xs text-secondaryText leading-relaxed">
               We diagnose what developmental state a person is in, then compose an experience that fits that state. Resources are ingredients. Experiences are the meal.
             </p>
           </div>
 
-          <div className="border border-border bg-secondaryBg p-8 flex flex-col gap-4 rounded-card shadow-subtle">
-            <span className="text-[10px] uppercase tracking-widest text-primaryText font-bold font-mono">THE EXPERIENCE</span>
+          <div className="border border-border bg-secondaryBg/40 p-8 flex flex-col gap-4 rounded-card shadow-subtle backdrop-blur-md">
+            <span className="text-[10px] uppercase tracking-widest text-champagneGold font-black font-mono">THE EXPERIENCE</span>
             <h3 className="text-md font-bold text-primaryText uppercase tracking-wider">An itinerary, not a feed</h3>
             <p className="text-xs text-secondaryText leading-relaxed">
               No endless streams. No algorithm optimization. Threshold structures a sequence of actions that unlock step-by-step, demanding proof of change, not completion.
             </p>
           </div>
 
-          <div className="border border-border bg-secondaryBg p-8 flex flex-col gap-4 rounded-card shadow-subtle">
-            <span className="text-[10px] uppercase tracking-widest text-primaryText font-bold font-mono">THE IDENTITY</span>
+          <div className="border border-border bg-[#121215]/20 p-8 flex flex-col gap-4 rounded-card shadow-subtle backdrop-blur-md">
+            <span className="text-[10px] uppercase tracking-widest text-champagneGold font-black font-mono">THE IDENTITY</span>
             <h3 className="text-md font-bold text-primaryText uppercase tracking-wider">Evidence of change</h3>
             <p className="text-xs text-secondaryText leading-relaxed">
               Who you're becoming matters more than what you're consuming. Interactive feedback gates ensure growth is recorded directly into the Evidence Ledger.
             </p>
           </div>
         </div>
-
-        {/* DEMO ANCHOR CONTAINER */}
-        <section id="demo" className="w-full flex flex-col items-center justify-center py-16 border-t border-border mt-8">
-          
-          {/* Pluggable Frame Display */}
-          <div className="relative border border-border p-3 bg-secondaryBg shadow-subtle rounded-card">
-            <span className="absolute -top-3 left-4 bg-background px-3 py-0.5 text-[9px] uppercase tracking-wider text-secondaryText font-bold border border-border rounded-full">
-              IABTM Pluggable Iframe
-            </span>
-            <iframe
-              src="/embed"
-              className="w-[400px] h-[700px] border border-border bg-background rounded-card shadow-subtle"
-              title="Threshold Live Embed"
-            />
-          </div>
-
-        </section>
 
       </main>
 

@@ -11,7 +11,7 @@ interface JourneyScreenProps {
   completedSteps: Record<string, boolean>;
   evidence: Record<string, EvidenceEntry>;
   onStepCompleteToggle: (stepId: string) => void;
-  onReflectionSubmit: (stepId: string, text: string) => void;
+  onReflectionSubmit: (stepId: string, text: string) => Promise<void>;
   submittingStepId?: string | null;
   userId: string;
   statedGoal: string;
