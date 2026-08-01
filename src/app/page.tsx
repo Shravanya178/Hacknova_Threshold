@@ -45,7 +45,7 @@ export default function HomePage() {
           </div>
 
           <p className="text-lg text-secondaryText font-normal max-w-2xl mx-auto mt-4 leading-relaxed">
-            Threshold is an agentic identity curator that diagnoses your current growth moment, composes the next meaningful experience, and continuously adapts as you grow.
+            Threshold is an Agentic Journey Intelligence System that diagnoses your current growth moment, composes the next meaningful experience, and continuously adapts as you grow.
           </p>
         </div>
 
@@ -77,43 +77,8 @@ export default function HomePage() {
         </div>
 
         {/* DEMO ANCHOR CONTAINER */}
-        <section id="demo" className="w-full flex flex-col lg:flex-row gap-12 items-center lg:items-start justify-center py-16 border-t border-border mt-8">
+        <section id="demo" className="w-full flex flex-col items-center justify-center py-16 border-t border-border mt-8">
           
-          {/* Pitch column */}
-          <div className="flex-1 max-w-[450px] flex flex-col gap-6 text-left">
-            <div className="flex flex-col gap-2">
-              <span className="text-[10px] uppercase tracking-widest text-secondaryText font-bold font-mono">CAPABILITY SHIELD</span>
-              <h2 className="text-2xl font-black uppercase tracking-tight text-primaryText leading-none">
-                Interactive Curation Frame
-              </h2>
-            </div>
-            
-            <p className="text-sm text-secondaryText leading-relaxed">
-              Below is the raw capability container as it embeds directly into the main website. It operates a sequential multi-agent loop running on Gemini.
-            </p>
-
-            <div className="flex flex-col gap-3 bg-secondaryBg p-5 border border-border text-xs text-secondaryText leading-relaxed rounded-card">
-              <div className="font-bold uppercase tracking-wider text-[10px] text-primaryText mb-1 flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-primaryText" />
-                Live Guardrails Active
-              </div>
-              <ul className="list-disc pl-4 flex flex-col gap-1.5 text-[11px]">
-                <li><strong>No Gamification:</strong> No points, badges, XP, or engagement-trap mechanisms are used.</li>
-                <li><strong>Gated Progress:</strong> Active states block downstream tasks until proof is written.</li>
-                <li><strong>Compassion-First:</strong> Burned-out users are spared from forced feedback inputs.</li>
-              </ul>
-            </div>
-
-            <div className="text-center lg:text-left mt-2">
-              <span className="font-script text-2xl text-primaryText leading-none block">
-                "We don't recommend content."
-              </span>
-              <span className="text-xs text-mutedText block mt-1 uppercase tracking-widest font-mono">
-                — threshold core thesis
-              </span>
-            </div>
-          </div>
-
           {/* Pluggable Frame Display */}
           <div className="relative border border-border p-3 bg-secondaryBg shadow-subtle rounded-card">
             <span className="absolute -top-3 left-4 bg-background px-3 py-0.5 text-[9px] uppercase tracking-wider text-secondaryText font-bold border border-border rounded-full">
