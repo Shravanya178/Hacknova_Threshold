@@ -23,6 +23,7 @@ export default function JourneyScreen({
   submittingStepId
 }: JourneyScreenProps) {
   const [activeReflectionStep, setActiveReflectionStep] = useState<string | null>(null);
+  const [expandedMediaIds, setExpandedMediaIds] = useState<Record<string, boolean>>({});
 
   const isStepLocked = (index: number): boolean => {
     if (index === 0) return false;
@@ -80,10 +81,16 @@ export default function JourneyScreen({
 
                   {/* Media item integration if present */}
                   {step.media && (
-                    <div className="mt-2.5 p-2 bg-background border border-white/5 rounded-[3px] flex flex-col gap-1 w-full max-w-lg">
+                    <div 
+                      onClick={() => setExpandedMediaIds(prev => ({ ...prev, [step.id]: !prev[step.id] }))}
+                      className="mt-2.5 p-2 bg-background border border-white/5 hover:border-white/10 rounded-[3px] flex flex-col gap-1 w-full max-w-lg cursor-pointer transition-normal select-none"
+                    >
                       <div className="flex justify-between items-center gap-2">
-                        <span className="text-[8px] uppercase tracking-widest text-primaryAccent font-bold font-mono">
+                        <span className="text-[8px] uppercase tracking-widest text-primaryAccent font-bold font-mono flex items-center gap-1">
                           IABTM Curated Resource
+                          <span className="text-[7px] text-mutedText lowercase font-sans">
+                            ({expandedMediaIds[step.id] ? "click to collapse" : "click to demo content"})
+                          </span>
                         </span>
                         <span className="text-[8px] uppercase tracking-wider text-mutedText font-semibold">
                           Gap: {step.media.capability_gap}
@@ -92,6 +99,14 @@ export default function JourneyScreen({
                       <p className="text-[10px] text-secondaryText leading-normal italic font-serif">
                         "{step.media.title}"
                       </p>
+                      {expandedMediaIds[step.id] && step.media.content && (
+                        <div className="mt-1.5 pt-1.5 border-t border-white/5 text-[10px] text-mutedText leading-relaxed font-sans normal-case fade-in-up">
+                          <span className="font-bold text-primaryText block mb-0.5 uppercase tracking-wider text-[8px] font-mono">
+                            Interactive Growth Guide:
+                          </span>
+                          {step.media.content}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

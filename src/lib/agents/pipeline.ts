@@ -105,7 +105,8 @@ export async function runThresholdPipeline(
           id: matchedMedia.id,
           title: matchedMedia.title,
           source: "IABTM",
-          capability_gap: matchedMedia.capability_gap
+          capability_gap: matchedMedia.capability_gap,
+          content: matchedMedia.content
         };
       }
     }
@@ -242,7 +243,8 @@ function getAbsoluteFallback(
       id: matchedMedia.id,
       title: matchedMedia.title,
       source: "IABTM",
-      capability_gap: matchedMedia.capability_gap
+      capability_gap: matchedMedia.capability_gap,
+      content: matchedMedia.content
     };
   }
 

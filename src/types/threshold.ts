@@ -8,6 +8,7 @@ export type ExperienceStep = {
     title: string;
     source: "IABTM";
     capability_gap: string;
+    content?: string;
   };
 };
 

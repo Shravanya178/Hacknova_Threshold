@@ -13,6 +13,7 @@ type MediaCatalogItem = {
   title: string;
   source: "IABTM";
   capability_gap: string;
+  content?: string;
 };
 
 // Reads media catalog from disk
@@ -144,7 +145,8 @@ Please compose the experience pathway. Make sure to attach the matched media ass
       id: matchedMedia.id,
       title: matchedMedia.title,
       source: "IABTM",
-      capability_gap: matchedMedia.capability_gap
+      capability_gap: matchedMedia.capability_gap,
+      content: matchedMedia.content
     };
   }
 
@@ -174,7 +176,8 @@ Please compose the experience pathway. Make sure to attach the matched media ass
       id: matchedMedia.id,
       title: matchedMedia.title,
       source: "IABTM",
-      capability_gap: matchedMedia.capability_gap
+      capability_gap: matchedMedia.capability_gap,
+      content: matchedMedia.content
     };
   }
 
