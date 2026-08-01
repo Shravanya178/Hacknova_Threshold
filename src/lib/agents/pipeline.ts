@@ -1,8 +1,9 @@
-import { runIdentityAgent } from "./identityAgent";
-import { runDiagnosisAgent } from "./diagnosisAgent";
-import { runConstraintsFilter, Constraints } from "./constraintsFilter";
+import { runIdentityAgent } from "./identity-agent";
+import { runDiagnosisAgent } from "./diagnosis-agent";
+import { runConstraintsFilter } from "./constraints-filter";
 import { runJourneyComposerAgent } from "./journeyComposerAgent";
 import { Diagnosis, AgentTraceItem } from "@/types/threshold";
+import { Constraints } from "./constraints-filter";
 
 export async function runThresholdPipeline(
   userId: string,
@@ -14,10 +15,11 @@ export async function runThresholdPipeline(
 
   try {
     // 1. Run Identity Agent
-    const identityResult = await runIdentityAgent(statedGoal, recentReflections);
+    const conversation = recentReflections.join("\n");
+    const identityResult = await runIdentityAgent(statedGoal, conversation);
     trace.push({
       agent: "Identity Agent",
-      input: { stated_goal: statedGoal, recent_reflections: recentReflections },
+      input: { stated_goal: statedGoal, conversation },
       result: identityResult.output
     });
 
@@ -33,7 +35,6 @@ export async function runThresholdPipeline(
 
     // Merge Diagnosis Agent traces into our pipeline trace
     if (diagnosisResult.trace && diagnosisResult.trace.length > 0) {
-      // Avoid duplicating the Identity Agent log
       diagnosisResult.trace.forEach(item => {
         if (item.agent !== "Identity Agent") {
           trace.push(item);
@@ -41,33 +42,33 @@ export async function runThresholdPipeline(
       });
     }
 
-    // 3. Run Constraints Filter
-    const filteredContext = runConstraintsFilter(
-      {
-        quadrant: diagnosisResult.quadrant,
-        capability_gap: diagnosisResult.capability_gap
-      },
-      constraints
-    );
+    // 3. Run Journey Composer Agent
+    const composerContext = {
+      quadrant: diagnosisResult.quadrant,
+      capability_gap: diagnosisResult.capability_gap,
+      constraints: {
+        timeLimit: constraints.timeAvailable,
+        locationLimit: constraints.location,
+        resourceLimit: constraints.resources || []
+      }
+    };
 
+    const journeyResult = await runJourneyComposerAgent(composerContext);
+    trace.push({
+      agent: "Journey Composer Agent",
+      input: composerContext,
+      result: journeyResult.steps
+    });
+
+    // 4. Run Constraints Filter on generated steps
+    const filteredSteps = runConstraintsFilter(journeyResult.steps, constraints.timeAvailable);
     trace.push({
       agent: "Constraints Filter",
       input: {
-        diagnosis: {
-          quadrant: diagnosisResult.quadrant,
-          capability_gap: diagnosisResult.capability_gap
-        },
-        constraints
+        steps_before: journeyResult.steps,
+        time_available: constraints.timeAvailable
       },
-      result: filteredContext
-    });
-
-    // 4. Run Journey Composer Agent
-    const journeyResult = await runJourneyComposerAgent(filteredContext);
-    trace.push({
-      agent: "Journey Composer Agent",
-      input: filteredContext,
-      result: journeyResult.steps
+      result: filteredSteps
     });
 
     // Construct final Diagnosis output
@@ -77,7 +78,7 @@ export async function runThresholdPipeline(
       rejected_quadrants: diagnosisResult.rejected_quadrants,
       capability_gap: diagnosisResult.capability_gap,
       gap_reasoning: diagnosisResult.gap_reasoning,
-      journey: journeyResult.steps,
+      journey: filteredSteps,
       trace
     };
 
@@ -87,7 +88,6 @@ export async function runThresholdPipeline(
     return finalDiagnosis;
   } catch (error) {
     console.error("Pipeline run failed, resolving static fallback", error);
-    // Absolute fallback in case of catastrophic pipeline crashes
     return getAbsoluteFallback(userId, statedGoal, constraints, trace);
   }
 }

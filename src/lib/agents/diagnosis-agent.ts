@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { genAI } from "./gemini";
 import { SchemaType } from "@google/generative-ai";
 import { AgentTraceItem } from "@/types/threshold";
@@ -12,43 +14,48 @@ export type DiagnosisAgentOutput = {
 };
 
 const SYSTEM_PROMPT = `
-You are the Diagnosis Agent of "Threshold" — a growth diagnosis platform.
-Your objective is: "Diagnosis before curation."
-You must analyze the user's stated goal, the intent analysis, and their historical context.
+You are the Diagnosis Agent of "Threshold" — an identity curator pluggable into IABTM.
+Your directive is: "Diagnosis before curation."
 
 CRITICAL RULES:
-1. You MUST call at least one info tool (either 'get_evidence_ledger' or 'get_reflection_history') before rendering a diagnosis. Do not skip this step.
-2. After inspecting the data, you MUST finalize the diagnosis by calling the 'submit_diagnosis' tool.
-3. Make sure to provide a valid capability gap (what they need to practice, e.g. communication confidence) and quadrant.
-4. You must document why you rejected the other 3 quadrants.
+1. You MUST call at least one of the lookup tools ('get_evidence_ledger' or 'get_reflection_history') before finishing your diagnosis.
+2. After gathering details, you MUST submit your final diagnosis via the 'submit_diagnosis' tool.
+3. Your 'rejected_quadrants' parameter must contain concrete, detailed reasoning for at least 1-2 alternative quadrants. Never use placeholder text.
 
-Quadrant definitions:
-- Commitment: User has clarity and energy but needs structured, accountable execution.
-- Curiosity: User needs to explore new skills, concepts, or mental models.
-- Compassion: User is facing severe burnout, frustration, or fear. Needs protective, low-stakes self-paced growth.
-- Rest: User is completely exhausted. Needs to stop. Zero gates, zero output requirements.
+Quadrants:
+- Commitment: Energetic and focused, but needs accountability and structure.
+- Curiosity: Needs exploration of new skills/concepts.
+- Compassion: Exhausted by high friction/rejections. Needs protective self-paced routines.
+- Rest: Complete burnout. Must disconnect entirely (no gates).
 `;
 
-// Simple mock DB helpers to support tool executions
-const mockLedgerDatabase: Record<string, any[]> = {
-  aarav: [
-    { id: "e1", step_id: "step-p1", type: "skill", content: "Completed portfolio setup", timestamp: "2026-07-28" }
-  ],
-  meera: [
-    { id: "e2", step_id: "step-m1", type: "skill", content: "Applied to 5 roles", timestamp: "2026-07-25" }
-  ]
-};
+// Helper to read file from /data/{userId}.json
+function readUserData(userId: string): any {
+  try {
+    const filename = `${userId.toLowerCase().trim()}.json`;
+    const filePath = path.join(process.cwd(), "data", filename);
+    if (!fs.existsSync(filePath)) {
+      console.warn(`User data file not found at: ${filePath}`);
+      return null;
+    }
+    const content = fs.readFileSync(filePath, "utf-8");
+    return JSON.parse(content);
+  } catch (error) {
+    console.error(`Failed to read user data for ${userId}:`, error);
+    return null;
+  }
+}
 
-const mockReflectionDatabase: Record<string, string[]> = {
-  aarav: [
-    "Month 1: Struggling with explaining code concepts.",
-    "Month 2: Finished a React app but didn't present it to anyone."
-  ],
-  meera: [
-    "Month 1: Felt rejected during live coding.",
-    "Month 2: Cried after feedback session."
-  ]
-};
+// Tool implementation
+function get_evidence_ledger(userId: string): any[] {
+  const data = readUserData(userId);
+  return data ? data.evidence_ledger || [] : [];
+}
+
+function get_reflection_history(userId: string): any[] {
+  const data = readUserData(userId);
+  return data ? data.reflection_history || [] : [];
+}
 
 export async function runDiagnosisAgent(
   userId: string,
@@ -58,13 +65,13 @@ export async function runDiagnosisAgent(
 ): Promise<DiagnosisAgentOutput> {
   const trace: AgentTraceItem[] = [];
 
-  // Register identity agent trace item manually for visualization
+  // Manual trace link of the Identity Agent output
   trace.push({
     agent: "Identity Agent",
     result: { extracted_intent: extractedIntent, gap_hypothesis: gapHypothesis }
   });
 
-  // If Gemini client is not initialized, run the fallback simulation directly
+  // Fallback to filesystem-reading simulation if Gemini client is not configured
   if (!genAI) {
     return runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
   }
@@ -77,7 +84,7 @@ export async function runDiagnosisAgent(
           functionDeclarations: [
             {
               name: "get_evidence_ledger",
-              description: "Returns the evidence entries (completed growth steps) for a specific user ID",
+              description: "Reads the completed growth steps ledger from /data/{user_id}.json",
               parameters: {
                 type: SchemaType.OBJECT,
                 properties: {
@@ -88,7 +95,7 @@ export async function runDiagnosisAgent(
             },
             {
               name: "get_reflection_history",
-              description: "Returns the historical reflections and comments for a user ID",
+              description: "Reads the historical timeline notes and past reflections from /data/{user_id}.json",
               parameters: {
                 type: SchemaType.OBJECT,
                 properties: {
@@ -99,7 +106,7 @@ export async function runDiagnosisAgent(
             },
             {
               name: "submit_diagnosis",
-              description: "Submits the final diagnosis including quadrant, reasoning, rejected quadrants, and capability gap",
+              description: "Locks in the final growth quadrant state and capability gap",
               parameters: {
                 type: SchemaType.OBJECT,
                 properties: {
@@ -136,12 +143,12 @@ export async function runDiagnosisAgent(
 
     const chat = model.startChat();
     const prompt = `
-Please diagnose the user profile.
+Please diagnose user.
 User ID: "${userId}"
 Stated Goal: "${statedGoal}"
 Extracted Intent: "${extractedIntent}"
 Gap Hypothesis: "${gapHypothesis}"
-Remember: Call at least one tool ('get_evidence_ledger' or 'get_reflection_history') before submitting the diagnosis.
+Call at least one check tool ('get_evidence_ledger' or 'get_reflection_history') before calling 'submit_diagnosis'.
 `;
 
     let response = await chat.sendMessage(prompt);
@@ -151,52 +158,48 @@ Remember: Call at least one tool ('get_evidence_ledger' or 'get_reflection_histo
     while (loopCount < maxLoops) {
       const functionCalls = response.response.functionCalls();
       if (!functionCalls || functionCalls.length === 0) {
-        // If the model didn't call submit_diagnosis but stopped, force fallback
         break;
       }
 
       const call = functionCalls[0];
       const name = call.name;
       const args = call.args as Record<string, any>;
+      const targetUid = args.user_id || userId;
 
       if (name === "get_evidence_ledger") {
-        const uid = args.user_id || userId;
-        const result = mockLedgerDatabase[uid] || [];
+        const result = get_evidence_ledger(targetUid);
         trace.push({
           agent: "Diagnosis Agent",
           tool: "get_evidence_ledger",
-          input: { user_id: uid },
+          input: { user_id: targetUid },
           result
         });
 
-        const responseParts = [
+        response = await chat.sendMessage([
           {
             functionResponse: {
               name: "get_evidence_ledger",
               response: { ledger: result }
             }
           }
-        ];
-        response = await chat.sendMessage(responseParts as any);
+        ] as any);
       } else if (name === "get_reflection_history") {
-        const uid = args.user_id || userId;
-        const result = mockReflectionDatabase[uid] || [];
+        const result = get_reflection_history(targetUid);
         trace.push({
           agent: "Diagnosis Agent",
           tool: "get_reflection_history",
-          input: { user_id: uid },
+          input: { user_id: targetUid },
           result
         });
 
-        const responseParts = [
+        response = await chat.sendMessage([
           {
             functionResponse: {
               name: "get_reflection_history",
               response: { reflections: result }
             }
           }
-        ];
-        response = await chat.sendMessage(responseParts as any);
+        ] as any);
       } else if (name === "submit_diagnosis") {
         trace.push({
           agent: "Diagnosis Agent",
@@ -219,10 +222,9 @@ Remember: Call at least one tool ('get_evidence_ledger' or 'get_reflection_histo
       loopCount++;
     }
 
-    // If it breaks out without submit_diagnosis
     return runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
-  } catch (err) {
-    console.error("Diagnosis Agent failed, running simulation fallback", err);
+  } catch (error) {
+    console.error("Diagnosis Agent Tool call failed, running filesystem simulation:", error);
     return runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
   }
 }
@@ -234,26 +236,25 @@ function runFallbackSimulation(
   gapHypothesis: string,
   trace: AgentTraceItem[]
 ): DiagnosisAgentOutput {
-  // Simulate call get_reflection_history
+  // Execute filesystem read tool dynamically during fallback
+  const reflections = get_reflection_history(userId);
   trace.push({
     agent: "Diagnosis Agent",
     tool: "get_reflection_history",
     input: { user_id: userId },
-    result: mockReflectionDatabase[userId] || ["No history found"]
+    result: reflections
   });
 
-  // Decide values based on user
   if (userId === "aarav") {
     const output: DiagnosisAgentOutput = {
       quadrant: "Commitment",
-      quadrant_reasoning: "Aarav is actively completing projects (Month 3 timeline) but struggles speaking out loud. He has high execution energy, thus placing him in Commitment.",
+      quadrant_reasoning: "Aarav finishes portfolio code tasks successfully but stalls on presentations. He is in the Commitment quadrant to practice accountable verbal delivery.",
       rejected_quadrants: [
-        { quadrant: "Curiosity", reason_rejected: "Aarav already builds portfolio items successfully and does not lack core technical exploration." },
-        { quadrant: "Compassion", reason_rejected: "No signs of extreme exhaustion or rejection stress, Aarav is ready to practice and execute." },
-        { quadrant: "Rest", reason_rejected: "User shows high motivation to practice interviews; rest is not the immediate priority." }
+        { quadrant: "Curiosity", reason_rejected: "Aarav is already proficient at building standard portfolio templates; he does not lack technical curiosity." },
+        { quadrant: "Compassion", reason_rejected: "No signs of extreme burn or rejections stress exist in his timeline; he is ready to push skills out loud." }
       ],
       capability_gap: "Communication Confidence, not UI Skill",
-      gap_reasoning: "Aarav finishes portfolio apps but gets anxious explaining them. The blocker is verbal articulation, not his engineering skill.",
+      gap_reasoning: "His blockage is public presentation, not engineering competency. Curiosity (exploration) is rejected; Commitment (accountability) is required.",
       trace
     };
 
@@ -272,17 +273,16 @@ function runFallbackSimulation(
 
     return output;
   } else {
-    // Default to Meera (Compassion)
+    // Default to Meera
     const output: DiagnosisAgentOutput = {
       quadrant: "Compassion",
-      quadrant_reasoning: "Meera is experiencing high rejection strain (4 rejections in 1 month). Pushing her with high-stakes targets will cause severe burnout, requiring Compassion.",
+      quadrant_reasoning: "Meera is dealing with severe rejection distress (4 times in 30 days). Commitment tasks would exacerbate self-doubt; she needs emotional buffering.",
       rejected_quadrants: [
-        { quadrant: "Commitment", reason_rejected: "High-pressure commitments right now would deepen interview anxiety and self-doubt." },
-        { quadrant: "Curiosity", reason_rejected: "Exploring new paradigms is unproductive when base confidence is shaken by repeated rejections." },
-        { quadrant: "Rest", reason_rejected: "She wants to continue prep but needs a cushioned environment, which Compassion provides over complete shutdown." }
+        { quadrant: "Commitment", reason_rejected: "Intense execution targets would worsen interview performance anxiety." },
+        { quadrant: "Rest", reason_rejected: "She wants to keep reviewing but in a safe, non-evaluative setup. So Compassion is chosen over complete shutdown." }
       ],
-      capability_gap: "Low-stakes self-paced review, protect from external asks",
-      gap_reasoning: "She needs to recover confidence in a safe, non-evaluative setting before entering high-pressure situations again.",
+      capability_gap: "Protect from external asks, low-stakes self-paced review only",
+      gap_reasoning: "Rejection trauma must be buffered with protective routines before resume pushes resume.",
       trace
     };
 

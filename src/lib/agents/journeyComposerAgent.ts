@@ -1,6 +1,6 @@
 import { callGeminiJSON } from "./gemini";
 import { ExperienceStep } from "@/types/threshold";
-import { FilteredDiagnosisContext } from "./constraintsFilter";
+import { FilteredDiagnosisContext } from "./constraints-filter";
 
 type JourneyComposerOutput = {
   steps: ExperienceStep[];
