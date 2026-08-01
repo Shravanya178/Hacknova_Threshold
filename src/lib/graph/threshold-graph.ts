@@ -47,6 +47,17 @@ async function checkDropOffDetection(userId: string): Promise<boolean> {
   try {
     const normalizedUid = userId.toLowerCase().trim();
 
+    // If the user has no evidence entries, they haven't completed any steps yet,
+    // so they cannot have a drop-off or repeated lapse!
+    const { count: evidenceCount } = await supabase
+      .from("evidence_entries")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", normalizedUid);
+
+    if (!evidenceCount || evidenceCount === 0) {
+      return false;
+    }
+
     // 1. Check for inactivity beyond 3 days (72 hours)
     const { data: latestEntry } = await supabase
       .from("evidence_entries")
