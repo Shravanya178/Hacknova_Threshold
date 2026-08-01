@@ -81,7 +81,7 @@ You are the Journey Composer Agent of "Threshold" — an identity curator plugga
 Your directive is: "We don't recommend content. We compose experiences."
 
 CRITICAL RULES:
-1. You must output an array of 3 to 4 steps.
+1. You must output an array of EXACTLY 3 steps.
 2. Every experience step must use one of these verbs strictly: "attend" | "ask" | "meet" | "apply" | "reflect" | "rest". Do NOT recommend reading books, articles, or watching general courses.
 3. Every step requires:
    - "id": unique string identifier (e.g., "step-1")
@@ -89,9 +89,13 @@ CRITICAL RULES:
    - "label": a short, punchy action phrase
    - "requires_output": boolean gate
    - "media": (Optional) An object containing "id", "title", "source" ("IABTM"), and "capability_gap".
-4. GUARDRAIL: If the quadrant is "Rest" or "Compassion", "requires_output" MUST be false for all steps. Never force outputs from exhausted or burnt-out users.
-5. If the quadrant is "Commitment" or "Curiosity", at least one step should have "requires_output" as true.
-6. INTEGRATE MEDIA AS AN EXPERIENCE INGREDIENT: You MUST attach the provided matching IABTM media asset to at least one step in the steps array (typically an "attend" or "reflect" step) under the "media" property. Select the closest matching catalog entry by capability_gap, don't require an exact match, and never return an empty media field.
+4. STRUCTURING GUIDELINE: To maintain a clean visual narrative for demo validations, structure your experience itinerary following this layout sequence:
+   - Step 1: A study or recovery task (usually "attend" or "rest"), and you MUST attach the provided matching media asset under its "media" property.
+   - Step 2: An active execution or articulation task (using verbs "apply", "ask", or "meet").
+   - Step 3: A reflection checkpoint (using the "reflect" verb).
+5. GUARDRAIL: If the quadrant is "Rest" or "Compassion", "requires_output" MUST be false for all steps. Never force outputs from exhausted or burnt-out users.
+6. If the quadrant is "Commitment" or "Curiosity", at least one step should have "requires_output" as true.
+7. INTEGRATE MEDIA AS AN EXPERIENCE INGREDIENT: You MUST attach the provided matching IABTM media asset to Step 1 under the "media" property. Select the closest matching catalog entry by capability_gap, don't require an exact match, and never return an empty media field.
 `;
 
 export async function runJourneyComposerAgent(
@@ -194,9 +198,9 @@ Please compose the experience pathway. Make sure to attach the matched media ass
     return step;
   });
 
-  // Attach matched media to fallback step as well to guarantee match in fallback path
+  // Attach matched media to the first step of customizedFallback to guarantee it fits the visual layout
   if (matchedMedia && customizedFallback.length > 0) {
-    const targetFallbackStep = customizedFallback.find(s => s.verb === "attend" || s.verb === "reflect") || customizedFallback[0];
+    const targetFallbackStep = customizedFallback[0];
     targetFallbackStep.resource_type = (matchedMedia as any).resource_type || "video";
     targetFallbackStep.media = {
       id: matchedMedia.id,
@@ -236,7 +240,7 @@ Please compose the experience pathway. Make sure to attach the matched media ass
   // If the model output steps but failed to attach the media, attach it programmatically!
   const hasAttachedMedia = steps.some(step => step.media && step.media.id);
   if (!hasAttachedMedia && matchedMedia && steps.length > 0) {
-    const targetStep = steps.find(s => s.verb === "attend" || s.verb === "reflect") || steps[0];
+    const targetStep = steps[0];
     targetStep.resource_type = (matchedMedia as any).resource_type || "video";
     targetStep.media = {
       id: matchedMedia.id,
