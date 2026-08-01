@@ -66,7 +66,7 @@ export default function IdentityConversation({
 
   return (
     <div className="identity-conversation-container">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <label htmlFor="stated-goal-input" className="text-xs font-bold uppercase tracking-wider text-secondaryText">
           Stated Goal
         </label>
@@ -77,12 +77,12 @@ export default function IdentityConversation({
           placeholder="I want confidence during interviews..."
           rows={3}
           disabled={loading}
-          className="w-full bg-surface border border-border p-3 text-sm text-primaryText rounded-[4px] focus-ring resize-none font-sans"
+          className="w-full bg-secondaryBg border border-border p-3 px-4 text-sm text-primaryText rounded-input focus-ring resize-none font-sans"
         />
         <button
           type="submit"
           disabled={loading || !statedGoal.trim()}
-          className="bg-primaryAccent hover:bg-primaryHover text-secondaryBg font-bold py-2.5 px-4 rounded-[4px] transition-normal text-xs uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="bg-primaryAccent hover:bg-primaryHover text-background font-bold py-3 px-6 rounded-btn transition-normal text-[11px] uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-subtle"
         >
           {loading ? "Diagnosing State..." : "Diagnose Growth Moment"}
         </button>

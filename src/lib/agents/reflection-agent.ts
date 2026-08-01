@@ -1,8 +1,7 @@
-import fs from "fs";
-import path from "path";
 import { callGeminiJSON } from "./gemini";
 import { runThresholdPipeline } from "./pipeline";
 import { EvidenceEntry, Diagnosis } from "@/types/threshold";
+import { supabase } from "../supabase";
 
 export type ReflectionAnalysis = {
   is_lapse: boolean;
@@ -47,29 +46,47 @@ export async function processUserReflection(
     timestamp: new Date().toISOString()
   };
 
-  // 2. Write the entry directly to data/{userId}.json
-  const dataFilePath = path.join(process.cwd(), "data", `${userId}.json`);
-  let fileContent: any = {};
-  if (fs.existsSync(dataFilePath)) {
-    const raw = fs.readFileSync(dataFilePath, "utf8");
-    fileContent = JSON.parse(raw);
-  } else {
-    fileContent = {
-      user_id: userId,
-      recent_reflections: [],
-      evidence_ledger: [],
-      reflection_history: []
-    };
-  }
+  // 2. Read existing user data and update reflections in Supabase
+  const normalizedUid = userId.toLowerCase().trim();
+  
+  // Fetch existing recent_reflections
+  const { data: userRow } = await supabase
+    .from("users")
+    .select("recent_reflections, name, stated_goal")
+    .eq("id", normalizedUid)
+    .single();
 
-  fileContent.evidence_ledger = fileContent.evidence_ledger || [];
-  fileContent.evidence_ledger.push(evidenceEntry);
+  const reflections: string[] = userRow?.recent_reflections 
+    ? (userRow.recent_reflections as string[]) 
+    : [];
+  
+  reflections.push(reflectionText);
 
-  fileContent.recent_reflections = fileContent.recent_reflections || [];
-  fileContent.recent_reflections.push(reflectionText);
+  // Upsert user details & reflections
+  const userName = userRow?.name || (userId.charAt(0).toUpperCase() + userId.slice(1));
+  const currentStatedGoal = userRow?.stated_goal || statedGoal || "Identify and bridge growth barriers";
 
-  // Write updated data back to JSON file database
-  fs.writeFileSync(dataFilePath, JSON.stringify(fileContent, null, 2), "utf8");
+  await supabase
+    .from("users")
+    .upsert({
+      id: normalizedUid,
+      name: userName,
+      stated_goal: currentStatedGoal,
+      recent_reflections: reflections
+    });
+
+  // Insert evidence entry
+  await supabase
+    .from("evidence_entries")
+    .insert({
+      id: evidenceEntry.id,
+      user_id: normalizedUid,
+      step_id: stepId,
+      type: evidenceEntry.type,
+      content: evidenceEntry.content,
+      timestamp: evidenceEntry.timestamp,
+      counts_as_evidence: true
+    });
 
   // 3. LLM analysis to determine if this indicates a lapse
   const userPrompt = `
@@ -108,8 +125,8 @@ Analyze if this is a growth lapse or standard practice struggle.
   if (analysis.is_lapse) {
     reDiagnosis = await runThresholdPipeline(
       userId,
-      statedGoal || "Restore confidence and stability",
-      fileContent.recent_reflections,
+      currentStatedGoal,
+      reflections,
       constraints || { timeAvailable: "open", location: "remote", resources: [] }
     );
   }

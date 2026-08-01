@@ -1,18 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  Lock,
-  Check,
-  Loader,
-  ArrowRight,
-  ChevronDown,
-  ChevronUp,
-  History,
-  Activity,
-  Award,
-  BookOpen
-} from "lucide-react";
+import React, { useState } from "react";
+import { Lock, Loader, Activity } from "lucide-react";
 import { User, Diagnosis, ExperienceStep, EvidenceEntry } from "@/types/threshold";
 import usersDataRaw from "../../data/users.json";
 import IdentityConversation from "@/components/IdentityConversation";
@@ -73,34 +62,6 @@ export default function EmbedPage() {
     setActiveTab("diagnose");
   };
 
-  const handleDiagnose = async () => {
-    setLoading(true);
-    setLapseAlert(null);
-    try {
-      const res = await fetch("/api/diagnose", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: currentUser.id,
-          statedGoal,
-          recentReflections,
-          constraints: {
-            timeAvailable,
-            location,
-            resources: ["laptop"]
-          }
-        })
-      });
-      const data = await res.json();
-      setDiagnosis(data);
-      setActiveTab("journey");
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleStepCompleteToggle = (stepId: string) => {
     setCompletedSteps((prev) => ({
       ...prev,
@@ -159,25 +120,25 @@ export default function EmbedPage() {
   };
 
   return (
-    <div className="w-[400px] h-[700px] bg-secondaryBg text-primaryText flex flex-col justify-between overflow-hidden border border-white/10 relative font-sans">
+    <div className="w-[400px] h-[700px] bg-background text-primaryText flex flex-col justify-between overflow-hidden border border-border relative font-sans">
       
       {/* 1. Header (User Toggle + Tabs) */}
-      <header className="bg-surface border-b border-white/5 p-4 flex flex-col gap-3">
+      <header className="bg-background border-b border-border p-4 flex flex-col gap-3">
         <div className="flex justify-between items-center">
-          <span className="text-xs uppercase tracking-widest text-mutedText font-bold">THRESHOLD</span>
+          <span className="text-[10px] uppercase tracking-widest text-secondaryText font-bold font-mono">THRESHOLD</span>
           
           {/* User selector */}
           <UserToggle activeUserId={currentUser.id} onUserChange={handleUserChange} />
         </div>
 
         {/* Tab switcher */}
-        <nav className="flex justify-between border-t border-white/5 pt-2">
+        <nav className="flex justify-between border-t border-border pt-2">
           <button
             onClick={() => setActiveTab("diagnose")}
             className={`text-xs uppercase tracking-wider font-semibold py-1 border-b-2 transition-normal ${
               activeTab === "diagnose"
                 ? "border-primaryAccent text-primaryText"
-                : "border-transparent text-mutedText hover:text-secondaryText"
+                : "border-transparent text-secondaryText hover:text-primaryText"
             }`}
           >
             Diagnosis
@@ -192,7 +153,7 @@ export default function EmbedPage() {
             } ${
               activeTab === "journey"
                 ? "border-primaryAccent text-primaryText"
-                : "border-transparent text-mutedText hover:text-secondaryText"
+                : "border-transparent text-secondaryText hover:text-primaryText"
             }`}
           >
             Journey
@@ -202,7 +163,7 @@ export default function EmbedPage() {
             className={`text-xs uppercase tracking-wider font-semibold py-1 border-b-2 transition-normal ${
               activeTab === "timeline"
                 ? "border-primaryAccent text-primaryText"
-                : "border-transparent text-mutedText hover:text-secondaryText"
+                : "border-transparent text-secondaryText hover:text-primaryText"
             }`}
           >
             Timeline
@@ -218,14 +179,14 @@ export default function EmbedPage() {
           <div className="flex flex-col gap-5 fade-in-up">
             
             {/* Conversation inputs */}
-            <div className="bg-surface p-4 border border-white/5 flex flex-col gap-4">
+            <div className="bg-secondaryBg p-5 border border-border flex flex-col gap-4 rounded-card shadow-subtle">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider text-mutedText font-bold block mb-1">Time Limit</label>
+                  <label className="text-[10px] uppercase tracking-wider text-secondaryText font-bold block mb-1">Time Limit</label>
                   <select
                     value={timeAvailable}
                     onChange={(e: any) => setTimeAvailable(e.target.value)}
-                    className="w-full bg-background border border-white/10 p-2 text-xs text-primaryText rounded-[4px] focus-ring"
+                    className="w-full bg-background border border-border p-2 text-xs text-primaryText rounded-input focus-ring font-sans"
                   >
                     <option value="5min">5 Minutes</option>
                     <option value="30min">30 Minutes</option>
@@ -233,11 +194,11 @@ export default function EmbedPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider text-mutedText font-bold block mb-1">Location</label>
+                  <label className="text-[10px] uppercase tracking-wider text-secondaryText font-bold block mb-1">Location</label>
                   <select
                     value={location}
                     onChange={(e: any) => setLocation(e.target.value)}
-                    className="w-full bg-background border border-white/10 p-2 text-xs text-primaryText rounded-[4px] focus-ring"
+                    className="w-full bg-background border border-border p-2 text-xs text-primaryText rounded-input focus-ring font-sans"
                   >
                     <option value="remote">Remote / Digital</option>
                     <option value="in-person">In-Person</option>
@@ -279,8 +240,8 @@ export default function EmbedPage() {
             
             {/* Lapse warning box if user encountered emotional lapse */}
             {lapseAlert && (
-              <div className="border border-error/20 bg-error/5 p-3 rounded-[4px] flex flex-col gap-1 fade-in-up">
-                <span className="text-[10px] font-bold text-error uppercase tracking-wider flex items-center gap-1.5">
+              <div className="border border-error/20 bg-error/5 p-4 rounded-card flex flex-col gap-1 fade-in-up">
+                <span className="text-[10px] font-bold text-error uppercase tracking-wider flex items-center gap-1.5 font-mono">
                   <Activity className="w-3.5 h-3.5" />
                   RE-CALIBRATING JOURNEY (LAPSE DETECTED)
                 </span>
@@ -304,21 +265,21 @@ export default function EmbedPage() {
         {/* TABS 3: TIMELINE (Longitudinal Snapshot) */}
         {activeTab === "timeline" && (
           <div className="flex flex-col gap-4 fade-in-up">
-            <div className="border-b border-white/5 pb-2">
-              <span className="text-[10px] uppercase tracking-wider text-mutedText font-bold">Identity Timeline</span>
+            <div className="border-b border-border pb-3">
+              <span className="text-[11px] uppercase tracking-wider text-secondaryText font-bold">Identity Timeline</span>
             </div>
 
-            <div className="relative pl-6 border-l border-white/10 flex flex-col gap-6 py-2 ml-3">
+            <div className="relative pl-6 border-l border-border flex flex-col gap-6 py-2 ml-3">
               {currentUser.timeline.map((entry) => (
                 <div key={entry.id} className="relative fade-in-up">
                   {/* Timeline point */}
-                  <div className="absolute -left-[30px] top-1.5 bg-secondaryBg border-2 border-primaryAccent w-3.5 h-3.5 rounded-full flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 bg-primaryAccent rounded-full" />
+                  <div className="absolute -left-[30px] top-2 bg-background border-2 border-primaryText w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 bg-primaryText rounded-full" />
                   </div>
 
-                  <div className="bg-surface p-4 border border-white/5">
+                  <div className="bg-secondaryBg p-4 border border-border rounded-card shadow-subtle">
                     <div className="flex justify-between items-baseline mb-1">
-                      <span className="text-[9px] uppercase tracking-widest text-primaryAccent font-bold">
+                      <span className="text-[9px] uppercase tracking-widest text-primaryText font-bold font-mono">
                         {entry.month}
                       </span>
                       <span className="text-[10px] font-semibold text-primaryText">
@@ -328,7 +289,7 @@ export default function EmbedPage() {
 
                     <div className="text-xs font-semibold text-primaryText mb-1 flex justify-between items-center">
                       <span>Gap: {entry.capability_gap}</span>
-                      <span className="font-script text-base text-primaryAccent/80">State: {entry.quadrant}</span>
+                      <span className="font-script text-base text-primaryText/80">State: {entry.quadrant}</span>
                     </div>
 
                     <p className="text-xs text-secondaryText leading-relaxed">
@@ -343,8 +304,8 @@ export default function EmbedPage() {
       </main>
 
       {/* 3. Footer */}
-      <footer className="bg-surface border-t border-white/5 p-3 text-center">
-        <span className="text-[9px] uppercase tracking-widest text-mutedText">
+      <footer className="bg-background border-t border-border p-3.5 text-center">
+        <span className="text-[9px] uppercase tracking-widest text-secondaryText font-medium font-mono">
           DIAGNOSIS BEFORE CURATION • ITINERARY OVER FEED
         </span>
       </footer>

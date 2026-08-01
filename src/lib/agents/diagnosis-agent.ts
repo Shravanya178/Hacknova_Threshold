@@ -1,8 +1,7 @@
-import fs from "fs";
-import path from "path";
 import { genAI } from "./gemini";
 import { SchemaType } from "@google/generative-ai";
 import { AgentTraceItem } from "@/types/threshold";
+import { supabase } from "../supabase";
 
 export type DiagnosisAgentOutput = {
   quadrant: "Commitment" | "Curiosity" | "Compassion" | "Rest";
@@ -29,32 +28,41 @@ Quadrants:
 - Rest: Complete burnout. Must disconnect entirely (no gates).
 `;
 
-// Helper to read file from /data/{userId}.json
-function readUserData(userId: string): any {
+// Supabase DB queries
+async function get_evidence_ledger(userId: string): Promise<any[]> {
   try {
-    const filename = `${userId.toLowerCase().trim()}.json`;
-    const filePath = path.join(process.cwd(), "data", filename);
-    if (!fs.existsSync(filePath)) {
-      console.warn(`User data file not found at: ${filePath}`);
-      return null;
+    const { data, error } = await supabase
+      .from("evidence_entries")
+      .select("id, user_id, step_id, type, content, timestamp, counts_as_evidence")
+      .eq("user_id", userId.toLowerCase().trim());
+
+    if (error) {
+      console.error(`Error querying evidence ledger for ${userId}:`, error);
+      return [];
     }
-    const content = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(content);
-  } catch (error) {
-    console.error(`Failed to read user data for ${userId}:`, error);
-    return null;
+    return data || [];
+  } catch (err) {
+    console.error(`Failed to get evidence ledger:`, err);
+    return [];
   }
 }
 
-// Tool implementation
-function get_evidence_ledger(userId: string): any[] {
-  const data = readUserData(userId);
-  return data ? data.evidence_ledger || [] : [];
-}
+async function get_reflection_history(userId: string): Promise<any[]> {
+  try {
+    const { data, error } = await supabase
+      .from("identity_states")
+      .select("id, month, label, quadrant, capability_gap, reasoning")
+      .eq("user_id", userId.toLowerCase().trim());
 
-function get_reflection_history(userId: string): any[] {
-  const data = readUserData(userId);
-  return data ? data.reflection_history || [] : [];
+    if (error) {
+      console.error(`Error querying reflection history for ${userId}:`, error);
+      return [];
+    }
+    return data || [];
+  } catch (err) {
+    console.error(`Failed to get reflection history:`, err);
+    return [];
+  }
 }
 
 export async function runDiagnosisAgent(
@@ -73,7 +81,7 @@ export async function runDiagnosisAgent(
 
   // Fallback to filesystem-reading simulation if Gemini client is not configured
   if (!genAI) {
-    return runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
+    return await runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
   }
 
   try {
@@ -84,7 +92,7 @@ export async function runDiagnosisAgent(
           functionDeclarations: [
             {
               name: "get_evidence_ledger",
-              description: "Reads the completed growth steps ledger from /data/{user_id}.json",
+              description: "Reads the completed growth steps ledger from database",
               parameters: {
                 type: SchemaType.OBJECT,
                 properties: {
@@ -95,7 +103,7 @@ export async function runDiagnosisAgent(
             },
             {
               name: "get_reflection_history",
-              description: "Reads the historical timeline notes and past reflections from /data/{user_id}.json",
+              description: "Reads the historical timeline notes and past reflections from database",
               parameters: {
                 type: SchemaType.OBJECT,
                 properties: {
@@ -167,7 +175,7 @@ Call at least one check tool ('get_evidence_ledger' or 'get_reflection_history')
       const targetUid = args.user_id || userId;
 
       if (name === "get_evidence_ledger") {
-        const result = get_evidence_ledger(targetUid);
+        const result = await get_evidence_ledger(targetUid);
         trace.push({
           agent: "Diagnosis Agent",
           tool: "get_evidence_ledger",
@@ -184,7 +192,7 @@ Call at least one check tool ('get_evidence_ledger' or 'get_reflection_history')
           }
         ] as any);
       } else if (name === "get_reflection_history") {
-        const result = get_reflection_history(targetUid);
+        const result = await get_reflection_history(targetUid);
         trace.push({
           agent: "Diagnosis Agent",
           tool: "get_reflection_history",
@@ -222,22 +230,21 @@ Call at least one check tool ('get_evidence_ledger' or 'get_reflection_history')
       loopCount++;
     }
 
-    return runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
+    return await runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
   } catch (error) {
-    console.error("Diagnosis Agent Tool call failed, running filesystem simulation:", error);
-    return runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
+    console.error("Diagnosis Agent Tool call failed, running database simulation:", error);
+    return await runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
   }
 }
 
-function runFallbackSimulation(
+async function runFallbackSimulation(
   userId: string,
   statedGoal: string,
   extractedIntent: string,
   gapHypothesis: string,
   trace: AgentTraceItem[]
-): DiagnosisAgentOutput {
-  // Execute filesystem read tool dynamically during fallback
-  const reflections = get_reflection_history(userId);
+): Promise<DiagnosisAgentOutput> {
+  const reflections = await get_reflection_history(userId);
   trace.push({
     agent: "Diagnosis Agent",
     tool: "get_reflection_history",
