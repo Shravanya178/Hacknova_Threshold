@@ -1,0 +1,62 @@
+[
+  {
+    "id": "media-1",
+    "title": "Speaking Under Pressure: Communication Patterns in Design Reviews",
+    "source": "IABTM",
+    "capability_gap": "Communication Confidence, not UI Skill"
+  },
+  {
+    "id": "media-2",
+    "title": "Boundaries and Buffers: Shielding Your Creative Output from Burnout",
+    "source": "IABTM",
+    "capability_gap": "Protect from external asks, low-stakes self-paced review only"
+  },
+  {
+    "id": "media-3",
+    "title": "Grid Systems and Spatial Dynamics in Modern Interfaces",
+    "source": "IABTM",
+    "capability_gap": "UI Design Execution"
+  },
+  {
+    "id": "media-4",
+    "title": "Portfolio Completeness: The Minimum Viable Case Study",
+    "source": "IABTM",
+    "capability_gap": "Portfolio Completeness"
+  },
+  {
+    "id": "media-5",
+    "title": "Pacing the Job Search: Dealing with High-Volume Applications",
+    "source": "IABTM",
+    "capability_gap": "High-volume Applications"
+  },
+  {
+    "id": "media-6",
+    "title": "Managing Rejection Fatigue in Creative Fields",
+    "source": "IABTM",
+    "capability_gap": "Emotional Buffer Protection"
+  },
+  {
+    "id": "media-7",
+    "title": "Distributed Architectures and High-Throughput System Design",
+    "source": "IABTM",
+    "capability_gap": "System Design"
+  },
+  {
+    "id": "media-8",
+    "title": "Articulating Design Decisions: Structured Presentation Templates",
+    "source": "IABTM",
+    "capability_gap": "Technical Presentation"
+  },
+  {
+    "id": "media-9",
+    "title": "Anxiety Regulation Protocols for Live Presenters",
+    "source": "IABTM",
+    "capability_gap": "Anxiety Management"
+  },
+  {
+    "id": "media-10",
+    "title": "Low-Stakes Iterative Review Protocols",
+    "source": "IABTM",
+    "capability_gap": "Self-paced Review"
+  }
+]

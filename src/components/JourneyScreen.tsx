@@ -77,6 +77,23 @@ export default function JourneyScreen({
                   <p className="text-xs text-primaryText font-medium leading-relaxed mt-1">
                     {step.label}
                   </p>
+
+                  {/* Media item integration if present */}
+                  {step.media && (
+                    <div className="mt-2.5 p-2 bg-background border border-white/5 rounded-[3px] flex flex-col gap-1 w-full max-w-lg">
+                      <div className="flex justify-between items-center gap-2">
+                        <span className="text-[8px] uppercase tracking-widest text-primaryAccent font-bold font-mono">
+                          IABTM Curated Resource
+                        </span>
+                        <span className="text-[8px] uppercase tracking-wider text-mutedText font-semibold">
+                          Gap: {step.media.capability_gap}
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-secondaryText leading-normal italic font-serif">
+                        "{step.media.title}"
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Completion Switch / Actions */}

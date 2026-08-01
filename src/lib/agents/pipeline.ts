@@ -1,7 +1,7 @@
 import { runIdentityAgent } from "./identity-agent";
 import { runDiagnosisAgent } from "./diagnosis-agent";
 import { runConstraintsFilter, filterDiagnosisContext, Constraints } from "./constraints-filter";
-import { runJourneyComposerAgent } from "./journey-composer-agent";
+import { runJourneyComposerAgent, readMediaCatalog, findMatchingMedia } from "./journey-composer-agent";
 import { Diagnosis, AgentTraceItem } from "@/types/threshold";
 
 export async function runThresholdPipeline(
@@ -94,6 +94,22 @@ export async function runThresholdPipeline(
     // 5. Apply Demo Fallback Safeguard (Section 7) to ensure 100% stage reliability
     finalDiagnosis = enforceSpecSanity(userId, finalDiagnosis);
 
+    // 6. Ensure matched IABTM media asset is attached to the journey steps
+    const catalog = readMediaCatalog();
+    const matchedMedia = findMatchingMedia(finalDiagnosis.capability_gap, catalog);
+    if (matchedMedia && finalDiagnosis.journey.length > 0) {
+      const hasMedia = finalDiagnosis.journey.some(step => step.media && step.media.id);
+      if (!hasMedia) {
+        const targetStep = finalDiagnosis.journey.find(s => s.verb === "attend" || s.verb === "reflect") || finalDiagnosis.journey[0];
+        targetStep.media = {
+          id: matchedMedia.id,
+          title: matchedMedia.title,
+          source: "IABTM",
+          capability_gap: matchedMedia.capability_gap
+        };
+      }
+    }
+
     return finalDiagnosis;
   } catch (error) {
     console.error("Pipeline run failed, resolving static fallback", error);
@@ -176,8 +192,10 @@ function getAbsoluteFallback(
     result: { status: "triggered", user_id: userId }
   });
 
+  let fallback: Diagnosis;
+
   if (userId === "aarav") {
-    return {
+    fallback = {
       quadrant: "Commitment",
       quadrant_reasoning: "Pipeline recovery: Aarav shows strong execution history but high presentation anxiety, mapping to Commitment.",
       rejected_quadrants: [
@@ -196,7 +214,7 @@ function getAbsoluteFallback(
       trace
     };
   } else {
-    return {
+    fallback = {
       quadrant: "Compassion",
       quadrant_reasoning: "Pipeline recovery: Meera has encountered multiple rejections and expresses self-worth fatigue. Compassion is required.",
       rejected_quadrants: [
@@ -214,4 +232,19 @@ function getAbsoluteFallback(
       trace
     };
   }
+
+  // Attach matched media
+  const catalog = readMediaCatalog();
+  const matchedMedia = findMatchingMedia(fallback.capability_gap, catalog);
+  if (matchedMedia && fallback.journey.length > 0) {
+    const targetStep = fallback.journey.find(s => s.verb === "attend" || s.verb === "reflect") || fallback.journey[0];
+    targetStep.media = {
+      id: matchedMedia.id,
+      title: matchedMedia.title,
+      source: "IABTM",
+      capability_gap: matchedMedia.capability_gap
+    };
+  }
+
+  return fallback;
 }

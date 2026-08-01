@@ -3,6 +3,12 @@ export type ExperienceStep = {
   verb: "attend" | "ask" | "meet" | "apply" | "reflect" | "rest";
   label: string;
   requires_output: boolean;
+  media?: {
+    id: string;
+    title: string;
+    source: "IABTM";
+    capability_gap: string;
+  };
 };
 
 export type EvidenceEntry = {
