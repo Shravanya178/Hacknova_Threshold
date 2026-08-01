@@ -1,9 +1,8 @@
 import { runIdentityAgent } from "./identity-agent";
 import { runDiagnosisAgent } from "./diagnosis-agent";
-import { runConstraintsFilter } from "./constraints-filter";
-import { runJourneyComposerAgent } from "./journeyComposerAgent";
+import { runConstraintsFilter, filterDiagnosisContext, Constraints } from "./constraints-filter";
+import { runJourneyComposerAgent } from "./journey-composer-agent";
 import { Diagnosis, AgentTraceItem } from "@/types/threshold";
-import { Constraints } from "./constraints-filter";
 
 export async function runThresholdPipeline(
   userId: string,
@@ -42,28 +41,38 @@ export async function runThresholdPipeline(
       });
     }
 
-    // 3. Run Journey Composer Agent
-    const composerContext = {
-      quadrant: diagnosisResult.quadrant,
-      capability_gap: diagnosisResult.capability_gap,
-      constraints: {
-        timeLimit: constraints.timeAvailable,
-        locationLimit: constraints.location,
-        resourceLimit: constraints.resources || []
-      }
-    };
+    // 3. Run Constraints Filter on Diagnosis context
+    const filteredContext = filterDiagnosisContext(
+      {
+        quadrant: diagnosisResult.quadrant,
+        capability_gap: diagnosisResult.capability_gap
+      },
+      constraints
+    );
+    trace.push({
+      agent: "Constraints Filter (Context)",
+      input: {
+        diagnosis: {
+          quadrant: diagnosisResult.quadrant,
+          capability_gap: diagnosisResult.capability_gap
+        },
+        constraints
+      },
+      result: filteredContext
+    });
 
-    const journeyResult = await runJourneyComposerAgent(composerContext);
+    // 4. Run Journey Composer Agent
+    const journeyResult = await runJourneyComposerAgent(filteredContext);
     trace.push({
       agent: "Journey Composer Agent",
-      input: composerContext,
+      input: filteredContext,
       result: journeyResult.steps
     });
 
-    // 4. Run Constraints Filter on generated steps
+    // 5. Run Constraints Filter on generated steps (to resize them)
     const filteredSteps = runConstraintsFilter(journeyResult.steps, constraints.timeAvailable);
     trace.push({
-      agent: "Constraints Filter",
+      agent: "Constraints Filter (Step Resizing)",
       input: {
         steps_before: journeyResult.steps,
         time_available: constraints.timeAvailable

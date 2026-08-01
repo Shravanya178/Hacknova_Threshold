@@ -74,3 +74,21 @@ export function runConstraintsFilter(
     };
   });
 }
+
+/**
+ * Filter Diagnosis Context — filters metadata details to feed into the Journey Composer.
+ */
+export function filterDiagnosisContext(
+  diagnosis: { quadrant: string; capability_gap: string },
+  constraints: Constraints
+): FilteredDiagnosisContext {
+  return {
+    quadrant: diagnosis.quadrant as any,
+    capability_gap: diagnosis.capability_gap,
+    constraints: {
+      timeLimit: constraints.timeAvailable,
+      locationLimit: constraints.location,
+      resourceLimit: constraints.resources || []
+    }
+  };
+}
