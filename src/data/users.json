@@ -1,0 +1,64 @@
+[
+  {
+    "id": "aarav",
+    "name": "Aarav",
+    "stated_goal": "I want confidence during interviews.",
+    "recent_reflections": [
+      "Finished my third portfolio project",
+      "Nervous every time someone asks me to explain my work out loud"
+    ],
+    "timeline": [
+      {
+        "id": "t-aarav-1",
+        "month": "Month 1",
+        "label": "Skill Scaffolding",
+        "quadrant": "Curiosity",
+        "capability_gap": "UI Design Execution",
+        "reasoning": "Focused heavily on mastering component layout and design patterns. Lacked confidence in styling but technical growth was priority."
+      },
+      {
+        "id": "t-aarav-2",
+        "month": "Month 2",
+        "label": "Portfolio Construction",
+        "quadrant": "Commitment",
+        "capability_gap": "Portfolio Completeness",
+        "reasoning": "Built projects to build evidence of completion. The push was execution speed and visual polish."
+      },
+      {
+        "id": "t-aarav-3",
+        "month": "Month 3",
+        "label": "Mentorship Transition",
+        "quadrant": "Commitment",
+        "capability_gap": "Communication Confidence",
+        "reasoning": "Started mentoring a junior designer. Found clarity in explaining simple terms to others but still stutter on self-advocacy."
+      }
+    ]
+  },
+  {
+    "id": "meera",
+    "name": "Meera",
+    "stated_goal": "I want confidence during interviews... I've been rejected four times this month.",
+    "recent_reflections": [
+      "Another rejection today",
+      "Maybe I'm just not good enough for this"
+    ],
+    "timeline": [
+      {
+        "id": "t-meera-1",
+        "month": "Month 1",
+        "label": "Intense Prep Run",
+        "quadrant": "Commitment",
+        "capability_gap": "High-volume Applications",
+        "reasoning": "Pushing applications out daily, preparing templates, and preparing interview questions. High fatigue, external validation dependent."
+      },
+      {
+        "id": "t-meera-2",
+        "month": "Month 2",
+        "label": "Rejection Exhaustion",
+        "quadrant": "Compassion",
+        "capability_gap": "Emotional Buffer Protection",
+        "reasoning": "Diagnosed as needing emotional boundaries. Stated interview prep is secondary to restoring confidence and pacing."
+      }
+    ]
+  }
+]
