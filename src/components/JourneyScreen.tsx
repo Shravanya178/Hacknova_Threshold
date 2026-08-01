@@ -83,7 +83,7 @@ export default function JourneyScreen({
                   {step.media && (
                     <div 
                       onClick={() => setExpandedMediaIds(prev => ({ ...prev, [step.id]: !prev[step.id] }))}
-                      className="mt-3.5 p-3.5 bg-secondaryBg border border-border hover:border-black/10 rounded-card flex flex-col gap-1.5 w-full max-w-lg cursor-pointer transition-normal select-none"
+                      className="mt-3.5 p-3.5 bg-champagne/40 border border-border hover:border-champagneGold hover:bg-champagne/60 rounded-card flex flex-col gap-1.5 w-full max-w-lg cursor-pointer transition-normal select-none"
                     >
                       <div className="flex justify-between items-center gap-2">
                         <span className="text-[8px] uppercase tracking-widest text-primaryText font-bold font-mono flex items-center gap-1">

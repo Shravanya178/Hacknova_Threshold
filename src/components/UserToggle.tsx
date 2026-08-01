@@ -29,7 +29,7 @@ export default function UserToggle({ activeUserId, onUserChange }: UserTogglePro
           }}
           className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full transition-normal ${
             !isCustom && activeUserId === "aarav"
-              ? "bg-primaryAccent text-background shadow-subtle"
+              ? "bg-champagneGold text-background shadow-subtle"
               : "text-secondaryText hover:text-primaryText"
           }`}
         >
@@ -42,7 +42,7 @@ export default function UserToggle({ activeUserId, onUserChange }: UserTogglePro
           }}
           className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full transition-normal ${
             !isCustom && activeUserId === "meera"
-              ? "bg-primaryAccent text-background shadow-subtle"
+              ? "bg-champagneGold text-background shadow-subtle"
               : "text-secondaryText hover:text-primaryText"
           }`}
         >
@@ -57,7 +57,7 @@ export default function UserToggle({ activeUserId, onUserChange }: UserTogglePro
           }}
           className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full transition-normal ${
             isCustom
-              ? "bg-primaryAccent text-background shadow-subtle"
+              ? "bg-champagneGold text-background shadow-subtle"
               : "text-secondaryText hover:text-primaryText"
           }`}
         >
@@ -76,7 +76,7 @@ export default function UserToggle({ activeUserId, onUserChange }: UserTogglePro
           />
           <button
             type="submit"
-            className="bg-primaryAccent hover:bg-primaryHover text-background text-[10px] font-bold px-3 py-1.5 rounded-btn uppercase tracking-wider transition-normal"
+            className="bg-champagneGold hover:bg-champagneHover text-background text-[10px] font-bold px-3 py-1.5 rounded-btn uppercase tracking-wider transition-normal"
           >
             Load
           </button>

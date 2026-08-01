@@ -60,7 +60,7 @@ export default function ReflectionCapture({
           <button
             type="submit"
             disabled={loading || !reflectionText.trim()}
-            className="self-end bg-primaryAccent hover:bg-primaryHover text-background font-bold px-4 py-2 uppercase tracking-wider text-[10px] rounded-btn transition-normal flex items-center gap-1.5 disabled:opacity-50 shadow-subtle"
+            className="self-end bg-champagneGold hover:bg-champagneHover text-background font-bold px-4 py-2 uppercase tracking-wider text-[10px] rounded-btn transition-normal flex items-center gap-1.5 disabled:opacity-50 shadow-subtle"
           >
             {loading ? "Saving..." : "Submit Proof"}
             <Send className="w-3 h-3" />

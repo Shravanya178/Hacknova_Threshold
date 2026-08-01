@@ -172,6 +172,17 @@ async function identityNode(state: typeof GraphStateAnnotation.State) {
   console.log("-> [identityNode] Fired at:", new Date().toISOString());
   const conversation = state.recentReflections.join("\n");
   const result = await runIdentityAgent(state.statedGoal, conversation);
+  // Ensure the user exists in the database
+  const normalizedUid = state.userId.toLowerCase().trim();
+  await supabase
+    .from("users")
+    .upsert({
+      id: normalizedUid,
+      name: state.userId.charAt(0).toUpperCase() + state.userId.slice(1),
+      stated_goal: state.statedGoal,
+      recent_reflections: state.recentReflections
+    });
+
   return {
     extractedIntent: result.output.extracted_intent,
     gapHypothesis: result.output.gap_hypothesis,

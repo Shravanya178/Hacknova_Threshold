@@ -82,7 +82,7 @@ export default function IdentityConversation({
         <button
           type="submit"
           disabled={loading || !statedGoal.trim()}
-          className="bg-primaryAccent hover:bg-primaryHover text-background font-bold py-3 px-6 rounded-btn transition-normal text-[11px] uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-subtle"
+          className="bg-champagneGold hover:bg-champagneHover text-background font-bold py-3 px-6 rounded-btn transition-normal text-[11px] uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-subtle"
         >
           {loading ? "Diagnosing State..." : "Diagnose Growth Moment"}
         </button>

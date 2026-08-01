@@ -22,6 +22,10 @@ const config: Config = {
         success: "#10B981",
         warning: "#F59E0B",
         error: "#EF4444",
+        champagne: "#F9F6F0",
+        champagneDark: "#EADEC9",
+        champagneGold: "#B59E7C",
+        champagneHover: "#A18A6A",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Inter", "sans-serif"],

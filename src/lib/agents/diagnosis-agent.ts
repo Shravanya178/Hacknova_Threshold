@@ -1,4 +1,4 @@
-import { genAI } from "./gemini";
+import { genAI, executeGeminiWithRotation } from "./gemini";
 import { SchemaType } from "@google/generative-ai";
 import { AgentTraceItem } from "@/types/threshold";
 import { supabase } from "../supabase";
@@ -85,8 +85,9 @@ export async function runDiagnosisAgent(
   }
 
   try {
-    const model = genAI.getGenerativeModel({
-      model: "gemini-3.5-flash",
+    return await executeGeminiWithRotation(async (activeClient) => {
+      const model = activeClient.getGenerativeModel({
+      model: "gemini-3.5-flash-lite",
       tools: [
         {
           functionDeclarations: [
@@ -149,7 +150,6 @@ export async function runDiagnosisAgent(
       systemInstruction: SYSTEM_PROMPT
     });
 
-    const chat = model.startChat();
     const prompt = `
 Please diagnose user.
 User ID: "${userId}"
@@ -159,12 +159,19 @@ Gap Hypothesis: "${gapHypothesis}"
 Call at least one check tool ('get_evidence_ledger' or 'get_reflection_history') before calling 'submit_diagnosis'.
 `;
 
-    let response = await chat.sendMessage(prompt);
+    const contents: any[] = [
+      {
+        role: "user",
+        parts: [{ text: prompt }]
+      }
+    ];
+
+    let apiResult = await model.generateContent({ contents });
     let loopCount = 0;
     const maxLoops = 5;
 
     while (loopCount < maxLoops) {
-      const functionCalls = response.response.functionCalls();
+      const functionCalls = apiResult.response.functionCalls();
       if (!functionCalls || functionCalls.length === 0) {
         break;
       }
@@ -173,6 +180,17 @@ Call at least one check tool ('get_evidence_ledger' or 'get_reflection_history')
       const name = call.name;
       const args = call.args as Record<string, any>;
       const targetUid = args.user_id || userId;
+
+      // Push model's call turn directly from candidate response content to preserve internal thought signatures
+      const modelContent = apiResult.response.candidates?.[0]?.content;
+      if (modelContent) {
+        contents.push(modelContent);
+      } else {
+        contents.push({
+          role: "model",
+          parts: [{ functionCall: { name, args } }]
+        });
+      }
 
       if (name === "get_evidence_ledger") {
         const result = await get_evidence_ledger(targetUid);
@@ -183,14 +201,20 @@ Call at least one check tool ('get_evidence_ledger' or 'get_reflection_history')
           result
         });
 
-        response = await chat.sendMessage([
-          {
-            functionResponse: {
-              name: "get_evidence_ledger",
-              response: { ledger: result }
+        // Push tool response as user turn
+        contents.push({
+          role: "user",
+          parts: [
+            {
+              functionResponse: {
+                name: "get_evidence_ledger",
+                response: { ledger: result }
+              }
             }
-          }
-        ] as any);
+          ]
+        });
+
+        apiResult = await model.generateContent({ contents });
       } else if (name === "get_reflection_history") {
         const result = await get_reflection_history(targetUid);
         trace.push({
@@ -200,14 +224,20 @@ Call at least one check tool ('get_evidence_ledger' or 'get_reflection_history')
           result
         });
 
-        response = await chat.sendMessage([
-          {
-            functionResponse: {
-              name: "get_reflection_history",
-              response: { reflections: result }
+        // Push tool response as user turn
+        contents.push({
+          role: "user",
+          parts: [
+            {
+              functionResponse: {
+                name: "get_reflection_history",
+                response: { reflections: result }
+              }
             }
-          }
-        ] as any);
+          ]
+        });
+
+        apiResult = await model.generateContent({ contents });
       } else if (name === "submit_diagnosis") {
         trace.push({
           agent: "Diagnosis Agent",
@@ -231,6 +261,7 @@ Call at least one check tool ('get_evidence_ledger' or 'get_reflection_history')
     }
 
     return await runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
+    });
   } catch (error) {
     console.error("Diagnosis Agent Tool call failed, running database simulation:", error);
     return await runFallbackSimulation(userId, statedGoal, extractedIntent, gapHypothesis, trace);
@@ -279,8 +310,7 @@ async function runFallbackSimulation(
     });
 
     return output;
-  } else {
-    // Default to Meera
+  } else if (userId === "meera") {
     const output: DiagnosisAgentOutput = {
       quadrant: "Compassion",
       quadrant_reasoning: "Meera is dealing with severe rejection distress (4 times in 30 days). Commitment tasks would exacerbate self-doubt; she needs emotional buffering.",
@@ -290,6 +320,51 @@ async function runFallbackSimulation(
       ],
       capability_gap: "Protect from external asks, low-stakes self-paced review only",
       gap_reasoning: "Rejection trauma must be buffered with protective routines before resume pushes resume.",
+      trace
+    };
+
+    trace.push({
+      agent: "Diagnosis Agent",
+      tool: "submit_diagnosis",
+      input: {
+        quadrant: output.quadrant,
+        quadrant_reasoning: output.quadrant_reasoning,
+        rejected_quadrants: output.rejected_quadrants,
+        capability_gap: output.capability_gap,
+        gap_reasoning: output.gap_reasoning
+      },
+      result: { status: "success" }
+    });
+
+    return output;
+  } else {
+    const goalLower = statedGoal.toLowerCase();
+    let quadrant = "Curiosity";
+    let capability_gap = "Technical Skill Execution";
+    let reasoning = "Exploring new engineering patterns to build core confidence.";
+
+    if (goalLower.includes("rest") || goalLower.includes("burnout") || goalLower.includes("exhaust")) {
+      quadrant = "Rest";
+      capability_gap = "Complete disconnect, recover energy reserves";
+      reasoning = "User indicates severe exhaustion; a complete disconnect is diagnosed to restore creative energy.";
+    } else if (goalLower.includes("reject") || goalLower.includes("anxiety") || goalLower.includes("fear")) {
+      quadrant = "Compassion";
+      capability_gap = "Emotional buffering and confidence recovery";
+      reasoning = "User is dealing with high-friction rejection stress; self-worth needs protection before execution pushes resume.";
+    } else if (goalLower.includes("interview") || goalLower.includes("practice") || goalLower.includes("verbal")) {
+      quadrant = "Commitment";
+      capability_gap = "Structured articulation and practice accountability";
+      reasoning = "User is ready to execute but lacks deliberate rehearsal habits to perform under evaluation.";
+    }
+
+    const output: DiagnosisAgentOutput = {
+      quadrant: quadrant as any,
+      quadrant_reasoning: reasoning,
+      rejected_quadrants: [
+        { quadrant: "Curiosity", reason_rejected: "Exploration is secondary to immediate stabilization/rehearsal needs." }
+      ],
+      capability_gap,
+      gap_reasoning: reasoning,
       trace
     };
 

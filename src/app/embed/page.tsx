@@ -137,7 +137,7 @@ export default function EmbedPage() {
             onClick={() => setActiveTab("diagnose")}
             className={`text-xs uppercase tracking-wider font-semibold py-1 border-b-2 transition-normal ${
               activeTab === "diagnose"
-                ? "border-primaryAccent text-primaryText"
+                ? "border-champagneGold text-primaryText"
                 : "border-transparent text-secondaryText hover:text-primaryText"
             }`}
           >
@@ -152,7 +152,7 @@ export default function EmbedPage() {
               !diagnosis ? "opacity-30 cursor-not-allowed" : ""
             } ${
               activeTab === "journey"
-                ? "border-primaryAccent text-primaryText"
+                ? "border-champagneGold text-primaryText"
                 : "border-transparent text-secondaryText hover:text-primaryText"
             }`}
           >
@@ -162,7 +162,7 @@ export default function EmbedPage() {
             onClick={() => setActiveTab("timeline")}
             className={`text-xs uppercase tracking-wider font-semibold py-1 border-b-2 transition-normal ${
               activeTab === "timeline"
-                ? "border-primaryAccent text-primaryText"
+                ? "border-champagneGold text-primaryText"
                 : "border-transparent text-secondaryText hover:text-primaryText"
             }`}
           >
