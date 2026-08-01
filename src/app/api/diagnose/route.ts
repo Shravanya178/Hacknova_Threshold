@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { runThresholdPipeline } from "@/lib/agents/pipeline";
+import { compiledThresholdGraph } from "@/lib/graph/threshold-graph";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,18 +13,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const diagnosis = await runThresholdPipeline(
+    const result = await compiledThresholdGraph.invoke({
       userId,
       statedGoal,
-      recentReflections || [],
-      constraints || { timeAvailable: "open", location: "remote", resources: [] }
-    );
+      recentReflections: recentReflections || [],
+      constraints: constraints || { timeAvailable: "open", location: "remote", resources: [] },
+      trace: []
+    });
+
+    const diagnosis = {
+      quadrant: result.quadrant,
+      quadrant_reasoning: result.quadrantReasoning,
+      rejected_quadrants: result.rejectedQuadrants,
+      capability_gap: result.capabilityGap,
+      gap_reasoning: result.gapReasoning,
+      journey: result.journeySteps || [],
+      trace: result.trace || []
+    };
 
     return NextResponse.json(diagnosis);
   } catch (error) {
-    console.error("Diagnosis API Error:", error);
+    console.error("Diagnosis API Error via LangGraph:", error);
     return NextResponse.json(
-      { error: "Internal server error running agent pipeline" },
+      { error: "Internal server error running LangGraph agent pipeline" },
       { status: 500 }
     );
   }

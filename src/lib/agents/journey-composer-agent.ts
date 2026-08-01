@@ -100,6 +100,16 @@ export async function runJourneyComposerAgent(
   const catalog = readMediaCatalog();
   const matchedMedia = findMatchingMedia(context.capability_gap, catalog);
 
+  let dropoffPrompt = "";
+  if (context.drop_off_detected) {
+    dropoffPrompt = `
+WARNING: The user is experiencing recent pattern drop-off or timeline gaps.
+You MUST compose extremely small, lower-friction steps to restore confidence:
+- Reduce step difficulty and time commitments (limit steps to 5-10 minutes).
+- Bias toward "rest" or "reflect" verbs, avoiding high-pressure active gates.
+`;
+  }
+
   const userPrompt = `
 Quadrant: "${context.quadrant}"
 Capability Gap: "${context.capability_gap}"
@@ -110,6 +120,8 @@ Constraints:
 
 Matched Media Asset to integrate:
 ${matchedMedia ? JSON.stringify(matchedMedia, null, 2) : "None"}
+
+${dropoffPrompt}
 
 Please compose the experience pathway. Make sure to attach the matched media asset (if available) to the most appropriate step in the array.
   `;

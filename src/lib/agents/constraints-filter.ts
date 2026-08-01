@@ -14,6 +14,7 @@ export type FilteredDiagnosisContext = {
     locationLimit: "remote" | "in-person";
     resourceLimit: string[];
   };
+  drop_off_detected?: boolean;
 };
 
 /**
