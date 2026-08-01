@@ -4,7 +4,8 @@
   "stated_goal": "I want confidence during interviews.",
   "recent_reflections": [
     "Finished my third portfolio project",
-    "Nervous every time someone asks me to explain my work out loud"
+    "Nervous every time someone asks me to explain my work out loud",
+    "I tried to share my portfolio but I fail to get any response or interest."
   ],
   "evidence_ledger": [
     {
@@ -14,6 +15,14 @@
       "type": "skill",
       "content": "Finished portfolio setup",
       "timestamp": "2026-07-28T12:00:00Z"
+    },
+    {
+      "id": "ev-1785583357376",
+      "user_id": "aarav",
+      "step_id": "step-c1",
+      "type": "reflective",
+      "content": "I tried to share my portfolio but I fail to get any response or interest.",
+      "timestamp": "2026-08-01T11:22:37.376Z"
     }
   ],
   "reflection_history": [

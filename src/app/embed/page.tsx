@@ -53,12 +53,24 @@ export default function EmbedPage() {
       setCurrentUser(user);
       setStatedGoal(user.stated_goal);
       setRecentReflections(user.recent_reflections);
-      setDiagnosis(null);
-      setEvidence({});
-      setCompletedSteps({});
-      setLapseAlert(null);
-      setActiveTab("diagnose");
+    } else {
+      // Initialize dynamic custom onboarding user profile
+      const customUser: User = {
+        id: userId,
+        name: userId.charAt(0).toUpperCase() + userId.slice(1),
+        stated_goal: "",
+        recent_reflections: [],
+        timeline: []
+      };
+      setCurrentUser(customUser);
+      setStatedGoal("");
+      setRecentReflections([]);
     }
+    setDiagnosis(null);
+    setEvidence({});
+    setCompletedSteps({});
+    setLapseAlert(null);
+    setActiveTab("diagnose");
   };
 
   const handleDiagnose = async () => {
