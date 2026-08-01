@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Threshold
 
-## Getting Started
+Team HACKNOVA
 
-First, run the development server:
+> **An Agentic Identity Curator that diagnoses your current growth moment before composing your next meaningful experience.**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Built for **HBTM 2026 – IABTM × IIIT Pune**
+
+## The Problem
+
+Today's algorithms optimize for attention.
+
+Threshold optimizes for **human potential**.
+
+Instead of recommending more content, it understands who you're becoming and composes experiences that help you grow.
+
+---
+
+## How It Works
+
+```text
+Identity Conversation
+        ↓
+Identity Map
+        ↓
+Growth Diagnosis
+        ↓
+Experience Composer
+        ↓
+Growth Journey
+        ↓
+Proof of Growth
+        ↓
+Reflection
+        ↓
+Identity Timeline
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Key Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+-  **Identity Map** – Understands aspirations, habits, and growth patterns.
+-  **Growth Diagnosis** – Identifies the user's current growth moment with transparent reasoning.
+-  **Experience Composer** – Curates experiences, not just content.
+-  **Proof of Growth** – Tracks evidence of real-world progress instead of content consumption.
+-  **Reflection Loop** – Learns from every completed experience.
+-  **Identity Timeline** – Visualizes how the user evolves over time.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Next.js
+- TypeScript
+- Tailwind CSS
+- AI Model APIs
+- Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Vision
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Threshold isn't another recommendation engine, habit tracker, or productivity app.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+It exists for one purpose:
+
+> **Help people become who they aspire to be-one meaningful experience at a time.**
