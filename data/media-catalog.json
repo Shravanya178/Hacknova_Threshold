@@ -3,70 +3,80 @@
     "id": "media-1",
     "title": "Speaking Under Pressure: Communication Patterns in Design Reviews",
     "source": "IABTM",
+    "resource_type": "video",
     "capability_gap": "Communication Confidence, not UI Skill",
-    "content": "Most designer blocks in presentations aren't technical; they are emotional. In design reviews, focus on framing. State the problem first, then describe the constraint, and finally show the visual solution. Never walk through features chronologically. Practice this rule: 'Purpose before pixels.'"
+    "content": "dQw4w9WgXcQ"
   },
   {
     "id": "media-2",
     "title": "Boundaries and Buffers: Shielding Your Creative Output from Burnout",
     "source": "IABTM",
+    "resource_type": "text",
     "capability_gap": "Protect from external asks, low-stakes self-paced review only",
-    "content": "When creative output is stalled, the worst reaction is working harder. Build a 'quarantine zone' for your design tasks: limit feedback sessions to peers only, set timer intervals of 20 minutes max, and strictly declare weekends offline. Your worth is not linear to daily code pushes."
+    "content": "When creative output is stalled, the worst reaction is working harder.\n\nBuild a 'quarantine zone' for your design tasks: limit feedback sessions to peers only.\n\nSet timer intervals of 20 minutes max, and strictly declare weekends offline. Your worth is not linear to daily code pushes."
   },
   {
     "id": "media-3",
     "title": "Grid Systems and Spatial Dynamics in Modern Interfaces",
     "source": "IABTM",
+    "resource_type": "slides",
     "capability_gap": "UI Design Execution",
-    "content": "Clean typography and precise grids establish trust before a user reads a single line of copy. Use an 8px grid system to align vertical spacing, maintain consistent card padding, and ensure that secondary text is at least 3 levels down in visual contrast hierarchy."
+    "content": "Slide 1: Clean typography and precise grids establish trust.\n\nSlide 2: Use an 8px grid system to align vertical spacing.\n\nSlide 3: Ensure that secondary text is at least 3 levels down in visual contrast hierarchy."
   },
   {
     "id": "media-4",
     "title": "Portfolio Completeness: The Minimum Viable Case Study",
     "source": "IABTM",
+    "resource_type": "audio",
     "capability_gap": "Portfolio Completeness",
-    "content": "Hiring managers look at portfolios for an average of 45 seconds. Skip long design-thinking essays. Instead, structure your case studies with three clear pillars: 1. The metric/goal, 2. The critical friction point, and 3. The high-fidelity design revision compared against the original."
+    "content": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
   },
   {
     "id": "media-5",
     "title": "Pacing the Job Search: Dealing with High-Volume Applications",
     "source": "IABTM",
+    "resource_type": "text",
     "capability_gap": "High-volume Applications",
-    "content": "A high application volume without tracking leads to emotional numbness. Treat the job search as a structured pipeline: target 5 high-intent applications per week, personalize each cover note by referencing a specific layout flaw on their live page, and track response states in a simple grid."
+    "content": "A high application volume without tracking leads to emotional numbness.\n\nTreat the job search as a structured pipeline: target 5 high-intent applications per week.\n\nPersonalize each cover note by referencing a specific layout flaw on their live page, and track response states in a simple grid."
   },
   {
     "id": "media-6",
     "title": "Managing Rejection Fatigue in Creative Fields",
     "source": "IABTM",
+    "resource_type": "text",
     "capability_gap": "Emotional Buffer Protection",
-    "content": "Rejections are data points, not verdicts. To protect your creative confidence, isolate your identity from application outcomes. Review rejected work under a low-stakes framework: ask yourself 'what is one layout pattern I can refine here?' rather than 'why am I not selected?'"
+    "content": "Rejections are data points, not verdicts.\n\nTo protect your creative confidence, isolate your identity from application outcomes.\n\nReview rejected work under a low-stakes framework: ask yourself 'what is one layout pattern I can refine here?' rather than 'why am I not selected?'"
   },
   {
     "id": "media-7",
     "title": "Distributed Architectures and High-Throughput System Design",
     "source": "IABTM",
+    "resource_type": "audio",
     "capability_gap": "System Design",
-    "content": "System design is about managing bottlenecks. When building scalable distributed applications, design with decoupling in mind. Use messaging queues to process high-throughput events asynchronously, leverage distributed caching for frequently read items, and ensure databases are partitioned."
+    "content": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
   },
   {
     "id": "media-8",
     "title": "Articulating Design Decisions: Structured Presentation Templates",
     "source": "IABTM",
+    "resource_type": "slides",
     "capability_gap": "Technical Presentation",
-    "content": "Presenting design decisions is an act of engineering translation. Avoid stating 'I liked this color.' Instead, frame it as: 'We selected this high-contrast palette to improve visual readability by 40% under low-light environments, meeting Web Content Accessibility Guidelines.'"
+    "content": "Slide 1: Presenting design decisions is an act of engineering translation.\n\nSlide 2: Avoid stating 'I liked this color.'\n\nSlide 3: Frame it as: 'We selected this high-contrast palette to improve visual readability by 40% under low-light environments.'"
   },
   {
     "id": "media-9",
     "title": "Anxiety Regulation Protocols for Live Presenters",
     "source": "IABTM",
+    "resource_type": "audio",
     "capability_gap": "Anxiety Management",
-    "content": "Speaking anxiety triggers physiological fight-or-flight responses. To regulate, apply double-inhalation box breathing 3 minutes before going live: take a deep breath in, take an extra short breath to fully inflate the lungs, hold for 4 seconds, and exhale slowly for 6 seconds."
+    "content": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
   },
   {
     "id": "media-10",
     "title": "Low-Stakes Iterative Review Protocols",
     "source": "IABTM",
+    "resource_type": "text",
     "capability_gap": "Self-paced Review",
-    "content": "High stakes shut down performance. Establish low-stakes checkpoints by working with dummy text and generic wireframes first. This decouples the fear of visual imperfection from your initial structural flow, letting you iterate rapidly before polishing pixels."
+    "content": "High stakes shut down performance.\n\nEstablish low-stakes checkpoints by working with dummy text and generic wireframes first.\n\nThis decouples the fear of visual imperfection from your initial structural flow, letting you iterate rapidly."
   }
 ]

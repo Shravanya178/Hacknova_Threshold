@@ -258,6 +258,10 @@ export default function EmbedPage() {
               onStepCompleteToggle={handleStepCompleteToggle}
               onReflectionSubmit={handleReflectionSubmit}
               submittingStepId={submittingStepId}
+              userId={currentUser.id}
+              statedGoal={statedGoal}
+              timeAvailable={timeAvailable}
+              location={location}
             />
           </div>
         )}

@@ -3,6 +3,7 @@ import path from "path";
 import { callGeminiJSON } from "./gemini";
 import { ExperienceStep } from "@/types/threshold";
 import { FilteredDiagnosisContext } from "./constraints-filter";
+import { searchYouTube } from "../youtube";
 
 type JourneyComposerOutput = {
   steps: ExperienceStep[];
@@ -98,7 +99,25 @@ export async function runJourneyComposerAgent(
 ): Promise<{ steps: ExperienceStep[]; log: string }> {
   // Load media catalog
   const catalog = readMediaCatalog();
-  const matchedMedia = findMatchingMedia(context.capability_gap, catalog);
+  let matchedMedia = findMatchingMedia(context.capability_gap, catalog);
+
+  // Try to find a real, highly relevant YouTube video matching the capability gap
+  try {
+    const ytResult = await searchYouTube(context.capability_gap);
+    if (ytResult) {
+      console.log(`[Journey Composer] Found relevant YouTube video: "${ytResult.title}" (${ytResult.id})`);
+      matchedMedia = {
+        id: ytResult.id,
+        title: ytResult.title,
+        source: "IABTM",
+        resource_type: "video" as any,
+        capability_gap: context.capability_gap,
+        content: ytResult.id
+      };
+    }
+  } catch (err) {
+    console.error("YouTube search fallback query in composer failed:", err);
+  }
 
   let dropoffPrompt = "";
   if (context.drop_off_detected) {
@@ -155,10 +174,30 @@ Please compose the experience pathway. Make sure to attach the matched media ass
       { id: "step-drop-2", verb: "reflect", label: "Write down one visual design achievement from this week", requires_output: false }
     ];
   }
+
+  // Customize the fallback steps dynamically based on the matched media
+  let customizedFallback = selectedFallback.map(step => {
+    if (matchedMedia) {
+      if (step.verb === "attend") {
+        return {
+          ...step,
+          label: `Review and study the curated resource: "${matchedMedia.title}"`
+        };
+      }
+      if (step.verb === "reflect") {
+        return {
+          ...step,
+          label: `Submit your realization on "${context.capability_gap}" in relation to "${matchedMedia.title}"`
+        };
+      }
+    }
+    return step;
+  });
   
   // Attach matched media to fallback step as well to guarantee match in fallback path
-  if (matchedMedia && selectedFallback.length > 0) {
-    const targetFallbackStep = selectedFallback.find(s => s.verb === "attend" || s.verb === "reflect") || selectedFallback[0];
+  if (matchedMedia && customizedFallback.length > 0) {
+    const targetFallbackStep = customizedFallback.find(s => s.verb === "attend" || s.verb === "reflect") || customizedFallback[0];
+    targetFallbackStep.resource_type = (matchedMedia as any).resource_type || "video";
     targetFallbackStep.media = {
       id: matchedMedia.id,
       title: matchedMedia.title,
@@ -171,10 +210,10 @@ Please compose the experience pathway. Make sure to attach the matched media ass
   const { response, rawText } = await callGeminiJSON<JourneyComposerOutput>(
     SYSTEM_PROMPT,
     userPrompt,
-    { steps: selectedFallback }
+    { steps: customizedFallback }
   );
 
-  let steps = response.steps || selectedFallback;
+  let steps = response.steps || customizedFallback;
   if (context.drop_off_detected && steps.length > 2) {
     steps = steps.slice(0, 2).map(s => {
       if (s.verb === "apply" || s.verb === "ask") {
@@ -198,6 +237,7 @@ Please compose the experience pathway. Make sure to attach the matched media ass
   const hasAttachedMedia = steps.some(step => step.media && step.media.id);
   if (!hasAttachedMedia && matchedMedia && steps.length > 0) {
     const targetStep = steps.find(s => s.verb === "attend" || s.verb === "reflect") || steps[0];
+    targetStep.resource_type = (matchedMedia as any).resource_type || "video";
     targetStep.media = {
       id: matchedMedia.id,
       title: matchedMedia.title,
@@ -206,6 +246,17 @@ Please compose the experience pathway. Make sure to attach the matched media ass
       content: matchedMedia.content
     };
   }
+
+  // Ensure all steps with attached media have the resource_type populated
+  steps = steps.map(s => {
+    if (s.media && s.media.id === matchedMedia?.id) {
+      return {
+        ...s,
+        resource_type: (matchedMedia as any).resource_type || "video"
+      };
+    }
+    return s;
+  });
 
   return {
     steps,

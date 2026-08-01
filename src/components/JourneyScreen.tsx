@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Lock, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 import { ExperienceStep, EvidenceEntry } from "@/types/threshold";
 import ReflectionCapture from "./ReflectionCapture";
+import AdaptiveMediaPlayer from "./AdaptiveMediaPlayer";
 
 interface JourneyScreenProps {
   steps: ExperienceStep[];
@@ -12,6 +13,10 @@ interface JourneyScreenProps {
   onStepCompleteToggle: (stepId: string) => void;
   onReflectionSubmit: (stepId: string, text: string) => void;
   submittingStepId?: string | null;
+  userId: string;
+  statedGoal: string;
+  timeAvailable: "5min" | "30min" | "open";
+  location: "remote" | "in-person";
 }
 
 export default function JourneyScreen({
@@ -20,7 +25,11 @@ export default function JourneyScreen({
   evidence,
   onStepCompleteToggle,
   onReflectionSubmit,
-  submittingStepId
+  submittingStepId,
+  userId,
+  statedGoal,
+  timeAvailable,
+  location
 }: JourneyScreenProps) {
   const [activeReflectionStep, setActiveReflectionStep] = useState<string | null>(null);
   const [expandedMediaIds, setExpandedMediaIds] = useState<Record<string, boolean>>({});
@@ -99,12 +108,17 @@ export default function JourneyScreen({
                       <p className="text-[10px] text-primaryText leading-normal italic font-serif">
                         "{step.media.title}"
                       </p>
-                      {expandedMediaIds[step.id] && step.media.content && (
-                        <div className="mt-2 pt-2 border-t border-border text-[10px] text-secondaryText leading-relaxed font-sans normal-case fade-in-up">
-                          <span className="font-bold text-primaryText block mb-0.5 uppercase tracking-wider text-[8px] font-mono">
-                            Interactive Growth Guide:
-                          </span>
-                          {step.media.content}
+                      {expandedMediaIds[step.id] && (
+                        <div className="mt-3 pt-3 border-t border-border w-full fade-in-up" onClick={(e) => e.stopPropagation()}>
+                          <AdaptiveMediaPlayer
+                            step={step}
+                            userId={userId}
+                            statedGoal={statedGoal}
+                            timeAvailable={timeAvailable}
+                            location={location}
+                            onReflectionSubmit={onReflectionSubmit}
+                            submitting={submittingStepId === step.id}
+                          />
                         </div>
                       )}
                     </div>
