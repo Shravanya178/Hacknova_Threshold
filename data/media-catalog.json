@@ -19,17 +19,17 @@
     "id": "media-3",
     "title": "Grid Systems and Spatial Dynamics in Modern Interfaces",
     "source": "IABTM",
-    "resource_type": "slides",
+    "resource_type": "text",
     "capability_gap": "UI Design Execution",
-    "content": "Slide 1: Clean typography and precise grids establish trust.\n\nSlide 2: Use an 8px grid system to align vertical spacing.\n\nSlide 3: Ensure that secondary text is at least 3 levels down in visual contrast hierarchy."
+    "content": "Clean typography and precise grids establish trust before a user reads a single line of copy.\n\nUse an 8px grid system to align vertical spacing, maintain consistent card padding, and ensure that secondary text is at least 3 levels down in visual contrast hierarchy.\n\nConsistent spacing reduces visual load, making layouts look premium and cohesive."
   },
   {
     "id": "media-4",
     "title": "Portfolio Completeness: The Minimum Viable Case Study",
     "source": "IABTM",
-    "resource_type": "audio",
+    "resource_type": "text",
     "capability_gap": "Portfolio Completeness",
-    "content": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    "content": "Hiring managers look at portfolios for an average of 45 seconds.\n\nSkip long design-thinking essays. Instead, structure your case studies with three clear pillars: 1. The metric/goal, 2. The critical friction point, and 3. The high-fidelity design revision compared against the original."
   },
   {
     "id": "media-5",
@@ -51,25 +51,25 @@
     "id": "media-7",
     "title": "Distributed Architectures and High-Throughput System Design",
     "source": "IABTM",
-    "resource_type": "audio",
+    "resource_type": "text",
     "capability_gap": "System Design",
-    "content": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+    "content": "System design is about managing bottlenecks.\n\nWhen building scalable distributed applications, design with decoupling in mind.\n\nUse messaging queues to process high-throughput events asynchronously, leverage distributed caching for frequently read items, and ensure databases are partitioned."
   },
   {
     "id": "media-8",
     "title": "Articulating Design Decisions: Structured Presentation Templates",
     "source": "IABTM",
-    "resource_type": "slides",
+    "resource_type": "text",
     "capability_gap": "Technical Presentation",
-    "content": "Slide 1: Presenting design decisions is an act of engineering translation.\n\nSlide 2: Avoid stating 'I liked this color.'\n\nSlide 3: Frame it as: 'We selected this high-contrast palette to improve visual readability by 40% under low-light environments.'"
+    "content": "Presenting design decisions is an act of engineering translation.\n\nAvoid stating 'I liked this color.'\n\nInstead, frame it as: 'We selected this high-contrast palette to improve visual readability by 40% under low-light environments, meeting Web Content Accessibility Guidelines.'"
   },
   {
     "id": "media-9",
     "title": "Anxiety Regulation Protocols for Live Presenters",
     "source": "IABTM",
-    "resource_type": "audio",
+    "resource_type": "text",
     "capability_gap": "Anxiety Management",
-    "content": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+    "content": "Speaking anxiety triggers physiological fight-or-flight responses.\n\nTo regulate, apply double-inhalation box breathing 3 minutes before going live: take a deep breath in, take an extra short breath to fully inflate the lungs, hold for 4 seconds, and exhale slowly for 6 seconds."
   },
   {
     "id": "media-10",

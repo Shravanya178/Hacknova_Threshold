@@ -59,7 +59,7 @@ export function findMatchingMedia(capabilityGap: string, catalog: MediaCatalogIt
 
   // 3. Fallback: find the item that shares the most common words
   const cleanTargetWords = capabilityGap.toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(Boolean);
-  
+
   let bestMatch: MediaCatalogItem | null = null;
   let maxOverlap = 0;
 
@@ -193,7 +193,7 @@ Please compose the experience pathway. Make sure to attach the matched media ass
     }
     return step;
   });
-  
+
   // Attach matched media to fallback step as well to guarantee match in fallback path
   if (matchedMedia && customizedFallback.length > 0) {
     const targetFallbackStep = customizedFallback.find(s => s.verb === "attend" || s.verb === "reflect") || customizedFallback[0];
