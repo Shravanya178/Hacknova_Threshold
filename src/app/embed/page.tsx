@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { User, Diagnosis, ExperienceStep, EvidenceEntry } from "@/types/threshold";
 import usersDataRaw from "../../data/users.json";
+import IdentityConversation from "@/components/IdentityConversation";
 
 const usersData = usersDataRaw as User[];
 
@@ -240,14 +241,6 @@ export default function EmbedPage() {
             
             {/* Conversation inputs */}
             <div className="bg-surface p-4 border border-white/5 flex flex-col gap-4">
-              <label className="text-[10px] uppercase tracking-wider text-mutedText font-bold">Stated Goal</label>
-              <textarea
-                value={statedGoal}
-                onChange={(e) => setStatedGoal(e.target.value)}
-                className="w-full bg-background border border-white/10 p-3 text-xs text-primaryText rounded-[4px] focus-ring resize-none h-16 font-sans leading-relaxed"
-                placeholder="What is your current growth intention?"
-              />
-
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-[10px] uppercase tracking-wider text-mutedText font-bold block mb-1">Time Limit</label>
@@ -274,23 +267,25 @@ export default function EmbedPage() {
                 </div>
               </div>
 
-              <button
-                onClick={handleDiagnose}
-                disabled={loading}
-                className="w-full bg-primaryAccent hover:bg-primaryHover text-secondaryBg font-bold py-3 uppercase tracking-wider text-[11px] rounded-none transition-normal flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <>
-                    <Loader className="w-3.5 h-3.5 animate-spin" />
-                    ANALYZING...
-                  </>
-                ) : (
-                  <>
-                    START HERE
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </>
-                )}
-              </button>
+              <IdentityConversation
+                userId={currentUser.id}
+                recentReflections={recentReflections}
+                timeAvailable={timeAvailable}
+                location={location}
+                onDiagnoseStart={() => {
+                  setLoading(true);
+                  setLapseAlert(null);
+                }}
+                onDiagnoseComplete={(data) => {
+                  setDiagnosis(data);
+                  setLoading(false);
+                  setActiveTab("journey");
+                }}
+                onDiagnoseError={(err) => {
+                  setLoading(false);
+                  console.error("Diagnosis failed:", err);
+                }}
+              />
             </div>
 
             {/* Results Reveal */}
