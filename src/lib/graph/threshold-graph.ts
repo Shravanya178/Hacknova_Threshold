@@ -169,7 +169,7 @@ function enforceSpecSanity(userId: string, diagnosis: Diagnosis): Diagnosis {
 // 2. StateGraph Node Implementations
 
 async function identityNode(state: typeof GraphStateAnnotation.State) {
-  console.log("-> Running LangGraph Identity Node");
+  console.log("-> [identityNode] Fired at:", new Date().toISOString());
   const conversation = state.recentReflections.join("\n");
   const result = await runIdentityAgent(state.statedGoal, conversation);
   return {
@@ -184,7 +184,7 @@ async function identityNode(state: typeof GraphStateAnnotation.State) {
 }
 
 async function diagnosisNode(state: typeof GraphStateAnnotation.State) {
-  console.log("-> Running LangGraph Diagnosis Node");
+  console.log("-> [diagnosisNode] Fired at:", new Date().toISOString());
   const result = await runDiagnosisAgent(
     state.userId,
     state.statedGoal,
@@ -203,7 +203,7 @@ async function diagnosisNode(state: typeof GraphStateAnnotation.State) {
 }
 
 async function constraintsNode(state: typeof GraphStateAnnotation.State) {
-  console.log("-> Running LangGraph Constraints Node");
+  console.log("-> [constraintsNode] Fired at:", new Date().toISOString());
   const filtered = filterDiagnosisContext(
     {
       quadrant: state.quadrant as any,
@@ -228,12 +228,15 @@ async function constraintsNode(state: typeof GraphStateAnnotation.State) {
 }
 
 async function composerNode(state: typeof GraphStateAnnotation.State) {
-  console.log("-> Running LangGraph Composer Node");
+  console.log("-> [composerNode] Fired at:", new Date().toISOString());
   
+  // Detect drop-off dynamically at compose-time as well
+  const isDropOff = state.isDropOff || await checkDropOffDetection(state.userId);
+
   // Feed drop-off pattern into composer (Prompt 18)
   const ctx = {
     ...state.filteredContext,
-    drop_off_detected: state.isDropOff || false
+    drop_off_detected: isDropOff
   };
 
   const composerResult = await runJourneyComposerAgent(ctx);
@@ -341,7 +344,7 @@ async function composerNode(state: typeof GraphStateAnnotation.State) {
 }
 
 async function reflectionNode(state: typeof GraphStateAnnotation.State) {
-  console.log("-> Running LangGraph Reflection Node");
+  console.log("-> [reflectionNode] Fired at:", new Date().toISOString());
   if (!state.stepId || !state.reflectionText) {
     throw new Error("stepId or reflectionText is undefined in state configuration");
   }
@@ -413,7 +416,9 @@ async function reflectionNode(state: typeof GraphStateAnnotation.State) {
     lowerText.includes("can't do this anymore") ||
     lowerText.includes("hate this") ||
     lowerText.includes("another rejection") ||
-    lowerText.includes("fail")
+    lowerText.includes("fail") ||
+    lowerText.includes("don't think i can do") ||
+    lowerText.includes("skipped")
   ) {
     fallback.is_lapse = true;
     fallback.reasoning = "Programmatic heuristic detected terms signaling high discouragement or potential lapse.";

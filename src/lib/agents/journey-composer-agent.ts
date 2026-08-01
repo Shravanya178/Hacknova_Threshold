@@ -148,7 +148,13 @@ Please compose the experience pathway. Make sure to attach the matched media ass
     ]
   };
 
-  const selectedFallback = fallbackSteps[context.quadrant] || fallbackSteps.Commitment;
+  let selectedFallback = fallbackSteps[context.quadrant] || fallbackSteps.Commitment;
+  if (context.drop_off_detected) {
+    selectedFallback = [
+      { id: "step-drop-1", verb: "rest", label: "Decompress and take a 10-minute offline break", requires_output: false },
+      { id: "step-drop-2", verb: "reflect", label: "Write down one visual design achievement from this week", requires_output: false }
+    ];
+  }
   
   // Attach matched media to fallback step as well to guarantee match in fallback path
   if (matchedMedia && selectedFallback.length > 0) {
@@ -169,6 +175,14 @@ Please compose the experience pathway. Make sure to attach the matched media ass
   );
 
   let steps = response.steps || selectedFallback;
+  if (context.drop_off_detected && steps.length > 2) {
+    steps = steps.slice(0, 2).map(s => {
+      if (s.verb === "apply" || s.verb === "ask") {
+        return { ...s, verb: "reflect" as const };
+      }
+      return s;
+    });
+  }
 
   // Final validation sweep on output steps:
   // 1. Force Rest/Compassion guardrail

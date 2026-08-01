@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
       trace: result.trace || []
     };
 
+    console.log("DIAGNOSE ROUTE RESPONSE:", JSON.stringify(diagnosis, null, 2));
     return NextResponse.json(diagnosis);
   } catch (error) {
     console.error("Diagnosis API Error via LangGraph:", error);

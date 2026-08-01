@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
+console.log("INITIALIZING SUPABASE CLIENT. URL on process.env:", process.env.NEXT_PUBLIC_SUPABASE_URL);
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://your-project.supabase.co";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-anon-key";
 
