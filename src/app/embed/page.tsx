@@ -16,6 +16,8 @@ import {
 import { User, Diagnosis, ExperienceStep, EvidenceEntry } from "@/types/threshold";
 import usersDataRaw from "../../data/users.json";
 import IdentityConversation from "@/components/IdentityConversation";
+import UserToggle from "@/components/UserToggle";
+import DiagnosisReveal from "@/components/DiagnosisReveal";
 
 const usersData = usersDataRaw as User[];
 
@@ -34,7 +36,6 @@ export default function EmbedPage() {
   const [diagnosis, setDiagnosis] = useState<Diagnosis | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<"diagnose" | "journey" | "timeline">("diagnose");
-  const [showTrace, setShowTrace] = useState<boolean>(false);
   
   // Evidence Ledger state (completed vs evidenced)
   const [evidence, setEvidence] = useState<Record<string, EvidenceEntry>>({});
@@ -172,24 +173,7 @@ export default function EmbedPage() {
           <span className="text-xs uppercase tracking-widest text-mutedText font-bold">THRESHOLD</span>
           
           {/* User selector */}
-          <div className="flex gap-1 border border-white/10 p-0.5 rounded-[4px] bg-background">
-            <button
-              onClick={() => handleUserChange("aarav")}
-              className={`px-3 py-1 text-[11px] font-bold uppercase tracking-wider rounded-[3px] transition-normal ${
-                currentUser.id === "aarav" ? "bg-primaryAccent text-secondaryBg" : "text-secondaryText hover:text-primaryText"
-              }`}
-            >
-              AARAV
-            </button>
-            <button
-              onClick={() => handleUserChange("meera")}
-              className={`px-3 py-1 text-[11px] font-bold uppercase tracking-wider rounded-[3px] transition-normal ${
-                currentUser.id === "meera" ? "bg-primaryAccent text-secondaryBg" : "text-secondaryText hover:text-primaryText"
-              }`}
-            >
-              MEERA
-            </button>
-          </div>
+          <UserToggle activeUserId={currentUser.id} onUserChange={handleUserChange} />
         </div>
 
         {/* Tab switcher */}
@@ -290,72 +274,7 @@ export default function EmbedPage() {
 
             {/* Results Reveal */}
             {diagnosis && (
-              <div className="flex flex-col gap-4 border border-white/5 bg-surface p-4 fade-in-up">
-                <div className="flex justify-between items-baseline border-b border-white/5 pb-2">
-                  <span className="text-[10px] uppercase tracking-wider text-mutedText font-bold">Growth State</span>
-                  <span className="font-script text-2xl text-primaryAccent leading-none">
-                    {diagnosis.quadrant}
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] uppercase tracking-wider text-mutedText font-bold">Identified Gap</span>
-                  <span className="text-sm font-semibold text-primaryText">{diagnosis.capability_gap}</span>
-                </div>
-
-                <div className="flex flex-col gap-2 bg-background p-3 border border-white/5">
-                  <span className="text-[10px] uppercase tracking-wider text-mutedText font-bold">Why This?</span>
-                  <p className="text-xs text-secondaryText leading-relaxed">{diagnosis.quadrant_reasoning}</p>
-                  <p className="text-xs text-secondaryText leading-relaxed mt-1 italic">{diagnosis.gap_reasoning}</p>
-                </div>
-
-                {/* Why Not X list */}
-                <div className="flex flex-col gap-2">
-                  <span className="text-[10px] uppercase tracking-wider text-mutedText font-bold">Excluded States</span>
-                  <div className="flex flex-col gap-2">
-                    {diagnosis.rejected_quadrants.map((item, idx) => (
-                      <div key={idx} className="text-xs text-mutedText border-l-2 border-white/10 pl-3">
-                        <span className="font-bold text-secondaryText block text-[10px] uppercase tracking-wider">{item.quadrant}</span>
-                        {item.reason_rejected}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Trace Button Trigger */}
-                <button
-                  onClick={() => setShowTrace(!showTrace)}
-                  className="text-xs text-primaryAccent hover:underline uppercase tracking-wider font-semibold text-left pt-2 flex items-center justify-between"
-                >
-                  <span>{showTrace ? "Hide Audit Trace" : "Audit Agent Decisions"}</span>
-                  {showTrace ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                </button>
-
-                {showTrace && (
-                  <div className="bg-background border border-white/10 p-3 max-h-[180px] overflow-y-auto text-[10px] font-mono text-mutedText flex flex-col gap-2 no-scrollbar">
-                    {diagnosis.trace.map((item, index) => (
-                      <div key={index} className="border-b border-white/5 pb-2 last:border-0 last:pb-0">
-                        <span className="text-primaryAccent font-bold">[{item.agent}]</span>
-                        {item.tool && (
-                          <div className="text-secondaryText">
-                            Tool: <span className="underline">{item.tool}</span>
-                          </div>
-                        )}
-                        {item.input && (
-                          <div className="text-[9px] opacity-75">
-                            Args: {JSON.stringify(item.input)}
-                          </div>
-                        )}
-                        {item.result && (
-                          <div className="text-[9px] text-primaryText">
-                            Out: {JSON.stringify(item.result)}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <DiagnosisReveal diagnosis={diagnosis} />
             )}
           </div>
         )}
