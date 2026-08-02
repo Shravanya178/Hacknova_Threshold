@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Lock, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 import { ExperienceStep, EvidenceEntry } from "@/types/threshold";
 import ReflectionCapture from "./ReflectionCapture";
 import AdaptiveMediaPlayer from "./AdaptiveMediaPlayer";
-import CreativeHubPlayer from "./CreativeHub/CreativeHubPlayer";
 
 interface JourneyScreenProps {
   steps: ExperienceStep[];
@@ -34,9 +34,26 @@ export default function JourneyScreen({
   location,
   quadrant
 }: JourneyScreenProps) {
+  const router = useRouter();
   const [activeReflectionStep, setActiveReflectionStep] = useState<string | null>(null);
   const [expandedMediaIds, setExpandedMediaIds] = useState<Record<string, boolean>>({});
-  const [creativeHubOpenStep, setCreativeHubOpenStep] = useState<ExperienceStep | null>(null);
+
+  /** Navigate to the dedicated Creative Hub page, passing all context as query params */
+  const openCreativeHub = (step: ExperienceStep) => {
+    const params = new URLSearchParams({
+      userId,
+      statedGoal,
+      stepId: step.id,
+      mediaTitle: step.media?.title || "",
+      mediaCapabilityGap: step.media?.capability_gap || "",
+      mediaContent: step.media?.content || "",
+      timeAvailable,
+      location,
+      requiresOutput: String(step.requires_output),
+      returnTo: window.location.pathname + window.location.search,
+    });
+    router.push(`/creative-hub?${params.toString()}`);
+  };
 
   const isStepLocked = (index: number): boolean => {
     if (index === 0) return false;
@@ -97,7 +114,7 @@ export default function JourneyScreen({
                     <div 
                       onClick={() => {
                         if (step.resource_type === "creative_hub") {
-                          setCreativeHubOpenStep(step);
+                          openCreativeHub(step);
                         } else {
                           setExpandedMediaIds(prev => ({ ...prev, [step.id]: !prev[step.id] }));
                         }
@@ -203,41 +220,6 @@ export default function JourneyScreen({
           );
         })}
       </div>
-
-      {/* Creative Hub Lightbox Modal Overlay */}
-      {creativeHubOpenStep && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 lg:p-8 fade-in-up" 
-          onClick={() => setCreativeHubOpenStep(null)}
-        >
-          <div 
-            className="bg-surface max-w-6xl w-full h-[90vh] rounded-2xl shadow-2xl relative border border-border flex flex-col overflow-hidden creative-hub-scope" 
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close button */}
-            <button 
-              onClick={() => setCreativeHubOpenStep(null)}
-              className="absolute top-4 right-4 bg-background hover:bg-secondaryBg border border-border p-2 rounded-full text-primaryText hover:text-secondary hover:scale-105 active:scale-95 transition-all z-50 shadow-md flex items-center justify-center"
-            >
-              <span className="material-symbols-outlined text-lg leading-none w-5 h-5 flex items-center justify-center">close</span>
-            </button>
-            <CreativeHubPlayer
-              step={creativeHubOpenStep}
-              userId={userId}
-              statedGoal={statedGoal}
-              timeAvailable={timeAvailable}
-              location={location}
-              onReflectionSubmit={async (stepId, text) => {
-                await onReflectionSubmit(stepId, text);
-                setTimeout(() => {
-                  setCreativeHubOpenStep(null);
-                }, 1200);
-              }}
-              submitting={submittingStepId === creativeHubOpenStep.id}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
