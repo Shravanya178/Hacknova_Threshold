@@ -5,6 +5,9 @@ import { Lock, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 import { ExperienceStep, EvidenceEntry } from "@/types/threshold";
 import ReflectionCapture from "./ReflectionCapture";
 import AdaptiveMediaPlayer from "./AdaptiveMediaPlayer";
+import CreativeHubPlayer from "./CreativeHub/CreativeHubPlayer";
+import IdentityExpressionCard from "./IdentityExpressionCard";
+import { getExpressionForState } from "@/lib/identityRegistry";
 
 interface JourneyScreenProps {
   steps: ExperienceStep[];
@@ -17,6 +20,7 @@ interface JourneyScreenProps {
   statedGoal: string;
   timeAvailable: "5min" | "30min" | "open";
   location: "remote" | "in-person";
+  quadrant?: string;
 }
 
 export default function JourneyScreen({
@@ -29,10 +33,14 @@ export default function JourneyScreen({
   userId,
   statedGoal,
   timeAvailable,
-  location
+  location,
+  quadrant
 }: JourneyScreenProps) {
   const [activeReflectionStep, setActiveReflectionStep] = useState<string | null>(null);
   const [expandedMediaIds, setExpandedMediaIds] = useState<Record<string, boolean>>({});
+  const [creativeHubOpenStep, setCreativeHubOpenStep] = useState<ExperienceStep | null>(null);
+
+  const mapping = quadrant ? getExpressionForState(quadrant) : null;
 
   const isStepLocked = (index: number): boolean => {
     if (index === 0) return false;
@@ -91,14 +99,22 @@ export default function JourneyScreen({
                   {/* Media item integration if present */}
                   {step.media && (
                     <div 
-                      onClick={() => setExpandedMediaIds(prev => ({ ...prev, [step.id]: !prev[step.id] }))}
+                      onClick={() => {
+                        if (step.resource_type === "creative_hub") {
+                          setCreativeHubOpenStep(step);
+                        } else {
+                          setExpandedMediaIds(prev => ({ ...prev, [step.id]: !prev[step.id] }));
+                        }
+                      }}
                       className="mt-3.5 p-3.5 bg-champagne/40 border border-border hover:border-champagneGold hover:bg-champagne/60 rounded-card flex flex-col gap-1.5 w-full max-w-lg cursor-pointer transition-normal select-none"
                     >
                       <div className="flex justify-between items-center gap-2">
                         <span className="text-[8px] uppercase tracking-widest text-primaryText font-bold font-mono flex items-center gap-1">
-                          IABTM Curated Resource
+                          {step.resource_type === "creative_hub" ? "IABTM Creative Hub" : "IABTM Curated Resource"}
                           <span className="text-[7px] text-secondaryText lowercase font-sans font-normal">
-                            ({expandedMediaIds[step.id] ? "click to collapse" : "click to demo content"})
+                            ({step.resource_type === "creative_hub"
+                              ? "click to launch hub" 
+                              : expandedMediaIds[step.id] ? "click to collapse" : "click to demo content"})
                           </span>
                         </span>
                         <span className="text-[8px] uppercase tracking-wider text-secondaryText font-semibold">
@@ -190,7 +206,45 @@ export default function JourneyScreen({
             </div>
           );
         })}
+        {mapping && (
+          <IdentityExpressionCard mapping={mapping} />
+        )}
       </div>
+
+      {/* Creative Hub Lightbox Modal Overlay */}
+      {creativeHubOpenStep && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 lg:p-8 fade-in-up" 
+          onClick={() => setCreativeHubOpenStep(null)}
+        >
+          <div 
+            className="bg-surface max-w-6xl w-full h-[90vh] rounded-2xl shadow-2xl relative border border-border flex flex-col overflow-hidden creative-hub-scope" 
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button 
+              onClick={() => setCreativeHubOpenStep(null)}
+              className="absolute top-4 right-4 bg-background hover:bg-secondaryBg border border-border p-2 rounded-full text-primaryText hover:text-secondary hover:scale-105 active:scale-95 transition-all z-50 shadow-md flex items-center justify-center"
+            >
+              <span className="material-symbols-outlined text-lg leading-none w-5 h-5 flex items-center justify-center">close</span>
+            </button>
+            <CreativeHubPlayer
+              step={creativeHubOpenStep}
+              userId={userId}
+              statedGoal={statedGoal}
+              timeAvailable={timeAvailable}
+              location={location}
+              onReflectionSubmit={async (stepId, text) => {
+                await onReflectionSubmit(stepId, text);
+                setTimeout(() => {
+                  setCreativeHubOpenStep(null);
+                }, 1200);
+              }}
+              submitting={submittingStepId === creativeHubOpenStep.id}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

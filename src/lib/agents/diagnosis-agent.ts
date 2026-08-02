@@ -344,7 +344,20 @@ async function runFallbackSimulation(
     let capability_gap = "Technical Skill Execution";
     let reasoning = "Exploring new engineering patterns to build core confidence.";
 
-    if (goalLower.includes("rest") || goalLower.includes("burnout") || goalLower.includes("exhaust")) {
+    if (
+      goalLower.includes("creative") || 
+      goalLower.includes("hub") || 
+      goalLower.includes("podcast") || 
+      goalLower.includes("storytelling") || 
+      goalLower.includes("creator") || 
+      goalLower.includes("advisory") || 
+      goalLower.includes("council") || 
+      goalLower.includes("expert")
+    ) {
+      quadrant = "Curiosity";
+      capability_gap = "Storytelling, Podcast Production & Executive Media";
+      reasoning = "User is looking to engage with high-end editorial media, podcast curation, and expert advisory networks to bridge creative execution gaps.";
+    } else if (goalLower.includes("rest") || goalLower.includes("burnout") || goalLower.includes("exhaust")) {
       quadrant = "Rest";
       capability_gap = "Complete disconnect, recover energy reserves";
       reasoning = "User indicates severe exhaustion; a complete disconnect is diagnosed to restore creative energy.";

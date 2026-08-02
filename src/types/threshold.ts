@@ -3,7 +3,7 @@ export type ExperienceStep = {
   verb: "attend" | "ask" | "meet" | "apply" | "reflect" | "rest";
   label: string;
   requires_output: boolean;
-  resource_type?: "video" | "audio" | "text" | "slides";
+  resource_type?: "video" | "audio" | "text" | "slides" | "creative_hub";
   media_plan?: MediaPlan;
   media?: {
     id: string;

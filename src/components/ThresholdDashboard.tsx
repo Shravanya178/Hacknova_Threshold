@@ -460,6 +460,7 @@ export default function ThresholdDashboard() {
                     statedGoal={statedGoal}
                     timeAvailable={timeAvailable}
                     location={location}
+                    quadrant={diagnosis.quadrant}
                   />
 
                   {/* PlanAdjustmentReveal — live variant */}

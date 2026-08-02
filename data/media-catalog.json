@@ -78,5 +78,13 @@
     "resource_type": "text",
     "capability_gap": "Self-paced Review",
     "content": "High stakes shut down performance.\n\nEstablish low-stakes checkpoints by working with dummy text and generic wireframes first.\n\nThis decouples the fear of visual imperfection from your initial structural flow, letting you iterate rapidly."
+  },
+  {
+    "id": "media-creative-hub",
+    "title": "Creative Hub Platforms: Podcast, Storytelling Lab, & Advisory Council",
+    "source": "IABTM",
+    "resource_type": "creative_hub",
+    "capability_gap": "Storytelling, Podcast Production & Executive Media",
+    "content": "creative_hub"
   }
 ]

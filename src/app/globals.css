@@ -64,3 +64,38 @@ body {
     transform: translateY(0);
   }
 }
+
+/* Scoped variables for Creative Hub MD3 design tokens to prevent bleeding into the main app */
+.creative-hub-scope {
+  --background: #f7f9fb;
+  --secondaryBg: #f2f4f6;
+  --surface: #f7f9fb;
+  --elevatedSurface: #eceef0;
+  --primaryText: #191c1e;
+  --secondaryText: #45464d;
+  --mutedText: #76777d;
+  --border: #c6c6cd;
+  --primaryAccent: #000000;
+  --primaryHover: #0051d5;
+  color: var(--primaryText);
+  background-color: var(--background);
+}
+
+.creative-hub-scope .glass-panel,
+.creative-hub-scope .glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.creative-hub-scope .custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.creative-hub-scope .custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.creative-hub-scope .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #00000033;
+  border-radius: 10px;
+}
+

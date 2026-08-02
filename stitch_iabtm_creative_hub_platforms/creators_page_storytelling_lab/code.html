@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The IABTM Storytelling Lab | Media &amp; Creators</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;600;700;800&amp;family=Geist:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .asymmetric-border {
+            clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #000000;
+            border-radius: 10px;
+        }
+        @keyframes subtle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-element { animation: subtle-float 6s ease-in-out infinite; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f7f9fb",
+                        "on-tertiary-container": "#b87500",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#191c1e",
+                        "surface-dim": "#d8dadc",
+                        "secondary": "#0051d5",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f7f9fb",
+                        "on-primary-container": "#7c839b",
+                        "outline-variant": "#c6c6cd",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#2a1700",
+                        "primary-fixed": "#dae2fd",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#45464d",
+                        "surface-tint": "#565e74",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "tertiary": "#000000",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#bec6e0",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-fixed-dim": "#bec6e0",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "surface-container": "#eceef0",
+                        "tertiary-container": "#2a1700",
+                        "surface-container-high": "#e6e8ea",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "surface-bright": "#f7f9fb",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-variant": "#e0e3e5",
+                        "on-secondary-fixed": "#00174b",
+                        "on-error-container": "#93000a",
+                        "primary": "#000000",
+                        "primary-container": "#131b2e",
+                        "secondary-container": "#316bf3",
+                        "surface-container-highest": "#e0e3e5",
+                        "inverse-surface": "#2d3133",
+                        "on-secondary-container": "#fefcff",
+                        "on-primary-fixed": "#131b2e",
+                        "inverse-on-surface": "#eff1f3",
+                        "outline": "#76777d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "margin-page": "64px",
+                        "asymmetric-offset": "80px",
+                        "section-gap": "128px",
+                        "gutter": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Geist"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-md": ["Chivo"],
+                        "headline-lg": ["Chivo"],
+                        "body-lg": ["Geist"],
+                        "display-xl": ["Chivo"],
+                        "headline-lg-mobile": ["Chivo"],
+                        "label-sm": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "headline-md": ["30px", {"lineHeight": "38px", "fontWeight": "600"}],
+                        "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "32px", "fontWeight": "400"}],
+                        "display-xl": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container selection:text-on-secondary-container overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-white/70 backdrop-blur-md shadow-sm border-b border-outline-variant/30 flex justify-between items-center w-full px-margin-page py-4 z-50 docked full-width top-0 sticky">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer transition-all active:scale-95 text-primary dark:text-on-background" onclick="toggleDrawer()">menu</span>
+<h1 class="font-display-xl text-headline-lg tracking-tighter text-primary dark:text-on-background">IABTM</h1>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant font-label-caps hover:text-secondary-container transition-colors duration-300" href="#">The Episode Vault</a>
+<a class="text-primary font-bold font-label-caps hover:text-secondary-container transition-colors duration-300" href="#">Storytelling Lab</a>
+<a class="text-on-surface-variant font-label-caps hover:text-secondary-container transition-colors duration-300" href="#">Advisory Council</a>
+<span class="material-symbols-outlined cursor-pointer transition-all active:scale-95 text-primary dark:text-on-background">search</span>
+</nav>
+</header>
+<!-- Navigation Drawer Overlay -->
+<div class="fixed inset-0 bg-black/20 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300" id="drawer-overlay" onclick="toggleDrawer()"></div>
+<!-- NavigationDrawer -->
+<aside class="bg-surface dark:bg-surface-container-highest h-full w-80 fixed left-0 top-0 border-r border-outline-variant shadow-2xl z-[70] -translate-x-full transition-transform duration-300 ease-in-out" id="main-drawer">
+<div class="flex flex-col h-full py-8 space-y-4">
+<div class="px-6 mb-8 flex justify-between items-center">
+<h2 class="font-display-xl text-headline-md text-primary">IABTM Intelligence</h2>
+<span class="material-symbols-outlined cursor-pointer" onclick="toggleDrawer()">close</span>
+</div>
+<nav class="flex flex-col">
+<a class="text-on-surface-variant font-body-lg px-6 py-4 hover:bg-surface-container-high transition-colors flex items-center gap-4" href="#">
+<span class="material-symbols-outlined">podcasts</span> The Episode Vault
+                </a>
+<a class="bg-secondary-container text-on-secondary-container font-bold px-6 py-4 rounded-full mx-4 flex items-center gap-4" href="#">
+<span class="material-symbols-outlined">brush</span> Storytelling Lab
+                </a>
+<a class="text-on-surface-variant font-body-lg px-6 py-4 hover:bg-surface-container-high transition-colors flex items-center gap-4" href="#">
+<span class="material-symbols-outlined">groups</span> Advisory Council
+                </a>
+<a class="text-on-surface-variant font-body-lg px-6 py-4 hover:bg-surface-container-high transition-colors flex items-center gap-4" href="#">
+<span class="material-symbols-outlined">public</span> Global Summits
+                </a>
+</nav>
+</div>
+</aside>
+<main class="relative">
+<!-- Hero Section: Magazine Style -->
+<section class="min-h-screen pt-12 px-margin-page grid grid-cols-1 md:grid-cols-12 gap-gutter relative overflow-hidden">
+<!-- Manifesto Column -->
+<div class="md:col-span-5 flex flex-col justify-center z-10">
+<div class="space-y-6">
+<span class="font-label-caps text-secondary uppercase tracking-[0.2em]">Storytelling Lab</span>
+<h2 class="font-display-xl text-headline-lg-mobile md:text-display-xl text-primary leading-none">
+                        Translating complex <span class="italic font-light">corporate mobility</span> into captivating visual media.
+                    </h2>
+<p class="font-body-lg text-on-surface-variant max-w-md">
+                        We bridge the gap between technical enterprise logistics and high-end editorial artistry, curated for the modern executive.
+                    </p>
+<div class="pt-8">
+<button class="bg-primary text-on-primary px-8 py-4 font-body-md flex items-center gap-3 hover:translate-x-1 transition-transform group">
+                            Explore the Collective
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Creator Mosaic Column -->
+<div class="md:col-span-7 relative h-[60vh] md:h-full mt-12 md:mt-0">
+<div class="absolute inset-0 grid grid-cols-6 grid-rows-6 gap-4">
+<!-- Image 1 -->
+<div class="col-span-4 row-span-4 rounded-xl overflow-hidden shadow-sm relative group">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="A cinematic, high-resolution close-up of a professional film director looking through a viewfinder on a futuristic urban set at night. The lighting is dominated by cool Traveler Blue neon and warm amber highlights, reflecting the brand's technical yet editorial aesthetic. Soft bokeh of a bustling Singapore cityscape creates a sophisticated, global business atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaVTbFU18ozol6ZgtJ-2rRxnOTvrTuJsDw6Y46Je_Rv4ul0FXwfr84QEtQK_kY3mqzi0ATUXxKj5NnWVUDeFVDnf5nzTmnHzHNOfYOKjtHKi-2hbjay5K3GRMf6NkFhllZL-3yld8U0XpXXzrJ5JaPEAlTVXQ0iMfH6iVcvXUvIAR1fViTNJVfHXwLOhKu4qoHY75WdHwb7wdfa8sBoCUZXDNSt3gVbsfc8p2usZr_UX2cin6zWYPiEA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end">
+<p class="text-white font-label-caps">Director Spotlight</p>
+<h3 class="text-white font-headline-md">Marcus Thorne</h3>
+</div>
+</div>
+<!-- Image 2 -->
+<div class="col-start-5 col-end-7 row-start-1 row-end-3 rounded-xl overflow-hidden float-element">
+<img class="w-full h-full object-cover" data-alt="Minimalist abstract digital art showcasing fluid, glassy shapes merging in a void, colored with deep Midnight Slate and Traveler Blue gradients. The texture is hyper-realistic with refractions and soft-focus edges, embodying the high-fidelity technology and precision of the IABTM brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA47tIPigxDwQ9acdHqbaP3PYus4DRFpAsK0aNssKEXJetMQV-up5XFPJb7PKLjJPCnExE4WSXHNZ4e4jfsy6jVGQhYnLzAKpcLxr6nHqWN9Er_uaLVEToPIVMuZDWjGhFxVCK4j9KhM_Fl-DoHaCBwP2kl_NUJHYw0gnFwZLfQPG6-S_549K0pb_1ais2KLjQiJ_FrV3zXVSfwNRwMAZvNHH9zmbLQxHlpvVBFJ4L01wjdkwvR3jxZhw"/>
+</div>
+<!-- Image 3 -->
+<div class="col-start-5 col-end-7 row-start-3 row-end-6 rounded-xl overflow-hidden shadow-lg translate-y-8">
+<img class="w-full h-full object-cover" data-alt="A wide-angle editorial shot of a high-end corporate lobby in London, featuring clean lines, marble surfaces, and floor-to-ceiling windows. A photographer is captured in silhouette, setting up a tripod against the bright morning light. The mood is calm, professional, and expansive, reflecting the quiet luxury of enterprise travel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1XeYbuYsR3feQkBiS2WtjJ26S6xztpjGsUVPmUsv3qyTRE0XqW8Km7H_UxizrukFaNAaDK9Z7Rs66Idspoz26z6EwrMPylFP8OdkeCh4NiNfj0BK_6qWCdbIhOVMNGbBTEG8EPvdEBLaxpvsERaedqfhy0l6hMBn399aOaRRFU6TWn-HxjyQrPycHEXv8UHK8bqNncKtJmAPkzE-SidcbAa8I-lpnepxBJCKZ_aCZlE161JW_0ODhvg"/>
+</div>
+<!-- Image 4 -->
+<div class="col-start-1 col-end-3 row-start-5 row-end-7 rounded-xl overflow-hidden -translate-y-4">
+<img class="w-full h-full object-cover" data-alt="Top-down flat lay of high-tech media gear: a Leica camera, a minimalist black smartphone, and a sleek leather-bound journal on a white textured surface. The composition is disciplined and airy with significant whitespace, echoing the design's Kinfolk-inspired editorial minimalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4YAt2rKKdKcy_ibIy1xTQIpVsgjGq0vEljeK9ADqj_IMR2kY2TfM3AdHjqih9kwCDcsO8OblUqOrB0g6RAKSZobO3IvA9-HG5O3c5Y7DtchgT-jzP_o9ls6PBdZR6DHM4dtijv4tI2l4_wNq9XuDuHP647Apn7JyTxwOlpITX8HuhEGtnujrF_GdqKUC6GPgMYfsEzPGYhXwjTfRmgQcWIiGeHeIsBPsujB2b57Y4BjIDWFnDns_zFQ"/>
+</div>
+</div>
+</div>
+<!-- Background Decorative Element -->
+<div class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 w-[800px] h-[800px] border border-outline-variant/10 rounded-full -z-10"></div>
+</section>
+<!-- Residency Spotlight: Large Horizontal Feature -->
+<section class="px-margin-page py-section-gap bg-surface-container-low">
+<div class="flex flex-col md:flex-row items-stretch gap-0 bg-white rounded-xl overflow-hidden shadow-sm">
+<div class="md:w-1/2 relative min-h-[400px]">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A vibrant, atmospheric behind-the-scenes photograph of the 2024 Global Summit in Lisbon. The scene shows a massive LED screen displaying global flight data in a dark, sophisticated auditorium. In the foreground, a cinematographer is focused on their monitor, capturing the blue-tinted light reflecting off the audience. The composition is asymmetric and cinematic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1Tr0dEIXyaOHYQZbzLSIG1ZVVInJ9SvqZoALp69TNtEF7MmMNiWKxIdNM6MjI7Qri_NgrwitdsPfETYEg7_8MunYozbNQcR5pgI3wcbeFlFx-wrpBz7XjNd-asBEtAo6tjK5IwEToDrwXRGgCPorr5-tHpTTYZycksYrSda8QMLmvMRLKBFerfotGuoqU-kquZdHFlYxZfiwusblC8AyDXD-H7xBvVMQzkhc_6c7ydN0E_CCoB070Vg"/>
+<div class="absolute top-6 left-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full font-label-caps text-primary text-xs flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span> CURRENT RESIDENCY
+                    </div>
+</div>
+<div class="md:w-1/2 p-12 md:p-24 flex flex-col justify-center">
+<h3 class="font-label-caps text-on-surface-variant mb-4">Behind the Scenes</h3>
+<h2 class="font-headline-lg text-primary mb-6 leading-tight">Documenting the 2024 Global Summit in Lisbon</h2>
+<p class="font-body-lg text-on-surface-variant mb-8">
+                        Our immersive tech specialists utilized real-time data visualization and 8K cinematography to turn a corporate conference into a narrative journey through the future of mobility.
+                    </p>
+<div class="flex gap-4">
+<button class="border border-primary text-primary px-8 py-3 font-body-md hover:bg-primary hover:text-on-primary transition-colors">Watch Film</button>
+<button class="text-primary font-body-md flex items-center gap-2 group">
+                            Process Gallery <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Creator Directory -->
+<section class="px-margin-page py-section-gap">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div class="max-w-2xl">
+<h2 class="font-display-xl text-headline-lg text-primary mb-4">The Collective</h2>
+<p class="font-body-lg text-on-surface-variant">A curated roster of global artists specializing in the intersection of enterprise tech and lifestyle media.</p>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap gap-3 overflow-x-auto pb-4 custom-scrollbar">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-caps text-xs">All Creators</button>
+<button class="border border-outline-variant text-on-surface-variant px-6 py-2 rounded-full font-label-caps text-xs hover:border-primary transition-colors">Event Cinematography</button>
+<button class="border border-outline-variant text-on-surface-variant px-6 py-2 rounded-full font-label-caps text-xs hover:border-primary transition-colors">Corporate Brand Designers</button>
+<button class="border border-outline-variant text-on-surface-variant px-6 py-2 rounded-full font-label-caps text-xs hover:border-primary transition-colors">Immersive Tech Specialists</button>
+<button class="border border-outline-variant text-on-surface-variant px-6 py-2 rounded-full font-label-caps text-xs hover:border-primary transition-colors">Editorial Photographers</button>
+</div>
+</div>
+<!-- Creator Grid (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Card 1 (Large) -->
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-white border border-outline-variant/30 transition-all hover:shadow-xl">
+<div class="aspect-[16/9] overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="A high-contrast fashion-style editorial photograph of a modern corporate office in Singapore at dusk. A woman in a sharp navy suit walks through a glass hallway, her movement captured with a slight motion blur. The floor reflects the orange sunset glow through large windows. The overall aesthetic is clean, luxurious, and technically precise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYycLDA5kZSoJxcAR_IXk5vUjGrl2wfxaJrDklUJFptupezYVzLuFlP-9FLZpsR-Y-FG84bO0A5tXgYy33mHTlYlFGxeSnFKyd1DIFF9fF3LtH7g0RIARAiUnfChq4nnlJG9zm0JogVKMz3tpbRsQWGDuTeqdYZGWmUn5earO_euT3o7XarUL_qhY1BlbYPRLLUEyq-_UvV7GDfV_CDmB4eS4320TLChCDERfS7GcJPZlPY1ZRd7F93Q"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+</div>
+<div class="p-8 flex justify-between items-start">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<h3 class="font-headline-md text-primary">Aria Vane</h3>
+<span class="bg-surface-container-highest px-3 py-1 rounded-full text-[10px] font-label-caps">Editorial Photographer</span>
+</div>
+<div class="flex gap-4 text-on-surface-variant font-label-caps text-xs">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span> London / Singapore</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">work</span> Google, SAP, IATA</span>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-6 py-3 font-label-caps text-xs transition-transform active:scale-95" onclick="openMediaKit('Aria Vane')">View Media Kit</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="md:col-span-4 group relative overflow-hidden rounded-xl bg-white border border-outline-variant/30 transition-all hover:shadow-xl">
+<div class="aspect-square overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Close-up architectural photography of a contemporary airport terminal's ceiling, featuring complex white metallic structures and geometric glass panels. The sky visible through the glass is a clear, pale Traveler Blue. The image emphasizes precision engineering and a clean, future-oriented design language." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARNyZ-PEib6r-Wp9ehIWpokR7o6xpkzOqNyVB1afyxZCqlo8hMXQVB4-z9kfUgiohqJISRSl7hlMb-zYPR8swTi9TpQMANtN0UJvIrIieuuS2o-Hjl4AKx4A_ft-3WBoO0MZNPkraMFuumscxXUsHFIdY6Qyy5PBoh5ELA7jSD8i9Yzx_St0tCwqOMcSF_7ZHQ0kCd_KMFPxuGaiLOdMM8EoVNaehuieAt5W-wiC_I0XtedtZSb2EAzg"/>
+</div>
+<div class="p-8">
+<div class="mb-4">
+<h3 class="font-headline-md text-primary">Kaito Chen</h3>
+<p class="font-label-caps text-secondary text-xs mt-1">Immersive Tech Specialist</p>
+</div>
+<div class="space-y-2 text-on-surface-variant font-label-caps text-xs mb-6">
+<p class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span> Tokyo / Zurich</p>
+<p class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">work</span> Emirates, Lufthansa, BMW</p>
+</div>
+<button class="w-full border border-primary text-primary px-6 py-3 font-label-caps text-xs hover:bg-primary hover:text-on-primary transition-colors" onclick="openMediaKit('Kaito Chen')">Media Kit</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="md:col-span-4 group relative overflow-hidden rounded-xl bg-white border border-outline-variant/30 transition-all hover:shadow-xl">
+<div class="aspect-square overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="A cinematic, low-light shot of a professional camera operator capturing a high-speed train arriving at a modern station in Berlin. The train's headlights create long, glowing streaks on the wet platform. The mood is moody, technical, and high-energy, focusing on the intersection of media production and transportation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdMr0Amtf0Gi3Plqhf6Vldhx31dK-mKJB85DFqQicLYOnAJI-CqNoHvzjkwEr1xYQ9_L4E5qNQ6krJG5vgfS3EeeQZqvOoJtWL2aG-lRTDDYiI8QV5MfnrT6Wasy3KdldPq01Z16uaVRX1WbSKm88pFZ_ew0NC3hBFwvWewlV6XrjaXkai8C3iyIJfMUgsojLnRIPLVBOp4D_Portb86solZ8S2vFY5oS0NKG4UFyDhliL5lP-aO_87w"/>
+</div>
+<div class="p-8">
+<div class="mb-4">
+<h3 class="font-headline-md text-primary">Sasha Meyer</h3>
+<p class="font-label-caps text-secondary text-xs mt-1">Event Cinematographer</p>
+</div>
+<div class="space-y-2 text-on-surface-variant font-label-caps text-xs mb-6">
+<p class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span> Berlin / Lisbon</p>
+<p class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">work</span> Oracle, Salesforce, IABTM</p>
+</div>
+<button class="w-full border border-primary text-primary px-6 py-3 font-label-caps text-xs hover:bg-primary hover:text-on-primary transition-colors" onclick="openMediaKit('Sasha Meyer')">Media Kit</button>
+</div>
+</div>
+<!-- Card 4 (Horizontal/Wide) -->
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-white border border-outline-variant/30 transition-all hover:shadow-xl">
+<div class="flex flex-col md:flex-row h-full">
+<div class="md:w-1/2 aspect-square md:aspect-auto overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="A minimalist brand design studio environment with clean white desks and large monitors displaying vector logos and motion graphics. The palette is strictly Midnight Slate and Pure White with subtle Traveler Blue accents. A designer is partially visible, working on a complex typography layout for a global travel brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp22FUYOXLAtlrrwwF6HVfEDL1jgDTecgyEpM-6MzmqrkVMJca6hfy42THitkdRtc-fwCLIpBlu4I-Xkpb05rBYv8uBB82XTkteExgZ1bK7QpOafEIScUerOS_g6cYzXGPrJ_RaWCKQa8IhfGSZbklmB6Nd0C6aQP4AvNZRoNvamheXkOh7aLG_-b-mF6yifOfFJ16bRnGe2-YVyePK3m0-KgGheUl9maQVGTmwhAPcYjORqBLxPwTeA"/>
+</div>
+<div class="md:w-1/2 p-10 flex flex-col justify-center">
+<div class="mb-6">
+<h3 class="font-headline-md text-primary">Elena Rossi</h3>
+<p class="font-label-caps text-secondary text-xs mt-1 uppercase">Corporate Brand Designer</p>
+</div>
+<p class="font-body-md text-on-surface-variant mb-6">Crafting precision visual identities for Fortune 500 logistics and mobility firms with an editorial edge.</p>
+<div class="space-y-2 text-on-surface-variant font-label-caps text-xs mb-8">
+<p class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span> Milan / New York</p>
+<p class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">work</span> Microsoft, DHL, United Airlines</p>
+</div>
+<button class="bg-primary text-on-primary px-8 py-3 font-label-caps text-xs" onclick="openMediaKit('Elena Rossi')">View Media Kit</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Slide-over Media Kit -->
+<div class="fixed inset-y-0 right-0 w-full md:w-[600px] bg-white shadow-2xl z-[80] translate-x-full transition-transform duration-500 ease-in-out border-l border-outline-variant" id="media-kit-drawer">
+<div class="h-full flex flex-col p-12 overflow-y-auto custom-scrollbar">
+<button class="self-start mb-12 flex items-center gap-2 font-label-caps text-xs text-on-surface-variant hover:text-primary transition-colors" onclick="closeMediaKit()">
+<span class="material-symbols-outlined text-sm">close</span> CLOSE
+                </button>
+<div class="space-y-12" id="media-kit-content">
+<!-- Dynamic content will be injected here -->
+<div>
+<span class="font-label-caps text-secondary text-xs mb-2 block">CREATOR PORTFOLIO</span>
+<h2 class="font-display-xl text-headline-lg text-primary mb-6" id="media-kit-name">Aria Vane</h2>
+<p class="font-body-lg text-on-surface-variant">Expertise in capturing the high-frequency energy of corporate environments with a calm, editorial lens.</p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<img class="w-full aspect-square object-cover rounded-lg" data-alt="A detailed editorial photograph of a business traveler in a high-tech airport lounge, using a glowing laptop in a darkened corner. The lighting is moody and precise, focusing on the tech interaction and professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgCRUDqMpJ58OzcqM7Xj4EOzHKRtlxIo7cWQqNYamCSGccre3LHgUsr9AYscjhW7RqTSa42UrmD1j-AsMHNSDtkWyOM-W019FoihbGmBvqC4TxSh_RZQSuyE9a4CZ23j0s6EkokuZT6C6o-m6pXo11r8J5up9a62-fm0LqQRLymNRiyTT6Gpdld0_vn2MkyaYOGJ2RALnJCTxOUOVzFn9QYvEPJgdHX-HY928iE424gWJh-koTWcPTgA"/>
+<img class="w-full aspect-square object-cover rounded-lg" data-alt="Architectural detail shot of a glass and steel bridge in a modern business district at night, with trailing light streaks from passing traffic below. High-precision technical photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZHUpyFAcflGmwj4yVS7pPff5CMlKqzWkbRxVgGzBwq9RCoGhNAi4zWleVIz5nSr7m4vqcYiA9O5RhPtp_5GOyOR0FFs5R_h8OJefHpNex6dxG19jaX41bfcMQLhjbMheS64Bt9wFxxtYBZiTL8XZM-nNeipOZMsm0PDLseqEIwZLqZWSsp2IDvhSuc6NBnlIFma5XYfT0BocWNQQsOoqqI5xCo9aDidIiy4s6GNBHj845G7OfF1HzVA"/>
+</div>
+<div class="space-y-6">
+<h4 class="font-label-caps text-primary border-b border-outline-variant pb-2">Selected Clients</h4>
+<div class="grid grid-cols-3 gap-4 font-label-caps text-xs text-on-surface-variant">
+<span>GOOGLE</span>
+<span>SAP</span>
+<span>IATA</span>
+<span>AIRBUS</span>
+<span>FEDEX</span>
+<span>SHELL</span>
+</div>
+</div>
+<div class="pt-8">
+<button class="w-full bg-primary text-on-primary py-4 font-body-md">Inquire for Projects</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant w-full mt-section-gap grid grid-cols-1 md:grid-cols-3 gap-gutter px-margin-page py-section-gap">
+<div class="space-y-6">
+<h2 class="font-display-xl text-headline-md font-bold text-primary">IABTM</h2>
+<p class="font-body-md text-on-surface-variant max-w-xs">Connecting the world's most innovative mobility leaders through the art of storytelling.</p>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="font-label-caps text-primary font-bold">The Collective</h3>
+<nav class="flex flex-col gap-2">
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-opacity" href="#">Stay Informed on Global Mobility</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-opacity" href="#">Privacy Policy</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-opacity" href="#">Terms of Service</a>
+</nav>
+</div>
+<div class="flex flex-col gap-8">
+<div class="space-y-4">
+<h3 class="font-label-caps text-primary font-bold">Subscribe</h3>
+<div class="flex">
+<input class="bg-transparent border-b border-outline-variant focus:border-primary outline-none py-2 font-body-md w-full transition-colors" placeholder="Email address" type="email"/>
+<button class="ml-4 material-symbols-outlined text-primary">arrow_forward</button>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant text-sm">© 2024 IABTM. All rights reserved.</p>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="bg-surface/80 backdrop-blur-lg fixed bottom-0 w-full md:hidden flex justify-around items-center h-16 px-4 z-50 border-t border-outline-variant/20 shadow-lg">
+<span class="material-symbols-outlined text-on-surface-variant active:scale-90 transition-transform">home</span>
+<span class="material-symbols-outlined text-on-surface-variant active:scale-90 transition-transform">podcasts</span>
+<span class="material-symbols-outlined text-secondary-container scale-110 active:scale-90 transition-transform" style="font-variation-settings: 'FILL' 1;">brush</span>
+<span class="material-symbols-outlined text-on-surface-variant active:scale-90 transition-transform">groups</span>
+</nav>
+<script>
+        function toggleDrawer() {
+            const drawer = document.getElementById('main-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+            const isHidden = drawer.classList.contains('-translate-x-full');
+            
+            if (isHidden) {
+                drawer.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+            } else {
+                drawer.classList.add('-translate-x-full');
+                overlay.classList.remove('opacity-100');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        function openMediaKit(name) {
+            const drawer = document.getElementById('media-kit-drawer');
+            document.getElementById('media-kit-name').innerText = name;
+            drawer.classList.remove('translate-x-full');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeMediaKit() {
+            const drawer = document.getElementById('media-kit-drawer');
+            drawer.classList.add('translate-x-full');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Close media kit on Esc key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeMediaKit();
+        });
+    </script>
+</body></html>

@@ -6,6 +6,7 @@ import AdaptiveVideoPlayer from "./AdaptiveVideoPlayer";
 import AdaptiveAudioPlayer from "./AdaptiveAudioPlayer";
 import AdaptiveTextReader from "./AdaptiveTextReader";
 import AdaptiveSlideViewer from "./AdaptiveSlideViewer";
+import CreativeHubPlayer from "./CreativeHub/CreativeHubPlayer";
 import { Loader2 } from "lucide-react";
 
 interface AdaptiveMediaPlayerProps {
@@ -78,14 +79,14 @@ export default function AdaptiveMediaPlayer({
   }, [step]);
 
   const runFallbackMediaPlan = (
-    type: "video" | "audio" | "text" | "slides",
+    type: "video" | "audio" | "text" | "slides" | "creative_hub",
     requiresOutput: boolean
   ): MediaPlan => {
     return {
-      segments: [{ id: "s-f", type: "watch", start: 0, end: type === "video" || type === "audio" ? 180 : 3 }],
+      segments: [{ id: "s-f", type: "watch", start: 0, end: type === "video" || type === "audio" || type === "creative_hub" ? 180 : 3 }],
       notes: [{ id: "n-f", trigger_point: 0, note: "Focus on connection to current goals." }],
       prompts: requiresOutput
-        ? [{ id: "p-f", trigger_point: type === "video" || type === "audio" ? 60 : 1, prompt: "What is your main take-away?" }]
+        ? [{ id: "p-f", trigger_point: type === "video" || type === "audio" || type === "creative_hub" ? 60 : 1, prompt: "What is your main take-away?" }]
         : []
     };
   };
@@ -163,6 +164,20 @@ export default function AdaptiveMediaPlayer({
         title={step.media.title}
         mediaPlan={mediaPlan}
         onReflectionSubmit={handleSubPlayerReflection}
+        submitting={submitting}
+      />
+    );
+  }
+
+  if (resourceType === "creative_hub") {
+    return (
+      <CreativeHubPlayer
+        step={step}
+        userId={userId}
+        statedGoal={statedGoal}
+        timeAvailable={timeAvailable}
+        location={location}
+        onReflectionSubmit={onReflectionSubmit}
         submitting={submitting}
       />
     );

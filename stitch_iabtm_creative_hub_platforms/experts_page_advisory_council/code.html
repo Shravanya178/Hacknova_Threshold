@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IABTM Global Advisory Council | Intelligence Excellence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;600;700;800&amp;family=Geist:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@100..900&amp;family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "background": "#f7f9fb",
+                "on-tertiary-container": "#b87500",
+                "on-secondary": "#ffffff",
+                "on-background": "#191c1e",
+                "surface-dim": "#d8dadc",
+                "secondary": "#0051d5",
+                "on-tertiary": "#ffffff",
+                "surface": "#f7f9fb",
+                "on-primary-container": "#7c839b",
+                "outline-variant": "#c6c6cd",
+                "error": "#ba1a1a",
+                "on-tertiary-fixed": "#2a1700",
+                "primary-fixed": "#dae2fd",
+                "on-surface": "#191c1e",
+                "on-surface-variant": "#45464d",
+                "surface-tint": "#565e74",
+                "on-primary-fixed-variant": "#3f465c",
+                "on-tertiary-fixed-variant": "#653e00",
+                "tertiary": "#000000",
+                "on-primary": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "inverse-primary": "#bec6e0",
+                "tertiary-fixed": "#ffddb8",
+                "surface-container-low": "#f2f4f6",
+                "primary-fixed-dim": "#bec6e0",
+                "error-container": "#ffdad6",
+                "on-error": "#ffffff",
+                "surface-container": "#eceef0",
+                "tertiary-container": "#2a1700",
+                "surface-container-high": "#e6e8ea",
+                "on-secondary-fixed-variant": "#003ea8",
+                "surface-bright": "#f7f9fb",
+                "secondary-fixed-dim": "#b4c5ff",
+                "tertiary-fixed-dim": "#ffb95f",
+                "secondary-fixed": "#dbe1ff",
+                "surface-variant": "#e0e3e5",
+                "on-secondary-fixed": "#00174b",
+                "on-error-container": "#93000a",
+                "primary": "#000000",
+                "primary-container": "#131b2e",
+                "secondary-container": "#316bf3",
+                "surface-container-highest": "#e0e3e5",
+                "inverse-surface": "#2d3133",
+                "on-secondary-container": "#fefcff",
+                "on-primary-fixed": "#131b2e",
+                "inverse-on-surface": "#eff1f3",
+                "outline": "#76777d"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "unit": "4px",
+                "margin-page": "64px",
+                "asymmetric-offset": "80px",
+                "section-gap": "128px",
+                "gutter": "32px"
+            },
+            "fontFamily": {
+                "body-md": ["Geist"],
+                "label-caps": ["JetBrains Mono"],
+                "headline-md": ["Chivo"],
+                "headline-lg": ["Chivo"],
+                "body-lg": ["Geist"],
+                "display-xl": ["Chivo"],
+                "headline-lg-mobile": ["Chivo"],
+                "label-sm": ["Geist"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                "headline-md": ["30px", {"lineHeight": "38px", "fontWeight": "600"}],
+                "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "32px", "fontWeight": "400"}],
+                "display-xl": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                "headline-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .asymmetric-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 32px;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        .hover-underline:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- TopAppBar -->
+<header class="bg-surface/70 backdrop-blur-xl text-primary font-display-xl text-display-xl docked full-width top-0 sticky border-b border-outline-variant/30 shadow-sm z-50 flex justify-between items-center w-full px-margin-page py-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer transition-all active:scale-95 text-on-surface" data-icon="menu">menu</span>
+<h1 class="font-display-xl text-headline-lg tracking-tighter text-primary">IABTM</h1>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant font-label-caps hover:text-secondary-container transition-colors duration-300 relative hover-underline" href="#">RESEARCH</a>
+<a class="text-primary font-bold font-label-caps hover:text-secondary-container transition-colors duration-300 relative hover-underline" href="#">ADVISORY COUNCIL</a>
+<a class="text-on-surface-variant font-label-caps hover:text-secondary-container transition-colors duration-300 relative hover-underline" href="#">SUMMITS</a>
+</nav>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined cursor-pointer transition-all active:scale-95 text-on-surface" data-icon="search">search</span>
+<button class="hidden lg:block bg-primary text-on-primary px-6 py-2 font-label-caps text-label-sm tracking-widest hover:bg-primary/90 transition-all">MEMBER LOGIN</button>
+</div>
+</header>
+<main class="min-h-screen">
+<!-- Hero Section -->
+<section class="relative pt-section-gap pb-24 overflow-hidden px-margin-page">
+<div class="absolute top-0 right-0 w-2/3 h-full -z-10 opacity-10">
+
+</div>
+<div class="max-w-4xl">
+<div class="flex items-center gap-2 mb-6">
+<span class="w-12 h-[1px] bg-primary"></span>
+<span class="font-label-caps text-primary tracking-widest">ESTABLISHED 2012</span>
+</div>
+<h2 class="font-display-xl text-display-xl text-primary mb-12 max-md:text-headline-lg-mobile">
+                    The IABTM Global Advisory Council.
+                </h2>
+<div class="flex flex-col md:flex-row gap-12 items-start">
+<!-- Counter Widget -->
+<div class="glass p-8 border border-outline-variant/30 rounded-xl shadow-sm flex flex-col gap-4 min-w-[300px]">
+<div class="flex items-baseline gap-2">
+<span class="font-display-xl text-display-xl text-primary leading-none">42</span>
+<span class="font-headline-md text-headline-md text-on-surface-variant">Senior Fellows</span>
+</div>
+<div class="h-[1px] bg-outline-variant/30 w-full"></div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-container" data-icon="public">public</span>
+<span class="font-body-lg text-body-lg">Across 18 Global Hubs</span>
+</div>
+</div>
+<!-- Search Box -->
+<div class="flex-1 w-full space-y-6">
+<div class="relative group">
+<input class="w-full bg-transparent border-b-2 border-outline focus:border-secondary transition-all py-4 px-2 text-headline-md font-headline-md outline-none placeholder:text-outline-variant/50" placeholder="Search council expertise..." type="text"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="travel_explore">travel_explore</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container-high px-4 py-1.5 rounded-full text-label-sm font-label-caps text-on-surface-variant border border-outline-variant/20 hover:border-secondary cursor-pointer transition-colors">#TravelPolicyAI</span>
+<span class="bg-surface-container-high px-4 py-1.5 rounded-full text-label-sm font-label-caps text-on-surface-variant border border-outline-variant/20 hover:border-secondary cursor-pointer transition-colors">#Decarbonization</span>
+<span class="bg-surface-container-high px-4 py-1.5 rounded-full text-label-sm font-label-caps text-on-surface-variant border border-outline-variant/20 hover:border-secondary cursor-pointer transition-colors">#NDCIntegration</span>
+<span class="bg-surface-container-high px-4 py-1.5 rounded-full text-label-sm font-label-caps text-on-surface-variant border border-outline-variant/20 hover:border-secondary cursor-pointer transition-colors">#DataSovereignty</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Expert Grid Section -->
+<section class="bg-white py-section-gap px-margin-page">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div>
+<h3 class="font-headline-lg text-headline-lg mb-4">Board of Governors</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                        Our experts represent the synthesis of regulatory precision and forward-leaning enterprise strategy in global mobility.
+                    </p>
+</div>
+<button class="group flex items-center gap-3 bg-primary text-on-primary px-8 py-4 rounded-full font-label-caps text-label-sm tracking-widest hover:shadow-lg transition-all active:scale-95">
+                    REQUEST ADVISORY
+                    <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<!-- Expert Card 1 -->
+<div class="flex flex-col md:flex-row gap-8 items-start p-8 border border-outline-variant/20 hover:border-outline transition-all group">
+<div class="w-full md:w-64 h-80 flex-shrink-0 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="A sophisticated professional portrait of Elena Vance, a woman in her 50s with an authoritative yet approachable expression. She is wearing a modern, tailored midnight slate blazer. The lighting is soft and cinematic, with a high-key minimalist background that evokes a premium corporate environment. The image is crisp, with deep blacks and bright whites, fitting an editorial minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyUDf98ZM4P3MGuaTtY4KLrrXDE9dyaermwBtKZWspzcaD5aXD_TWHuFyrRxsadmXQmIGGbmcrqvz-L35J-mCmPFd2mabEvEo15CjNcALbxSLbaDXdgKa6IOmBoNk3WM-rOxcNBkIhLFd9LLuRRBZiOZVjH18fUxjO4LzpP2Lh7jiVJw6s7_kUX_Sq-uYFtTEo8XPO_U8aK8vCMxWMjBI6G7cVuQvAlDF2SWXhQF5rT3taXi_8hu2Eyg"/>
+</div>
+<div class="flex flex-col h-full py-2">
+<span class="font-label-caps text-secondary-container mb-2">FELLOW 014</span>
+<h4 class="font-headline-md text-headline-md mb-1">Elena Vance</h4>
+<p class="font-label-caps text-on-surface-variant mb-4">SVP OF GLOBAL MOBILITY</p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                            Leading transformation in multi-modal corporate transit across the APAC region. Former head of strategic policy at Global Logistics Forum.
+                        </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="text-xs bg-tertiary-container/5 text-on-tertiary-container px-2 py-1 border border-on-tertiary-container/20">#GlobalTransit</span>
+<span class="text-xs bg-tertiary-container/5 text-on-tertiary-container px-2 py-1 border border-on-tertiary-container/20">#TaxCompliance</span>
+</div>
+<a class="text-primary font-bold font-label-caps text-label-sm flex items-center gap-2 hover:gap-4 transition-all" href="#">
+                            VIEW FULL PROFILE <span class="material-symbols-outlined text-xs" data-icon="north_east">north_east</span>
+</a>
+</div>
+</div>
+<!-- Expert Card 2 -->
+<div class="flex flex-col md:flex-row gap-8 items-start p-8 border border-outline-variant/20 hover:border-outline transition-all group">
+<div class="w-full md:w-64 h-80 flex-shrink-0 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="A high-profile professional portrait of Dr. Sarah Chen, an Asian woman in her late 30s with a focus and vision in her gaze. She stands in a bright, modern architectural space with glass and steel elements. She wears a minimalist white silk blouse. The photography style is high-contrast, professional, and reflects the efficiency of high-fidelity enterprise technology. The palette is dominated by whites, grays, and deep navy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBli3IDvOSohQfv1UBd_gihWlg7x1uI8oqq1Y4Ejk51QCLLxwOfy2GokO3tyGgiwXEgf4dy7Ln3NvSPtVfbkTw4uKO0jIcyKcMVH3IBK1ZbURG-IlQqypSoR_Tl9sKCjMPc0de_JH-SdRa6yubtESxvaByTzq2h9MsAze5AhHfAIA_ZXbEMfzbMzn7K3daJUe-g_NtDAin0ng37Vw4sHyxY-Qgz-icHnJ0U-e2xZ1i0a_mpcMyYiwigCA"/>
+</div>
+<div class="flex flex-col h-full py-2">
+<span class="font-label-caps text-secondary-container mb-2">FELLOW 029</span>
+<h4 class="font-headline-md text-headline-md mb-1">Dr. Sarah Chen</h4>
+<p class="font-label-caps text-on-surface-variant mb-4">AVIATION SUSTAINABILITY STRATEGIST</p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                            Pioneering research into SAF integration and carbon-offset validation for Tier-1 corporate carriers. Consultant to IATA Environmental Committee.
+                        </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="text-xs bg-tertiary-container/5 text-on-tertiary-container px-2 py-1 border border-on-tertiary-container/20">#AviationSustainability</span>
+<span class="text-xs bg-tertiary-container/5 text-on-tertiary-container px-2 py-1 border border-on-tertiary-container/20">#SAFPolicy</span>
+</div>
+<a class="text-primary font-bold font-label-caps text-label-sm flex items-center gap-2 hover:gap-4 transition-all" href="#">
+                            VIEW FULL PROFILE <span class="material-symbols-outlined text-xs" data-icon="north_east">north_east</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Featured Whitepaper Banner -->
+<div class="mt-24 bg-primary text-on-primary p-12 relative overflow-hidden group cursor-pointer">
+<div class="absolute right-0 top-0 h-full w-1/3 opacity-20 -z-0">
+
+</div>
+<div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="max-w-2xl">
+<span class="font-label-caps text-secondary-fixed mb-4 inline-block">LATEST INTELLIGENCE RELEASE</span>
+<h3 class="font-headline-lg text-headline-lg mb-4">Recent Whitepaper: The AI Shift in Corporate Procurement</h3>
+<p class="text-body-lg opacity-80">Download the 2024 Framework for AI-Driven Contract Negotiation and Compliance Monitoring.</p>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-6xl mb-4 transition-transform group-hover:translate-y-2" data-icon="download">download</span>
+<span class="font-label-caps text-label-sm">2.4MB PDF</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Knowledge Vault -->
+<section class="py-section-gap px-margin-page bg-background">
+<div class="flex items-center gap-4 mb-12">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="inventory_2">inventory_2</span>
+<h3 class="font-headline-lg text-headline-lg">Knowledge Vault</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Vault Item 1 -->
+<div class="bg-white p-8 border border-outline-variant/20 hover:shadow-xl transition-all flex flex-col group">
+<div class="flex justify-between items-start mb-8">
+<span class="bg-surface-container px-3 py-1 rounded text-xs font-label-caps text-on-surface-variant">POLICY TEMPLATE</span>
+<span class="font-label-caps text-label-sm text-outline">12 MIN READ</span>
+</div>
+<h5 class="font-headline-md text-headline-md mb-6 leading-tight group-hover:text-secondary-container transition-colors">Global Remote Work &amp; Nexus Policy V4.0</h5>
+<div class="mt-auto pt-8 border-t border-outline-variant/10 flex justify-between items-center">
+<span class="material-symbols-outlined text-outline" data-icon="article">article</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<!-- Vault Item 2 -->
+<div class="bg-white p-8 border border-outline-variant/20 hover:shadow-xl transition-all flex flex-col group">
+<div class="flex justify-between items-start mb-8">
+<span class="bg-surface-container px-3 py-1 rounded text-xs font-label-caps text-on-surface-variant">MARKET ANALYSIS</span>
+<span class="font-label-caps text-label-sm text-outline">18 MIN READ</span>
+</div>
+<h5 class="font-headline-md text-headline-md mb-6 leading-tight group-hover:text-secondary-container transition-colors">NDC Integration Roadmap for Enterprise</h5>
+<div class="mt-auto pt-8 border-t border-outline-variant/10 flex justify-between items-center">
+<span class="material-symbols-outlined text-outline" data-icon="monitoring">monitoring</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<!-- Vault Item 3 -->
+<div class="bg-white p-8 border border-outline-variant/20 hover:shadow-xl transition-all flex flex-col group">
+<div class="flex justify-between items-start mb-8">
+<span class="bg-surface-container px-3 py-1 rounded text-xs font-label-caps text-on-surface-variant">EXECUTIVE BRIEF</span>
+<span class="font-label-caps text-label-sm text-outline">5 MIN READ</span>
+</div>
+<h5 class="font-headline-md text-headline-md mb-6 leading-tight group-hover:text-secondary-container transition-colors">Sustainable Fuel Surcharges: Legal Implications</h5>
+<div class="mt-auto pt-8 border-t border-outline-variant/10 flex justify-between items-center">
+<span class="material-symbols-outlined text-outline" data-icon="gavel">gavel</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Asymmetric Call to Action -->
+<div class="mt-section-gap flex flex-col lg:flex-row items-center gap-16">
+<div class="lg:w-1/2 relative h-[400px] w-full overflow-hidden rounded-xl">
+<img class="w-full h-full object-cover" data-alt="A clean, top-down photograph of a minimalist high-end boardroom table made of dark walnut. On the table is a sleek black tablet showing high-density logistical data tables and charts with JetBrains Mono typography. The lighting is focused and professional. The scene captures the intersection of traditional leadership and modern technology, with a refined, luxury-business aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAqdHqZWe_Pg4sKQeG4YeE1cpumYriODtASv8QDKbydbGykhKJa4QI7bE8l8Z0KXMva-ZxKj0Rpp-lBPpwCx4tpdbJ1Ak-whtiNGCcwz2IejW8quYd92EMbZaqzVSJ3XNOp8UOSyFAeDO72gG9qYnCJ00Y9lfBYYd0OkHevWmT7iJ1rt_bIKUHshliNBFDHDX6uoGLSyxjgAoNqQIur-o9avBOOQYX25IH1bjUoq0pHRh9Nkp_cWhUCA"/>
+</div>
+<div class="lg:w-1/2 space-y-8">
+<h3 class="font-headline-lg text-headline-lg">Harness Collective Strategic Intelligence</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                        The Global Advisory Council offers bespoke deep-dives for IABTM Corporate Members. From policy audits to future-proofing your mobility roadmap, our fellows provide the precision you need.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-primary text-on-primary px-10 py-4 font-label-caps text-label-sm tracking-widest hover:bg-secondary-container transition-all">
+                            MEMBERSHIP ACCESS
+                        </button>
+<button class="border border-primary text-primary px-10 py-4 font-label-caps text-label-sm tracking-widest hover:bg-surface-container transition-all">
+                            COUNCIL PROSPECTUS
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low text-on-surface font-body-md w-full mt-section-gap border-t border-outline-variant grid grid-cols-1 md:grid-cols-3 gap-gutter px-margin-page py-section-gap">
+<div class="flex flex-col gap-6">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">IABTM</h2>
+<p class="text-on-surface-variant max-w-xs">Advancing the global mobility industry through intelligence, research, and collaborative excellence.</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="language">language</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="mail">mail</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-caps text-primary font-bold">RESOURCES</h4>
+<ul class="flex flex-col gap-2">
+<li><a class="text-on-surface-variant hover:text-primary transition-opacity" href="#">Stay Informed on Global Mobility</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-opacity" href="#">Whitepaper Archives</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-opacity" href="#">Annual Summit Reports</a></li>
+</ul>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-caps text-primary font-bold">LEGAL</h4>
+<ul class="flex flex-col gap-2">
+<li><a class="text-on-surface-variant hover:text-primary transition-opacity" href="#">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-opacity" href="#">Terms of Service</a></li>
+<li class="mt-8 text-xs text-on-surface-variant">© 2024 IABTM. All rights reserved.</li>
+</ul>
+</div>
+</footer>
+<!-- Mobile Bottom NavBar (Visible only on mobile) -->
+<nav class="fixed bottom-0 w-full md:hidden bg-surface/80 backdrop-blur-lg border-t border-outline-variant/20 shadow-lg flex justify-around items-center h-16 px-4 z-50">
+<span class="material-symbols-outlined text-on-surface-variant active:scale-90 transition-transform" data-icon="home">home</span>
+<span class="material-symbols-outlined text-on-surface-variant active:scale-90 transition-transform" data-icon="podcasts">podcasts</span>
+<span class="material-symbols-outlined text-secondary-container scale-110 active:scale-90 transition-transform" data-icon="groups">groups</span>
+<span class="material-symbols-outlined text-on-surface-variant active:scale-90 transition-transform" data-icon="brush">brush</span>
+</nav>
+<script>
+        // Micro-interactions for Council Cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Potential for adding JS driven subtle effects
+            });
+        });
+
+        // Search Autocomplete Logic (Simulated)
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('input', (e) => {
+            if(e.target.value.length > 2) {
+                // Trigger suggested tags animation or filtering
+            }
+        });
+    </script>
+</body></html>

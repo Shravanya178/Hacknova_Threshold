@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UNPACKED | IABTM Intelligence Podcast</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@600;700;800&amp;family=Geist:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@100..900&amp;family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Theme Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "background": "#f7f9fb",
+                "on-tertiary-container": "#b87500",
+                "on-secondary": "#ffffff",
+                "on-background": "#191c1e",
+                "surface-dim": "#d8dadc",
+                "secondary": "#0051d5",
+                "on-tertiary": "#ffffff",
+                "surface": "#f7f9fb",
+                "on-primary-container": "#7c839b",
+                "outline-variant": "#c6c6cd",
+                "error": "#ba1a1a",
+                "on-tertiary-fixed": "#2a1700",
+                "primary-fixed": "#dae2fd",
+                "on-surface": "#191c1e",
+                "on-surface-variant": "#45464d",
+                "surface-tint": "#565e74",
+                "on-primary-fixed-variant": "#3f465c",
+                "on-tertiary-fixed-variant": "#653e00",
+                "tertiary": "#000000",
+                "on-primary": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "inverse-primary": "#bec6e0",
+                "tertiary-fixed": "#ffddb8",
+                "surface-container-low": "#f2f4f6",
+                "primary-fixed-dim": "#bec6e0",
+                "error-container": "#ffdad6",
+                "on-error": "#ffffff",
+                "surface-container": "#eceef0",
+                "tertiary-container": "#2a1700",
+                "surface-container-high": "#e6e8ea",
+                "on-secondary-fixed-variant": "#003ea8",
+                "surface-bright": "#f7f9fb",
+                "secondary-fixed-dim": "#b4c5ff",
+                "tertiary-fixed-dim": "#ffb95f",
+                "secondary-fixed": "#dbe1ff",
+                "surface-variant": "#e0e3e5",
+                "on-secondary-fixed": "#00174b",
+                "on-error-container": "#93000a",
+                "primary": "#000000",
+                "primary-container": "#131b2e",
+                "secondary-container": "#316bf3",
+                "surface-container-highest": "#e0e3e5",
+                "inverse-surface": "#2d3133",
+                "on-secondary-container": "#fefcff",
+                "on-primary-fixed": "#131b2e",
+                "inverse-on-surface": "#eff1f3",
+                "outline": "#76777d"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "unit": "4px",
+                "margin-page": "64px",
+                "asymmetric-offset": "80px",
+                "section-gap": "128px",
+                "gutter": "32px"
+            },
+            "fontFamily": {
+                "body-md": ["Geist"],
+                "label-caps": ["JetBrains Mono"],
+                "headline-md": ["Chivo"],
+                "headline-lg": ["Chivo"],
+                "body-lg": ["Geist"],
+                "display-xl": ["Chivo"],
+                "headline-lg-mobile": ["Chivo"],
+                "label-sm": ["Geist"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                "headline-md": ["30px", {"lineHeight": "38px", "fontWeight": "600"}],
+                "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "32px", "fontWeight": "400"}],
+                "display-xl": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                "headline-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #00000033;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container selection:text-on-secondary-container antialiased">
+<!-- Top Navigation Anchor -->
+<nav class="bg-white/70 backdrop-blur-md border-b border-outline-variant/30 docked full-width top-0 sticky flex justify-between items-center w-full px-64 py-4 z-50">
+<div class="flex items-center gap-8">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-all">menu</span>
+<div class="font-display-xl text-headline-lg tracking-tighter text-primary">IABTM</div>
+</div>
+<div class="hidden md:flex items-center gap-10">
+<a class="text-on-surface-variant font-label-caps hover:text-secondary-container transition-colors duration-300" href="#">Insights</a>
+<a class="text-primary font-bold font-label-caps hover:text-secondary-container transition-colors duration-300" href="#">The Episode Vault</a>
+<a class="text-on-surface-variant font-label-caps hover:text-secondary-container transition-colors duration-300" href="#">Summits</a>
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-all">search</span>
+</div>
+</nav>
+<!-- Side Drawer (NavigationDrawer Logic) -->
+<aside class="hidden lg:flex flex-col h-full py-8 space-y-4 bg-surface fixed left-0 top-24 w-20 border-r border-outline-variant z-40 group hover:w-80 transition-all duration-300 ease-in-out">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-4 bg-secondary-container text-on-secondary-container font-bold px-6 py-4 rounded-full mx-2 cursor-pointer transition-all">
+<span class="material-symbols-outlined" data-icon="podcasts">podcasts</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap overflow-hidden">The Episode Vault</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant font-body-lg px-6 py-4 mx-2 cursor-pointer hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="brush">brush</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap overflow-hidden">Storytelling Lab</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant font-body-lg px-6 py-4 mx-2 cursor-pointer hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap overflow-hidden">Advisory Council</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant font-body-lg px-6 py-4 mx-2 cursor-pointer hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap overflow-hidden">Global Summits</span>
+</div>
+</div>
+</aside>
+<main class="ml-0 lg:ml-20">
+<!-- Hero Section: Asymmetrical Layout -->
+<section class="px-6 md:px-margin-page pt-16 pb-section-gap grid grid-cols-1 lg:grid-cols-12 gap-gutter relative">
+<div class="lg:col-span-7 flex flex-col justify-center">
+<span class="font-label-caps text-secondary font-bold mb-4 tracking-widest block">FEATURED EPISODE</span>
+<h1 class="font-display-xl text-[120px] leading-[100px] mb-8 text-primary uppercase relative z-10">
+                    Unpacked<span class="text-secondary">:</span>
+</h1>
+<p class="font-headline-md text-on-surface-variant max-w-xl mb-12">
+                    Business Travel &amp; Events Unfiltered. Sharp insights from the minds redefining global mobility.
+                </p>
+<!-- Distribution Cluster -->
+<div class="flex flex-wrap gap-4 items-center">
+<span class="font-label-caps text-on-surface-variant mr-4">LISTEN ON</span>
+<a class="p-3 border border-outline-variant hover:border-primary transition-colors flex items-center gap-2 group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" style="font-variation-settings: 'FILL' 1;">podcasts</span>
+<span class="font-label-caps text-[10px]">APPLE</span>
+</a>
+<a class="p-3 border border-outline-variant hover:border-primary transition-colors flex items-center gap-2 group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+<span class="font-label-caps text-[10px]">YOUTUBE</span>
+</a>
+<a class="p-3 border border-outline-variant hover:border-primary transition-colors flex items-center gap-2 group" href="#">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" style="font-variation-settings: 'FILL' 1;">equalizer</span>
+<span class="font-label-caps text-[10px]">SPOTIFY</span>
+</a>
+</div>
+</div>
+<div class="lg:col-span-5 lg:mt-asymmetric-offset">
+<!-- Interactive Mini-Player Mockup -->
+<div class="glass-panel p-8 shadow-2xl relative border border-white/40 overflow-hidden group">
+<div class="flex items-start justify-between mb-8">
+<div class="flex gap-4 items-center">
+<div class="w-16 h-16 bg-primary-container overflow-hidden">
+<img class="w-full h-full object-cover grayscale" data-alt="A cinematic, high-contrast black and white portrait of a business executive looking thoughtfully into the distance. The lighting is dramatic, high-key, and minimalist, emphasizing clean lines and sophisticated texture in a high-end corporate setting. Soft shadows create a calm, authoritative editorial aesthetic consistent with premium business publications." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlqKyk3UYO2IU9dfTI1ZVexpxVKVSj7OXo_SqkX14uLN9XJ8ImF69WnQGH-cHOSXHhJoOMsGKAM4W4LOca8J9vKaLM1dWtEAOE0KZAKr9p5mdtINtaYk5SRlQwfa9HAHsciasWGvxnop7_Vi42aikOsBfveJgkznVPrVjzs1u4yA5TSG8Ik7CS22_hSblTzviDj221POQ3g4BBZqK6oaH1zsH5Bf9LvjKJopdQenI6bmXtTM5gyH7b9A"/>
+</div>
+<div>
+<h4 class="font-bold text-primary">Marcus Thorne</h4>
+<p class="text-label-caps text-on-surface-variant text-[10px]">EX-AMEX GBT ADVISOR</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary/30">more_horiz</span>
+</div>
+<h3 class="font-headline-md mb-6 leading-tight">The Future of Multi-Modal Procurement in EMEA</h3>
+<!-- Player UI -->
+<div class="space-y-6">
+<!-- Progress Bar -->
+<div class="relative">
+<div class="h-1 bg-outline-variant/30 w-full rounded-full">
+<div class="h-1 bg-primary w-1/3 rounded-full relative">
+<div class="absolute -right-1 -top-1 w-3 h-3 bg-primary rounded-full shadow-lg"></div>
+</div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] font-label-caps text-on-surface-variant">
+<span>12:45</span>
+<span>38:20</span>
+</div>
+</div>
+<!-- Chapter Markers -->
+<div class="flex gap-2">
+<div class="px-3 py-1 bg-surface-container rounded-full text-[10px] font-label-caps text-on-surface-variant border border-outline-variant/20">04:12 - Ground Mobility</div>
+<div class="px-3 py-1 bg-primary/5 rounded-full text-[10px] font-label-caps text-primary border border-primary/10">Active: Tech Shifts</div>
+</div>
+<!-- Controls -->
+<div class="flex items-center justify-between pt-4">
+<span class="material-symbols-outlined text-2xl hover:text-secondary cursor-pointer transition-colors">replay_10</span>
+<div class="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-xl">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<span class="material-symbols-outlined text-2xl hover:text-secondary cursor-pointer transition-colors">forward_30</span>
+</div>
+</div>
+<!-- Floating Action Button Contextual -->
+<button class="absolute -bottom-2 -right-2 bg-secondary-container text-on-secondary-container px-8 py-4 font-label-caps text-sm tracking-widest hover:-translate-y-1 transition-transform shadow-lg flex items-center gap-3">
+<span class="material-symbols-outlined">podcasts</span>
+                        PLAY FULL EPISODE
+                    </button>
+</div>
+</div>
+</section>
+<!-- Episode Vault Section -->
+<section class="px-6 md:px-margin-page py-section-gap bg-surface-container-low border-t border-outline-variant/30">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div>
+<h2 class="font-display-xl text-headline-lg text-primary mb-4">The Episode Vault</h2>
+<p class="font-body-lg text-on-surface-variant max-w-lg">Access a comprehensive library of unfiltered conversations on global mobility strategy.</p>
+</div>
+<!-- Filter Tabs -->
+<div class="flex gap-6 overflow-x-auto pb-4 custom-scrollbar whitespace-nowrap w-full md:w-auto">
+<button class="font-label-caps text-primary border-b-2 border-primary pb-2">ALL SESSIONS</button>
+<button class="font-label-caps text-on-surface-variant hover:text-primary pb-2 transition-colors">GLOBAL TRAVEL TECH</button>
+<button class="font-label-caps text-on-surface-variant hover:text-primary pb-2 transition-colors">EXECUTIVE PROCUREMENT</button>
+<button class="font-label-caps text-on-surface-variant hover:text-primary pb-2 transition-colors">MICE &amp; CORPORATE EVENTS</button>
+<button class="font-label-caps text-on-surface-variant hover:text-primary pb-2 transition-colors">PROCUREMENT &amp; ESG</button>
+</div>
+</div>
+<!-- Bento Grid Episode Vault -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Episode Card 1 -->
+<div class="group bg-white p-8 border border-outline-variant/30 hover:border-primary/40 transition-all flex flex-col h-full">
+<div class="flex justify-between items-start mb-6">
+<span class="font-label-caps text-[10px] bg-secondary/10 text-secondary px-2 py-1">GLOBAL TRAVEL TECH</span>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-[10px] text-on-surface-variant">OCT 24, 2024</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">38 MINS</span>
+</div>
+</div>
+<h3 class="font-headline-md mb-4 group-hover:text-secondary transition-colors cursor-pointer">AI-Driven Sourcing: Beyond the Hype Cycles</h3>
+<p class="text-on-surface-variant mb-8 flex-grow">A deep dive into how machine learning is actually impacting hotel RFP seasons and what it means for 2025 budgets.</p>
+<div class="space-y-4 mb-8">
+<div class="flex items-center gap-3 bg-surface-container-lowest p-3 border border-outline-variant/20">
+<div class="w-8 h-8 rounded-full bg-outline-variant/40 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up professional headshot of a female technology executive with a sharp, minimalist aesthetic. The lighting is cool-toned and clean, with a neutral gray background. She is wearing a modern dark blazer, and the image has the crisp clarity of a high-end tech journal editorial." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVPF7mzK1UMkBD2ie0ccmez6uIPQ_TTw-WtF61b3RK7n_OaqGLfRsGp7gLokR1NQfwcYsp8YQngwQv-KTI66WNS-EH3MQZbdZvG8gPEHjKJa0im2q_XRfy-DB7DPaXA7pyWnTDGGBQL6Yc7G5rj5tpKnHkP9oG8kr4kf54FAcBQl2eQ29P96DNJbgActO8FYaU-fcVLdMmbGumFAVxoJ3ei9jptKf9_UokGvjEBRMTQ36RmJp53TCYVA"/>
+</div>
+<span class="font-label-caps text-[10px] text-primary">HOST: SARAH JENKINS</span>
+</div>
+<ul class="space-y-2">
+<li class="flex gap-2 items-start text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm text-secondary">check_circle</span>
+                                Predictive pricing models for Q1
+                            </li>
+<li class="flex gap-2 items-start text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm text-secondary">check_circle</span>
+                                Data sovereignty in cloud procurement
+                            </li>
+</ul>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant/20 mt-auto">
+<div class="flex gap-3">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">play_circle</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">share</span>
+</div>
+<a class="font-label-caps text-[10px] flex items-center gap-2 text-primary hover:underline" href="#">
+<span class="material-symbols-outlined text-sm">download</span>
+                            EXEC SUMMARY PDF
+                        </a>
+</div>
+</div>
+<!-- Episode Card 2 -->
+<div class="group bg-white p-8 border border-outline-variant/30 hover:border-primary/40 transition-all flex flex-col h-full">
+<div class="flex justify-between items-start mb-6">
+<span class="font-label-caps text-[10px] bg-on-tertiary-container/10 text-on-tertiary-container px-2 py-1">PROCUREMENT &amp; ESG</span>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-[10px] text-on-surface-variant">OCT 18, 2024</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">42 MINS</span>
+</div>
+</div>
+<h3 class="font-headline-md mb-4 group-hover:text-secondary transition-colors cursor-pointer">The Carbon Tax Reality for Business Aviation</h3>
+<p class="text-on-surface-variant mb-8 flex-grow">How new EU regulations are forcing a rethink of executive short-haul travel and private charter logistics.</p>
+<div class="space-y-4 mb-8">
+<div class="flex items-center gap-3 bg-surface-container-lowest p-3 border border-outline-variant/20">
+<div class="w-8 h-8 rounded-full bg-outline-variant/40 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A sharp, minimalist portrait of a sustainability consultant in a modern, eco-conscious architectural space. The background features natural wood and large glass panels with soft, indirect sunlight. The professional has a composed and expert expression, styled for a premium global business news segment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt8_CQo-15oYmB3Ze4P6N5aMyzV--rwzSTQHFQYI1P32jhrcnUxw5AI8ywJQ45xmY3chjGNfzeeArK-1Y9mmnytjiZhxYjHMvOj_rKX_CpYDbSjRXEBh2FlsUqK1_ZChiRMFy4kGON4fIF2k-Q6agrRqi8OJurkO8MCXSnhL8Lqj8niPs_bZAqsdeQTPDUMpmx3ZTGd-OmlfiDMcYzXSYWMYiklT6iqtogyUd_Z2vbP98HTGtViSXmBw"/>
+</div>
+<span class="font-label-caps text-[10px] text-primary">HOST: LEONARD VANCE</span>
+</div>
+<ul class="space-y-2">
+<li class="flex gap-2 items-start text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm text-secondary">check_circle</span>
+                                SAF blending mandates vs. reality
+                            </li>
+<li class="flex gap-2 items-start text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm text-secondary">check_circle</span>
+                                Offset integrity audits
+                            </li>
+</ul>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant/20 mt-auto">
+<div class="flex gap-3">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">play_circle</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">share</span>
+</div>
+<a class="font-label-caps text-[10px] flex items-center gap-2 text-primary hover:underline" href="#">
+<span class="material-symbols-outlined text-sm">download</span>
+                            EXEC SUMMARY PDF
+                        </a>
+</div>
+</div>
+<!-- Episode Card 3 -->
+<div class="group bg-white p-8 border border-outline-variant/30 hover:border-primary/40 transition-all flex flex-col h-full">
+<div class="flex justify-between items-start mb-6">
+<span class="font-label-caps text-[10px] bg-primary/10 text-primary px-2 py-1">EXECUTIVE PROCUREMENT</span>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-[10px] text-on-surface-variant">OCT 12, 2024</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">35 MINS</span>
+</div>
+</div>
+<h3 class="font-headline-md mb-4 group-hover:text-secondary transition-colors cursor-pointer">Re-negotiating Dynamic Pricing in 2025</h3>
+<p class="text-on-surface-variant mb-8 flex-grow">Why the traditional annual RFP is dead and how to move toward continuous negotiation with key partners.</p>
+<div class="space-y-4 mb-8">
+<div class="flex items-center gap-3 bg-surface-container-lowest p-3 border border-outline-variant/20">
+<div class="w-8 h-8 rounded-full bg-outline-variant/40 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A sophisticated editorial headshot of a senior procurement leader in a high-tech office environment. The background is a soft blur of glowing screens and glass walls. The lighting is professional, using a three-point setup to create depth and authority. The subject wears a sharp tailored suit, epitomizing modern corporate leadership." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDfV6WAzvuFcS9AqtSuUWPQlHoDExtw1szaVqEBlovkvT63F_d4Y0CglkExDP6SCXhOCc5s2Z8Bsd9pcwLW7CzOTwGbOZds7uTaukCFekB8V1LSFA5Jy2dcAY82gIIkJASvsJMxo13g4-ILw6r1kZGx15MmUo8KmmzP37a8GFUoXpvibAGl2b174MGUEdX6Rf_hEtupoTiUrmR-CoFq_ZIIOT-jPV9MnB0FXQ1yt3TNLjraSm3sWiGuA"/>
+</div>
+<span class="font-label-caps text-[10px] text-primary">HOST: ANITA RAO</span>
+</div>
+<ul class="space-y-2">
+<li class="flex gap-2 items-start text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm text-secondary">check_circle</span>
+                                Index-based pricing strategies
+                            </li>
+<li class="flex gap-2 items-start text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-sm text-secondary">check_circle</span>
+                                Performance-based airline deals
+                            </li>
+</ul>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant/20 mt-auto">
+<div class="flex gap-3">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">play_circle</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">share</span>
+</div>
+<a class="font-label-caps text-[10px] flex items-center gap-2 text-primary hover:underline" href="#">
+<span class="material-symbols-outlined text-sm">download</span>
+                            EXEC SUMMARY PDF
+                        </a>
+</div>
+</div>
+</div>
+<!-- Load More Action -->
+<div class="mt-16 flex justify-center">
+<button class="font-label-caps text-sm border border-primary px-12 py-4 hover:bg-primary hover:text-white transition-all duration-500 tracking-widest">
+                    EXPLORE FULL ARCHIVE
+                </button>
+</div>
+</section>
+<!-- Subscription / Newsletter Section -->
+<section class="px-6 md:px-margin-page py-section-gap relative overflow-hidden bg-primary text-white">
+<div class="absolute right-0 top-0 w-1/2 h-full opacity-10 pointer-events-none">
+
+</div>
+<div class="relative z-10 max-w-4xl">
+<h2 class="font-display-xl text-white mb-8">Stay Ahead of the Curve.</h2>
+<p class="font-body-lg text-white/70 mb-12 max-w-2xl">Join 25,000+ travel executives receiving weekly unfiltered intelligence directly to their inbox.</p>
+<form class="flex flex-col md:flex-row gap-4">
+<input class="flex-grow bg-transparent border-b-2 border-white/30 text-white placeholder:text-white/30 focus:border-white focus:ring-0 transition-colors py-4 px-0" placeholder="YOUR CORPORATE EMAIL" type="email"/>
+<button class="bg-white text-primary font-label-caps px-12 py-4 hover:bg-secondary-container hover:text-white transition-colors duration-300">SUBSCRIBE NOW</button>
+</form>
+</div>
+</section>
+<!-- Footer Section -->
+<footer class="grid grid-cols-1 md:grid-cols-3 gap-gutter px-64 py-section-gap bg-surface-container-low border-t border-outline-variant">
+<div class="space-y-6">
+<div class="font-headline-md text-headline-md font-bold text-primary">IABTM</div>
+<p class="text-on-surface-variant text-sm max-w-xs">The Intelligence Authority for Business Travel and Mobility Professionals globally.</p>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-caps text-primary text-[10px]">RESOURCES</h4>
+<div class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-primary transition-opacity text-sm" href="#">Stay Informed on Global Mobility</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity text-sm" href="#">Event Calendar</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity text-sm" href="#">Intelligence Reports</a>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-caps text-primary text-[10px]">LEGAL</h4>
+<div class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-primary transition-opacity text-sm" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity text-sm" href="#">Terms of Service</a>
+<p class="text-on-surface-variant/60 text-xs mt-4">© 2024 IABTM. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<!-- Mobile Bottom Nav -->
+<nav class="fixed bottom-0 w-full md:hidden bg-surface/80 backdrop-blur-lg border-t border-outline-variant/20 flex justify-around items-center h-16 px-4 z-50">
+<span class="material-symbols-outlined text-on-surface-variant">home</span>
+<span class="material-symbols-outlined text-secondary-container scale-110">podcasts</span>
+<span class="material-symbols-outlined text-on-surface-variant">brush</span>
+<span class="material-symbols-outlined text-on-surface-variant">groups</span>
+</nav>
+</main>
+<script>
+        // Micro-interactions for the player
+        document.addEventListener('DOMContentLoaded', () => {
+            const playButton = document.querySelector('.bg-primary.text-white');
+            let playing = false;
+
+            playButton.addEventListener('click', function() {
+                playing = !playing;
+                const icon = this.querySelector('.material-symbols-outlined');
+                icon.textContent = playing ? 'pause' : 'play_arrow';
+                
+                // Toggle active state visualization
+                if(playing) {
+                    this.classList.add('animate-pulse');
+                } else {
+                    this.classList.remove('animate-pulse');
+                }
+            });
+
+            // Smooth scroll to top functionality if needed
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body></html>
