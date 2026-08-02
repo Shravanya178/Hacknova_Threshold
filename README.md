@@ -2,7 +2,7 @@
 
 Team HACKNOVA
 
-> **An Agentic Identity Curator that diagnoses your current growth moment before composing your next meaningful experience.**
+> **An Agentic Intelligence layer that diagnoses your current growth moment before composing your next meaningful experience.**
 
 Built for **HBTM 2026 – IABTM × IIIT Pune**
 
