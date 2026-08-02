@@ -26,7 +26,13 @@ export default function CreativeHubPlayer({
   onReflectionSubmit,
   submitting = false
 }: CreativeHubPlayerProps) {
-  const [activeTab, setActiveTab] = useState<"podcast" | "creators" | "experts">("podcast");
+  const getDefaultTab = (): "podcast" | "creators" | "experts" => {
+    if (userId.toLowerCase() === "aarav") return "podcast";
+    if (userId.toLowerCase() === "meera") return "podcast";
+    return "creators";
+  };
+
+  const [activeTab, setActiveTab] = useState<"podcast" | "creators" | "experts">(getDefaultTab());
   const [recentInteractions, setRecentInteractions] = useState<string[]>([]);
   const [responseText, setResponseText] = useState("");
   const [submitted, setSubmitted] = useState(false);

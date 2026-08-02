@@ -105,22 +105,24 @@ export async function runJourneyComposerAgent(
   const catalog = readMediaCatalog();
   let matchedMedia = findMatchingMedia(context.capability_gap, catalog);
 
-  // Try to find a real, highly relevant YouTube video matching the capability gap
-  try {
-    const ytResult = await searchYouTube(context.capability_gap);
-    if (ytResult) {
-      console.log(`[Journey Composer] Found relevant YouTube video: "${ytResult.title}" (${ytResult.id})`);
-      matchedMedia = {
-        id: ytResult.id,
-        title: ytResult.title,
-        source: "IABTM",
-        resource_type: "video" as any,
-        capability_gap: context.capability_gap,
-        content: ytResult.id
-      } as any;
+  // Try to find a real, highly relevant YouTube video matching the capability gap ONLY if no curated match exists
+  if (!matchedMedia) {
+    try {
+      const ytResult = await searchYouTube(context.capability_gap);
+      if (ytResult) {
+        console.log(`[Journey Composer] Found relevant YouTube video: "${ytResult.title}" (${ytResult.id})`);
+        matchedMedia = {
+          id: ytResult.id,
+          title: ytResult.title,
+          source: "IABTM",
+          resource_type: "video" as any,
+          capability_gap: context.capability_gap,
+          content: ytResult.id
+        } as any;
+      }
+    } catch (err) {
+      console.error("YouTube search fallback query in composer failed:", err);
     }
-  } catch (err) {
-    console.error("YouTube search fallback query in composer failed:", err);
   }
 
   let dropoffPrompt = "";

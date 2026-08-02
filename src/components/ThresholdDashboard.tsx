@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Activity } from "lucide-react";
+import { ChevronLeft, ChevronRight, Activity, ArrowRight } from "lucide-react";
 import { User, Diagnosis, ExperienceStep, EvidenceEntry } from "@/types/threshold";
 import usersDataRaw from "../data/users.json";
 import IdentityConversation from "./IdentityConversation";
@@ -10,6 +10,7 @@ import DiagnosisReveal from "./DiagnosisReveal";
 import JourneyScreen from "./JourneyScreen";
 import PlanAdjustmentReveal from "./PlanAdjustmentReveal";
 import JudgeModePanel, { SeededAdjustment } from "./JudgeModePanel";
+import { getExpressionForState } from "@/lib/identityRegistry";
 
 const usersData = usersDataRaw as User[];
 
@@ -222,7 +223,7 @@ export default function ThresholdDashboard() {
   };
 
   const handleNextSlide = () => {
-    const maxIdx = !!diagnosis ? 3 : 0;
+    const maxIdx = !!diagnosis ? 4 : 0;
     setActiveSlide((prev) => Math.min(maxIdx, prev + 1));
   };
 
@@ -291,7 +292,8 @@ export default function ThresholdDashboard() {
             { idx: 0, label: "01. Intake Intent" },
             { idx: 1, label: "02. Identity Map" },
             { idx: 2, label: "03. Experience Pathway" },
-            { idx: 3, label: "04. Historical Timeline" }
+            { idx: 3, label: "04. Historical Timeline" },
+            { idx: 4, label: "05. Identity Expression" }
           ].map((tab) => {
             const isActive = activeSlide === tab.idx;
             const isAvailable = tab.idx === 0 || !!diagnosis;
@@ -558,10 +560,167 @@ export default function ThresholdDashboard() {
           </div>
         </div>
 
+        {/* Card 4: Identity Expression */}
+        <div
+          onClick={() => activeSlide !== 4 && setActiveSlide(4)}
+          className={`absolute w-[92%] md:w-[75%] lg:w-[50%] h-[560px] transition-all duration-500 ease-out cursor-pointer rounded-[24px] overflow-hidden ${getSlideStyle(4)}`}
+        >
+          <div className={`w-full h-full bg-surface border border-border p-6 flex flex-col justify-between ${activeSlide === 4 ? "pointer-events-auto" : "pointer-events-none"}`}>
+            <div className="flex flex-col gap-1.5">
+              <div className="flex justify-between items-center">
+                <span className="bg-champagneGold/10 border border-champagneGold/20 text-champagneGold font-mono text-xs px-3 py-1 rounded-full uppercase tracking-wider font-bold">
+                  05. Identity Expression
+                </span>
+                <span className="text-xs text-secondaryText font-mono font-semibold">PHASE 5</span>
+              </div>
+              <h3 className="text-xl font-black text-primaryText uppercase tracking-wider mt-3">
+                Identity recognition moment
+              </h3>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto no-scrollbar py-3 text-left flex flex-col justify-between">
+              {diagnosis ? (() => {
+                const expressionMapping = getExpressionForState(diagnosis.quadrant);
+                const sessionEvidence = Object.values(evidence).map((e) => e.content);
+                const hasSessionEvidence = sessionEvidence.length > 0;
+                
+                return expressionMapping ? (
+                  <div className="flex flex-col gap-4 mt-2">
+                    
+                    {/* Identity State and Stated Goal */}
+                    <div className="flex justify-between items-start gap-4">
+                      <div>
+                        <span className="text-[9px] uppercase tracking-widest text-mutedText font-mono font-bold block">
+                          Current Developmental State
+                        </span>
+                        <span className="text-2xl font-script font-bold text-champagneGold leading-none block mt-1">
+                          {diagnosis.quadrant}
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[9px] uppercase tracking-widest text-mutedText font-mono font-bold block">
+                          Stated Goal
+                        </span>
+                        <span className="text-xs text-secondaryText italic font-medium block mt-1">
+                          "{statedGoal}"
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Proof Section */}
+                    <div className="bg-secondaryBg/80 border border-border p-4 rounded-card flex flex-col gap-2 shadow-subtle">
+                      <span className="text-[9px] uppercase tracking-widest text-secondaryText font-mono font-bold">
+                        Milestone Proof & Reflections
+                      </span>
+                      {hasSessionEvidence ? (
+                        <div className="flex flex-col gap-1.5">
+                          {sessionEvidence.map((content, idx) => (
+                            <p key={idx} className="text-xs text-primaryText italic leading-relaxed">
+                              • "{content}"
+                            </p>
+                          ))}
+                        </div>
+                      ) : recentReflections.length > 0 ? (
+                        <div className="flex flex-col gap-1.5">
+                          {recentReflections.map((ref, idx) => (
+                            <p key={idx} className="text-xs text-secondaryText italic leading-relaxed">
+                              • "{ref}"
+                            </p>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-mutedText italic">
+                          No active reflections or session evidence logged yet. Use the Growth Pathway tab checklist to file proof.
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Product & Recognition Card */}
+                    <div className="p-4 bg-white border border-border rounded-card shadow-sm flex flex-col gap-4">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[9px] uppercase tracking-widest text-mutedText font-mono font-bold">
+                          Acknowledged Asset Aspiration
+                        </span>
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-primaryText">
+                          {expressionMapping.recognitionMoment}
+                        </h4>
+                      </div>
+
+                      <div className="flex gap-4 items-start">
+                        {expressionMapping.image && (
+                          /* Highlight product photo in champagne gold! */
+                          <div className="w-24 h-24 bg-white border-2 border-champagneGold rounded-md overflow-hidden flex-shrink-0 flex items-center justify-center p-1.5 shadow-[0_0_15px_rgba(181,158,124,0.3)] hover:shadow-[0_0_20px_rgba(181,158,124,0.5)] transition-all duration-300">
+                            <img 
+                              src={expressionMapping.image} 
+                              alt={expressionMapping.title} 
+                              className="w-full h-full object-contain" 
+                            />
+                          </div>
+                        )}
+                        <div className="flex-1 flex flex-col justify-between min-h-[96px]">
+                          <div>
+                            <div className="flex flex-wrap items-baseline gap-1.5">
+                              <span className="text-[9px] font-bold font-mono text-champagneGold uppercase tracking-widest block">
+                                "{expressionMapping.uiCopy || expressionMapping.expressionText}"
+                              </span>
+                              {expressionMapping.price && (
+                                <span className="text-[9px] font-mono text-mutedText">
+                                  ({expressionMapping.price})
+                                </span>
+                              )}
+                            </div>
+                            <h3 className="text-xs font-bold leading-tight text-primaryText my-1">
+                              {expressionMapping.title}
+                            </h3>
+                            <p className="text-[11px] text-secondaryText leading-relaxed">
+                              {expressionMapping.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="pt-2.5 border-t border-border/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <span className="text-[9px] text-mutedText italic font-serif leading-normal max-w-[280px]">
+                          Rationale: {expressionMapping.rationale}
+                        </span>
+                        <a
+                          href={expressionMapping.destination}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-primaryText hover:bg-champagneGold text-background hover:text-primaryText font-mono text-[9px] uppercase font-bold py-2 px-4 rounded-btn flex items-center justify-center gap-1.5 transition-all text-center self-end sm:self-auto"
+                        >
+                          View Collection
+                          <ArrowRight className="w-3 h-3" />
+                        </a>
+                      </div>
+                    </div>
+
+                  </div>
+                ) : (
+                  <div className="h-full flex flex-col items-center justify-center p-8 text-center text-secondaryText bg-secondaryBg/20 border border-dashed border-border rounded-card">
+                    <p className="text-xs">No matching recognition expression configured for developmental state "{diagnosis.quadrant}".</p>
+                  </div>
+                );
+              })() : (
+                <div className="h-full flex flex-col items-center justify-center p-8 text-center text-secondaryText bg-secondaryBg/20 border border-dashed border-border rounded-card">
+                  <p className="text-sm font-bold uppercase tracking-wider text-primaryText mb-1">Expression Locked</p>
+                  <p className="text-xs max-w-[200px] leading-relaxed">
+                    Generate a growth diagnosis from the intake card to view dynamic expressions.
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            <p className="text-xs text-secondaryText leading-relaxed pt-3 border-t border-border/40 font-mono text-center">
+              IDENTITY RECOGNITION · PLATFORM EXPRESSION
+            </p>
+          </div>
+        </div>
+
         {/* Next Arrow Button (Right side of stack) */}
         <button
           onClick={handleNextSlide}
-          disabled={activeSlide === (!!diagnosis ? 3 : 0)}
+          disabled={activeSlide === (!!diagnosis ? 4 : 0)}
           className="absolute right-3 lg:right-6 z-40 p-3.5 rounded-full border border-border bg-surface hover:bg-secondaryBg shadow-md disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
         >
           <ChevronRight className="w-4 h-4 text-primaryText" />

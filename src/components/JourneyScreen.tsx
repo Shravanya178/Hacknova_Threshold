@@ -6,8 +6,6 @@ import { ExperienceStep, EvidenceEntry } from "@/types/threshold";
 import ReflectionCapture from "./ReflectionCapture";
 import AdaptiveMediaPlayer from "./AdaptiveMediaPlayer";
 import CreativeHubPlayer from "./CreativeHub/CreativeHubPlayer";
-import IdentityExpressionCard from "./IdentityExpressionCard";
-import { getExpressionForState } from "@/lib/identityRegistry";
 
 interface JourneyScreenProps {
   steps: ExperienceStep[];
@@ -39,8 +37,6 @@ export default function JourneyScreen({
   const [activeReflectionStep, setActiveReflectionStep] = useState<string | null>(null);
   const [expandedMediaIds, setExpandedMediaIds] = useState<Record<string, boolean>>({});
   const [creativeHubOpenStep, setCreativeHubOpenStep] = useState<ExperienceStep | null>(null);
-
-  const mapping = quadrant ? getExpressionForState(quadrant) : null;
 
   const isStepLocked = (index: number): boolean => {
     if (index === 0) return false;
@@ -206,9 +202,6 @@ export default function JourneyScreen({
             </div>
           );
         })}
-        {mapping && (
-          <IdentityExpressionCard mapping={mapping} />
-        )}
       </div>
 
       {/* Creative Hub Lightbox Modal Overlay */}

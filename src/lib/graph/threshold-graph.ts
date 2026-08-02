@@ -276,13 +276,39 @@ async function composerNode(state: typeof GraphStateAnnotation.State) {
 
   finalDiagnosis = enforceSpecSanity(state.userId, finalDiagnosis, state.isLapse || isDropOff);
 
-  // Attach matching media card
+  // Ensure Creative Hub step exists with personalized title matching identity
+  const hasCreativeHub = finalDiagnosis.journey.some(s => s.resource_type === "creative_hub");
+  if (!hasCreativeHub) {
+    finalDiagnosis.journey.push({
+      id: "step-creative-hub",
+      verb: "attend" as const,
+      label: `Engage with your personalized IABTM Creative Hub to build confidence and perspective.`,
+      requires_output: false,
+      resource_type: "creative_hub" as const,
+      media: {
+        id: "media-creative-hub",
+        title: getCustomizedTitle(state.userId, finalDiagnosis.quadrant),
+        source: "IABTM" as const,
+        capability_gap: finalDiagnosis.capability_gap,
+        content: "creative_hub"
+      }
+    });
+  } else {
+    finalDiagnosis.journey = finalDiagnosis.journey.map(s => {
+      if (s.resource_type === "creative_hub" && s.media) {
+        s.media.title = getCustomizedTitle(state.userId, finalDiagnosis.quadrant);
+      }
+      return s;
+    });
+  }
+
+  // Attach matching media card (excluding media-creative-hub from count checks)
   const catalog = readMediaCatalog();
   const matchedMedia = findMatchingMedia(finalDiagnosis.capability_gap, catalog);
   if (matchedMedia && finalDiagnosis.journey.length > 0) {
-    const hasMedia = finalDiagnosis.journey.some(step => step.media && step.media.id);
+    const hasMedia = finalDiagnosis.journey.some(step => step.media && step.media.id && step.media.id !== "media-creative-hub");
     if (!hasMedia) {
-      const targetStep = finalDiagnosis.journey.find(s => s.verb === "attend" || s.verb === "reflect") || finalDiagnosis.journey[0];
+      const targetStep = finalDiagnosis.journey.find(s => (s.verb === "attend" || s.verb === "reflect") && s.id !== "step-creative-hub") || finalDiagnosis.journey[0];
       targetStep.media = {
         id: matchedMedia.id,
         title: matchedMedia.title,
@@ -290,6 +316,7 @@ async function composerNode(state: typeof GraphStateAnnotation.State) {
         capability_gap: matchedMedia.capability_gap,
         content: matchedMedia.content
       };
+      targetStep.resource_type = (matchedMedia as any).resource_type || "video";
     }
   }
 
@@ -512,3 +539,21 @@ const workflow = new StateGraph(GraphStateAnnotation)
 
 // Compile compiled graph
 export const compiledThresholdGraph = workflow.compile();
+
+function getCustomizedTitle(userId: string, quadrant: string): string {
+  const name = userId.charAt(0).toUpperCase() + userId.slice(1);
+  switch (quadrant) {
+    case "Commitment":
+      return `Creative Hub | ${name}'s Path to Commitment: UNPACKED Intelligence Podcast`;
+    case "Curiosity":
+      return `Creative Hub | ${name}'s Curiosity Sandbox: Creators & Storytelling Lab`;
+    case "Compassion":
+      return `Creative Hub | ${name}'s Compassion Path: UNPACKED Intelligence Podcast`;
+    case "Rest":
+      return `Creative Hub | ${name}'s Recovery Zone: Calm Podcast & Mindful Rest`;
+    case "Contribution":
+      return `Creative Hub | ${name}'s Mentorship Hub: Together We Become`;
+    default:
+      return `Creative Hub | ${name}'s Personalized ${quadrant} Experience`;
+  }
+}
